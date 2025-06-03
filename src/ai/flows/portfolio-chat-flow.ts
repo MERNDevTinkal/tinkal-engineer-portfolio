@@ -3,9 +3,9 @@
 /**
  * @fileOverview A portfolio chatbot AI flow.
  *
- * - portfolioChatFlow - A function that responds to user queries about Tinkal Kumar.
- * - PortfolioChatInput - The input type for the portfolioChatFlow.
- * - PortfolioChatOutput - The return type for the portfolioChatFlow.
+ * - getPortfolioChatResponse - A function that responds to user queries about Tinkal Kumar.
+ * - PortfolioChatInput - The input type for the getPortfolioChatResponse.
+ * - PortfolioChatOutput - The return type for the getPortfolioChatResponse.
  */
 
 import {ai} from '@/ai/genkit';
@@ -30,7 +30,7 @@ export type PortfolioChatInput = z.infer<typeof PortfolioChatInputSchema>;
 
 const PortfolioChatOutputSchema = z.object({
   response: z.string().describe("The chatbot's response to the user query."),
-  suggestedFollowUps: z.array(z.string()).optional().describe('Up to 3 brief suggested follow-up questions a user might ask next. These should be relevant to the conversation or other key aspects of Tinkal\'s profile.'),
+  suggestedFollowUps: z.array(z.string()).optional().describe('Up to 3 brief, relevant suggested follow-up questions (max 5-7 words each) a user might ask next, related to the conversation or key aspects of Tinkal\'s profile.'),
 });
 export type PortfolioChatOutput = z.infer<typeof PortfolioChatOutputSchema>;
 
@@ -71,7 +71,7 @@ ${certificationsString}
 
 Contact Information: ${contactString}
 
-After providing your main answer, also generate up to 3 short, relevant follow-up questions that a user might ask next. Return these as an array of strings in the 'suggestedFollowUps' field of your JSON output. If the conversation is just starting or no specific follow-up is obvious, suggest general questions about key areas like my skills, prominent projects, or overall experience.
+After providing your main answer, also generate up to 3 short (max 5-7 words each), relevant follow-up questions that a user might ask next based on the current query or other key aspects of the profile. Return these as an array of strings in the 'suggestedFollowUps' field of your JSON output. Examples: "Tell me about his MERN project?", "What's his latest role?", "Any cloud skills?". If the conversation is just starting or no specific follow-up is obvious, suggest general questions about key areas like skills, prominent projects, or overall experience.
 
 Keep your answers brief and to the point, ideally 2-3 sentences unless more detail is specifically requested and available.
 When asked about contact, guide them to the contact section or provide the email/LinkedIn.
@@ -85,7 +85,7 @@ const chatPrompt = ai.definePrompt({
   system: systemPrompt,
   prompt: `User's question: {{userInput}}`,
   config: {
-    temperature: 0.4, // Slightly increased for potentially more varied suggestions
+    temperature: 0.4, 
      safetySettings: [
       { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
       { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
@@ -107,10 +107,10 @@ const portfolioChatFlowInternal = ai.defineFlow(
     if (!output || !output.response) {
       return { response: "I'm sorry, I couldn't generate a response at this moment. Please try again or rephrase your question.", suggestedFollowUps: [] };
     }
-    // Ensure suggestedFollowUps is an array even if undefined from LLM
+    
     return {
         ...output,
-        suggestedFollowUps: output.suggestedFollowUps || [],
+        suggestedFollowUps: output.suggestedFollowUps ? output.suggestedFollowUps.filter(s => s.trim() !== "").slice(0, 3) : [],
     };
   }
 );

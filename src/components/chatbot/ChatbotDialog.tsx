@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Bot, Send, Loader2, X } from "lucide-react";
+import { Bot, Send, Loader2, X, MessageSquarePlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -10,6 +10,7 @@ import { ChatMessage } from "./ChatMessage";
 import { getPortfolioChatResponse, type PortfolioChatInput, type PortfolioChatOutput } from "@/ai/flows/portfolio-chat-flow";
 import { AUTHOR_NAME } from "@/lib/data";
 import { motion, AnimatePresence } from "framer-motion";
+import { Badge } from "@/components/ui/badge";
 
 interface Message {
   id: string;
@@ -50,6 +51,7 @@ export function ChatbotDialog() {
       setTimeout(() => inputRef.current?.focus(), 100);
     } else {
       setMessages([]); 
+      setCurrentInput("");
       setShowSuggestions(false);
     }
   }, [isOpen]); 
@@ -66,7 +68,7 @@ export function ChatbotDialog() {
   const processMessage = async (messageText: string) => {
     if (!messageText.trim() || isLoading) return;
 
-    setShowSuggestions(false); // Hide suggestions when a message is sent
+    setShowSuggestions(false); 
 
     const userMessage: Message = {
       id: `${Date.now()}-user-${Math.random().toString(36).substring(7)}`,
@@ -92,10 +94,9 @@ export function ChatbotDialog() {
       );
 
       if (result.suggestedFollowUps && result.suggestedFollowUps.length > 0) {
-        setCurrentSuggestions(result.suggestedFollowUps);
+        setCurrentSuggestions(result.suggestedFollowUps.slice(0, 3)); // Take up to 3 suggestions
       } else {
-        // Fallback to initial suggestions if AI doesn't provide any
-        setCurrentSuggestions(INITIAL_SUGGESTIONS); 
+        setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0,3)); 
       }
 
     } catch (error) {
@@ -107,10 +108,10 @@ export function ChatbotDialog() {
           : msg
         )
       );
-      setCurrentSuggestions(INITIAL_SUGGESTIONS); // Fallback suggestions on error
+      setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0,3));
     } finally {
       setIsLoading(false);
-      setShowSuggestions(true); // Show suggestions again (new or fallback)
+      setShowSuggestions(true); 
       inputRef.current?.focus();
     }
   };
@@ -121,7 +122,7 @@ export function ChatbotDialog() {
   };
 
   const handleSuggestionClick = (suggestion: string) => {
-    setCurrentInput(""); // Clear input before processing suggestion
+    setCurrentInput(""); 
     processMessage(suggestion);
   };
   
@@ -162,10 +163,13 @@ export function ChatbotDialog() {
             exit="closed"
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className="fixed bottom-24 right-6 z-40 w-full max-w-sm rounded-xl bg-background shadow-2xl border border-border overflow-hidden flex flex-col"
-            style={{ height: 'min(70vh, 600px)'}} // Set max height for the chat window
+            style={{ height: 'min(70vh, 650px)'}} 
           >
-            <header className="bg-card p-4 border-b border-border">
+            <header className="bg-card p-4 border-b border-border flex items-center justify-between">
               <h3 className="font-semibold text-lg text-primary font-headline">Chat with {AUTHOR_NAME}'s Assistant</h3>
+               <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="h-8 w-8">
+                <X className="h-5 w-5" />
+              </Button>
             </header>
 
             <ScrollArea className="flex-grow p-4" ref={scrollAreaRef}>
@@ -174,16 +178,19 @@ export function ChatbotDialog() {
               ))}
             </ScrollArea>
             
-            {/* Suggestions displayed directly above the footer */}
             {showSuggestions && currentSuggestions.length > 0 && (
-                <div className="p-3 border-t border-border"> 
+                <div className="px-4 pt-2 pb-3 border-t border-border bg-background/70"> 
+                    <div className="flex items-center mb-2">
+                        <MessageSquarePlus className="h-4 w-4 mr-2 text-primary/80" />
+                        <p className="text-xs font-medium text-muted-foreground">Suggestions:</p>
+                    </div>
                     <div className="flex flex-wrap gap-2">
                         {currentSuggestions.map((q, index) => (
                             <Button
                             key={index}
                             variant="outline"
                             size="sm"
-                            className="text-xs h-auto py-1" 
+                            className="text-xs h-auto py-1 px-2.5 rounded-full shadow-sm hover:bg-accent hover:text-accent-foreground" 
                             onClick={() => handleSuggestionClick(q)}
                             disabled={isLoading}
                             >
@@ -210,8 +217,9 @@ export function ChatbotDialog() {
                   onChange={(e) => setCurrentInput(e.target.value)}
                   disabled={isLoading}
                   className="flex-grow"
+                  aria-label="Type your message"
                 />
-                <Button type="submit" size="icon" disabled={isLoading || !currentInput.trim()}>
+                <Button type="submit" size="icon" disabled={isLoading || !currentInput.trim()} aria-label="Send message">
                   {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
                 </Button>
               </form>
@@ -222,3 +230,4 @@ export function ChatbotDialog() {
     </>
   );
 }
+
