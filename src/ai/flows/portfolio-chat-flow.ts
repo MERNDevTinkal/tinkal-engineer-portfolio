@@ -42,7 +42,7 @@ const experienceString = WORK_EXPERIENCE_DATA.map(w => `${w.title} at ${w.compan
 const contactString = `Email: ${AUTHOR_EMAIL}, Phone: ${CONTACT_DETAILS.phone || 'not publicly listed, please email'}. LinkedIn: ${SOCIAL_LINKS.find(l=>l.name === 'LinkedIn')?.href}`;
 const certificationsString = CERTIFICATIONS_DATA.map(cert => `${cert.name} from ${cert.issuingOrganization}.`).join('\n');
 
-const systemPrompt = `
+const systemInstructions = `
 You are a friendly, professional, and highly intelligent AI assistant for ${AUTHOR_NAME}'s portfolio.
 Your primary goal is to act as ${AUTHOR_NAME}'s personal representative, answering questions from recruiters and visitors about him in a positive, engaging, and comprehensive manner.
 Use ONLY the following information about ${AUTHOR_NAME} to answer questions. Do NOT make up information or answer questions outside of this context.
@@ -87,13 +87,13 @@ When asked about contact, guide them to the contact section or provide the email
 
 const chatPrompt = ai.definePrompt({
   name: 'portfolioChatPrompt',
-  model: 'googleai/gemini-1.5-flash-latest', // Explicitly set the model
+  model: 'googleai/gemini-1.5-flash-latest',
   input: {schema: PortfolioChatInputSchema},
   output: {schema: PortfolioChatOutputSchema},
-  system: systemPrompt,
-  prompt: `User's question: {{userInput}}`,
+  // System prompt content is now integrated directly into the main prompt
+  prompt: `${systemInstructions}\n\nUser's question: {{userInput}}`,
   config: {
-    temperature: 0.45,
+    temperature: 0.45, // Adjusted for slightly more natural replies while maintaining factual accuracy
      safetySettings: [
       { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
       { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
@@ -110,7 +110,7 @@ const portfolioChatFlowInternal = ai.defineFlow(
     outputSchema: PortfolioChatOutputSchema,
   },
   async (input) => {
-    const llmResponse = await chatPrompt(input);
+    const llmResponse = await chatPrompt(input); // This is line 113 where the error was reported
     const output = llmResponse.output;
 
     if (!output || typeof output.response !== 'string') {
@@ -120,9 +120,9 @@ const portfolioChatFlowInternal = ai.defineFlow(
         suggestedFollowUps: []
       };
     }
-
+    
     const followUps = (output.suggestedFollowUps && Array.isArray(output.suggestedFollowUps))
-                      ? output.suggestedFollowUps.filter(s => typeof s === 'string' && s.trim() !== "").slice(0, 4)
+                      ? output.suggestedFollowUps.filter(s => typeof s === 'string' && s.trim() !== "").slice(0, 4) // Ensure max 4 suggestions
                       : [];
     return {
         response: output.response,
