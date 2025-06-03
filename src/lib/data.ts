@@ -32,7 +32,7 @@ export const HERO_TITLES = [
   "React Virtuoso",
   "Node.js Architect",
   "TypeScript Advocate",
-  "AI Integrationist",
+  "AI Integration Specialist",
   "Software Innovator",
   "Creative Problem Solver",
   "Tech Enthusiast"
@@ -66,28 +66,16 @@ export interface EducationEntry {
 
 export const EDUCATION_DATA: EducationEntry[] = [
   {
-    degree: "Master of Computer Applications (MCA)",
-    institution: "Chandigarh University, Punjab",
-    graduationYear: "2022 - 2024",
+    degree: "Bachelor of Technology (B.Tech) in Computer Science & Engineering",
+    institution: "Raj Kumar Goel Institute of Technology, Ghaziabad",
+    graduationYear: "2020 - 2024",
     details: [
-      "Specialized in Full Stack Development and Cloud Computing.",
-      "Achieved a CGPA of 7.8/10.",
-      "Key Coursework: Advanced Web Technologies (React, Node.js), Database Management (MongoDB, SQL), Software Engineering Principles, AI/ML Fundamentals, Cloud Platforms (AWS basics).",
-      "Developed a capstone project on an 'AI-Powered E-learning Platform'.",
+      "Specialized in software development and full-stack technologies.",
+      "Affiliated to Dr. A.P.J. Abdul Kalam Technical University, Lucknow.",
+      "Key Coursework: Data Structures & Algorithms, Web Development (HTML, CSS, JavaScript), Database Management Systems, Operating Systems, Computer Networks.",
+      "Final Year Project: 'AI-Powered Personalized Learning Platform' (conceptual)."
     ],
     Icon: GraduationCap,
-  },
-  {
-    degree: "Bachelor of Computer Applications (BCA)",
-    institution: "Patliputra University, Patna",
-    graduationYear: "2018 - 2021",
-    details: [
-      "Gained a strong foundation in computer science principles and application development.",
-      "Secured 75% aggregate marks.",
-      "Final Year Project: 'Inventory Management System' using Java and MySQL.",
-      "Active member of the college coding club.",
-    ],
-    Icon: Award, 
   },
 ];
 
@@ -127,45 +115,58 @@ export const WORK_EXPERIENCE_DATA: ExperienceEntry[] = [
     ],
     Icon: Building,
   },
-  {
-    title: "Software Development Intern",
-    company: "Celebal Technologies",
-    duration: "January 2024 - June 2024",
-    location: "Jaipur, Rajasthan (Remote)",
-    responsibilities: [
-      "Developed and maintained features for enterprise web applications using the MERN stack (MongoDB, Express.js, React, Node.js) and Next.js.",
-      "Contributed to designing and implementing RESTful APIs for data exchange.",
-      "Integrated third-party services and APIs to enhance application functionality.",
-      "Collaborated within an Agile team, participating in sprint planning, daily stand-ups, and code reviews.",
-      "Utilized Git for version control and Jira for task management and issue tracking.",
-      "Gained hands-on experience with CI/CD pipelines and cloud deployment basics.",
-    ],
-    Icon: Building,
-  },
 ];
 
 export interface CertificationEntry {
   name: string;
   issuingOrganization: string;
-  dateAwarded: string;
+  dateAwarded: string; // Please update with actual year or full date
   credentialUrl?: string;
   Icon: LucideIcon;
 }
 
-// PLEASE UPDATE WITH YOUR ACTUAL CERTIFICATIONS
+// PLEASE UPDATE dateAwarded for your certifications
 export const CERTIFICATIONS_DATA: CertificationEntry[] = [
   {
-    name: "Certified JavaScript Developer",
-    issuingOrganization: "Tech Certification Board",
-    dateAwarded: "Dec 2023",
+    name: "Full Stack Web Development",
+    issuingOrganization: "Internshala Trainings",
+    dateAwarded: "2023", // Update this
     credentialUrl: "#", // Replace with actual URL if available
     Icon: Award,
   },
   {
-    name: "Advanced React Patterns",
-    issuingOrganization: "Web Dev University",
-    dateAwarded: "Mar 2024",
-    // credentialUrl: "#", // Example: Optional URL, remove or update
+    name: "MERN Stack Web Development",
+    issuingOrganization: "Coding Ninjas",
+    dateAwarded: "2024", // Update this
+    credentialUrl: "#", // Replace with actual URL if available
+    Icon: Award,
+  },
+  {
+    name: "Frontend Web Development",
+    issuingOrganization: "PW Skills",
+    dateAwarded: "2023", // Update this
+    credentialUrl: "#", // Replace with actual URL if available
+    Icon: Award,
+  },
+  {
+    name: "Backend Web Development",
+    issuingOrganization: "PW Skills",
+    dateAwarded: "2023", // Update this
+    credentialUrl: "#", // Replace with actual URL if available
+    Icon: Award,
+  },
+  {
+    name: "DevOps Fundamentals",
+    issuingOrganization: "PW Skills",
+    dateAwarded: "2024", // Update this
+    credentialUrl: "#", // Replace with actual URL if available
+    Icon: Award,
+  },
+  {
+    name: "Skills India Program Completion",
+    issuingOrganization: "Skills India", // Or the specific authority
+    dateAwarded: "2023", // Update this
+    credentialUrl: "#", // Replace with actual URL if available
     Icon: Award,
   },
 ];
@@ -211,7 +212,7 @@ export const TECH_STACK: TechStackItem[] = [
   // Methodologies & Other
   { name: "DevOps", Icon: TerminalSquare },
   { name: "Responsive Design", Icon: Smartphone },
-  { name: "Clean Architecture", Icon: Layers },
+  { name: "Clean Architecture", Icon: Layers }, // Changed from Architecture
   { name: "Component Reusability", Icon: Puzzle },
   { name: "Problem Solving", Icon: Lightbulb },
 ];
@@ -220,8 +221,8 @@ export interface Project {
   id: string;
   title: string;
   description: string;
-  image: string;
-  dataAiHint: string;
+  image?: string; // Image is now optional
+  dataAiHint?: string; // Optional if image is removed
   liveDemoUrl?: string; 
   githubRepoUrl: string;
   techStack: TechStackItem[]; 
@@ -229,15 +230,15 @@ export interface Project {
 }
 
 // PLEASE UPDATE liveDemoUrl for your projects where available.
-// If a project does not have a live demo, leave liveDemoUrl empty, as "#", or undefined.
 // The ProjectCard component will handle missing/invalid live demo URLs gracefully.
+// Images are no longer displayed on the project cards.
 export const PROJECTS_DATA: Project[] = [
   {
     id: "job-portal",
     title: "Job Portal App",
     description: "A comprehensive MERN stack platform for job seekers and employers, featuring advanced search, application tracking, user management, and built with TypeScript for robust development.",
-    image: "https://placehold.co/600x400.png",
-    dataAiHint: "job board interface",
+    // image: "https://placehold.co/600x400.png", // Image removed
+    // dataAiHint: "job board interface", // dataAiHint removed as image is removed
     liveDemoUrl: "https://job-portal-tinkal.vercel.app/", 
     githubRepoUrl: "https://github.com/MERNDevTinkal/Job-Portal-App",
     techStack: [
@@ -252,9 +253,8 @@ export const PROJECTS_DATA: Project[] = [
     id: "notes-app",
     title: "Notes App (MERN)",
     description: "A secure and intuitive MERN stack application for creating, organizing, and managing personal notes. Features JWT-based authentication, protected routes, and complete CRUD operations.",
-    image: "https://placehold.co/600x400.png",
-    dataAiHint: "note taking application",
-    liveDemoUrl: "#", 
+    // image: "https://placehold.co/600x400.png", // Image removed
+    liveDemoUrl: "#", // Example: No valid live demo
     githubRepoUrl: "https://github.com/MERNDevTinkal/Notes-Application",
     techStack: [
       { name: "React", Icon: CodeXml },
@@ -268,9 +268,8 @@ export const PROJECTS_DATA: Project[] = [
     id: "e-commerce",
     title: "E-commerce Frontend (Redux)",
     description: "A dynamic online shopping experience with product listings, cart functionality, and efficient global state management using Redux Toolkit, styled with Tailwind CSS.",
-    image: "https://placehold.co/600x400.png",
-    dataAiHint: "online store product",
-    liveDemoUrl: "", 
+    // image: "https://placehold.co/600x400.png", // Image removed
+    liveDemoUrl: "", // Example: Empty live demo URL
     githubRepoUrl: "https://github.com/MERNDevTinkal/Ecommerce-Using-Redux",
     techStack: [
       { name: "React", Icon: CodeXml },
@@ -280,6 +279,8 @@ export const PROJECTS_DATA: Project[] = [
     ],
     Icon: ShoppingCart,
   },
+  // You can add more projects here if you want them displayed on the main page
+  // or keep it concise and rely on the "View More on GitHub" button.
 ];
 
 export const BLOG_SECTION_DETAILS = {
@@ -301,5 +302,3 @@ export const EMAILJS_CONFIG = {
   templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "YOUR_EMAILJS_TEMPLATE_ID",
   publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "YOUR_EMAILJS_PUBLIC_KEY",
 };
-
-    

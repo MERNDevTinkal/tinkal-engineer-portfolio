@@ -1,7 +1,6 @@
 
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Github, ExternalLink } from "lucide-react";
@@ -54,21 +53,12 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
       className="h-full"
     >
       <Card className="h-full flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 bg-card border border-border/70 hover:border-primary/50">
-        <div className="relative w-full h-52 sm:h-56">
-           <Image
-            src={project.image}
-            alt={project.title}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover"
-            data-ai-hint={project.dataAiHint}
-          />
-        </div>
+        {/* Image section removed */}
         <CardHeader className="pb-3 pt-5">
           <CardTitle className="text-xl sm:text-2xl font-headline text-primary">{project.title}</CardTitle>
         </CardHeader>
         <CardContent className="flex-grow pt-0">
-          <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
+          <p className="text-muted-foreground mb-4 text-sm leading-relaxed line-clamp-3">
             {project.description}
           </p>
           <div className="mb-4">
