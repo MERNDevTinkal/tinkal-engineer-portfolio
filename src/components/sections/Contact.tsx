@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { CONTACT_DETAILS, EMAILJS_CONFIG, SOCIAL_LINKS, AUTHOR_EMAIL } from "@/lib/data";
+import { CONTACT_DETAILS, EMAILJS_CONFIG, SOCIAL_LINKS, AUTHOR_EMAIL, AUTHOR_NAME } from "@/lib/data";
 import Link from "next/link";
 
 const contactFormSchema = z.object({
@@ -51,9 +51,9 @@ export function Contact() {
         EMAILJS_CONFIG.templateId,
         {
           from_name: data.name,
-          to_name: "Tinkal Kumar",
+          to_name: AUTHOR_NAME, // Using AUTHOR_NAME from lib/data.ts
           from_email: data.email,
-          to_email: AUTHOR_EMAIL, // Your email address
+          to_email: AUTHOR_EMAIL, 
           phone_number: data.phone || "Not provided",
           message: data.message,
         },
@@ -138,17 +138,17 @@ export function Contact() {
         >
           <div>
             <Label htmlFor="name" className="text-sm font-medium">Full Name</Label>
-            <Input id="name" {...register("name")} placeholder="John Doe" className="mt-1" />
+            <Input id="name" {...register("name")} placeholder={AUTHOR_NAME} className="mt-1" />
             {errors.name && <p className="mt-1 text-xs text-destructive">{errors.name.message}</p>}
           </div>
           <div>
             <Label htmlFor="email" className="text-sm font-medium">Email Address</Label>
-            <Input id="email" type="email" {...register("email")} placeholder="john.doe@example.com" className="mt-1" />
+            <Input id="email" type="email" {...register("email")} placeholder={`your.email@example.com`} className="mt-1" />
             {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email.message}</p>}
           </div>
           <div>
             <Label htmlFor="phone" className="text-sm font-medium">Phone Number (Optional)</Label>
-            <Input id="phone" type="tel" {...register("phone")} placeholder="+1 234 567 8900" className="mt-1" />
+            <Input id="phone" type="tel" {...register("phone")} placeholder="+91 123 456 7890" className="mt-1" />
             {errors.phone && <p className="mt-1 text-xs text-destructive">{errors.phone.message}</p>}
           </div>
           <div>
@@ -169,3 +169,6 @@ export function Contact() {
     </SectionWrapper>
   );
 }
+
+
+    

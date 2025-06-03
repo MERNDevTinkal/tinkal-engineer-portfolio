@@ -9,7 +9,7 @@ import {
 
 export const APP_NAME = "Tinkal";
 export const AUTHOR_NAME = "Tinkal Kumar";
-export const AUTHOR_EMAIL = "tinkalkumar67693@gmail.com";
+export const AUTHOR_EMAIL = "tinkalkumar67693@gmail.com"; // This is your actual email for contact
 
 export const NAV_LINKS = [
   { name: "Home", href: "#home" },
@@ -42,7 +42,7 @@ export const PROFILE_IMAGES = [
   { src: "/images/profile-3.jpg", alt: "Tinkal Kumar - Casual Tech Look", dataAiHint: "casual tech" },
 ];
 
-export const RESUME_PATH = "/Tinkal_Resume.pdf"; // Ensure Tinkal_Resume.pdf is in the /public folder
+export const RESUME_PATH = "/Tinkal_Resume.pdf";
 
 export const ABOUT_ME = {
   summary: `An Indian software engineer hailing from Jamui district, Bihar, I am a results-driven MERN Stack Developer with expertise in building scalable full-stack web applications using MongoDB, Express.js, React.js, and Node.js. Passionate about clean code, component reusability, performance optimization, and collaborating on real-world client projects. I thrive on solving complex challenges with innovation and continuously learning new technologies.`,
@@ -53,7 +53,7 @@ export const ABOUT_ME = {
   IconRelocation: Briefcase,
   IconAbout: UserCircle2,
   image: {
-    src: "/images/about-me-image.jpg", // Ensure about-me-image.jpg is in /public/images/
+    src: "/images/about-me-image.jpg",
     alt: "Tinkal Kumar at work or a professional setting",
     dataAiHint: "developer workspace",
   },
@@ -73,9 +73,12 @@ export const EDUCATION_DATA: EducationEntry[] = [
     institution: "Raj Kumar Goel Institute of Technology, Ghaziabad (Affiliated to Dr. A.P.J. Abdul Kalam Technical University, Lucknow)",
     graduationYear: "2020 - 2024",
     details: [
-      "Specialized in software development principles and full-stack technologies.",
-      "Key Coursework: Data Structures & Algorithms, Web Development (HTML, CSS, JavaScript), Database Management Systems (SQL, NoSQL), Operating Systems, Computer Networks, Object-Oriented Programming, Software Engineering.",
-      "Skills Gained: Proficient in C++ and Java for core concepts; Strong analytical and problem-solving abilities developed through coursework and projects; Practical experience with version control systems (Git); Understanding of agile development methodologies and teamwork in project settings."
+      "Comprehensive curriculum covering core CS concepts: Data Structures & Algorithms, Object-Oriented Programming (Java, C++), Database Management Systems (SQL, NoSQL fundamentals), Operating Systems, Computer Networks, and Software Engineering principles.",
+      "Specialized in web development technologies including HTML, CSS, JavaScript, and gained foundational knowledge for full-stack development.",
+      "Developed strong analytical and problem-solving skills through various academic projects and assignments.",
+      "Gained practical experience with version control systems like Git and GitHub for collaborative projects.",
+      "Acquired understanding of agile development methodologies and the importance of teamwork in software development lifecycles.",
+      "Focused on building a solid theoretical and practical foundation for a career in software engineering."
     ],
     Icon: GraduationCap,
   },
@@ -124,7 +127,7 @@ export const WORK_EXPERIENCE_DATA: ExperienceEntry[] = [
 export interface CertificationEntry {
   name: string;
   issuingOrganization: string;
-  credentialUrl?: string;
+  credentialUrl?: string; // Optional URL to the credential
   Icon: LucideIcon;
 }
 
@@ -132,41 +135,41 @@ export const CERTIFICATIONS_DATA: CertificationEntry[] = [
   {
     name: "Full Stack Web Development",
     issuingOrganization: "Internshala Trainings",
-    credentialUrl: "#", // Replace with actual URL
+    credentialUrl: "#", // Replace # with your actual credential URL or remove if N/A
     Icon: Award,
   },
   {
     name: "MERN Stack Web Development",
     issuingOrganization: "Coding Ninjas",
-    credentialUrl: "#", // Replace with actual URL
+    credentialUrl: "#", // Replace # with your actual credential URL or remove if N/A
     Icon: Award,
   },
   {
     name: "Frontend Web Development",
     issuingOrganization: "PW Skills",
-    credentialUrl: "#", // Replace with actual URL
+    credentialUrl: "#", // Replace # with your actual credential URL or remove if N/A
     Icon: Award,
   },
   {
     name: "Backend Web Development",
     issuingOrganization: "PW Skills",
-    credentialUrl: "#", // Replace with actual URL
+    credentialUrl: "#", // Replace # with your actual credential URL or remove if N/A
     Icon: Award,
   },
   {
     name: "DevOps Fundamentals",
     issuingOrganization: "PW Skills",
-    credentialUrl: "#", // Replace with actual URL
+    credentialUrl: "#", // Replace # with your actual credential URL or remove if N/A
     Icon: Award,
   },
   {
     name: "Skills India Program Completion",
     issuingOrganization: "Skills India", 
-    credentialUrl: "#", // Replace with actual URL
+    credentialUrl: "#", // Replace # with your actual credential URL or remove if N/A
     Icon: Award,
   },
 ];
-// TODO: Update the credentialUrl for each certification with the actual link.
+
 
 export interface TechStackItem {
   name: string;
@@ -243,7 +246,7 @@ export const PROJECTS_DATA: Project[] = [
     id: "notes-app",
     title: "Notes App (MERN)",
     description: "A secure and intuitive MERN stack application for creating, organizing, and managing personal notes. Features JWT-based authentication, protected routes, and complete CRUD operations for effective note management.",
-    liveDemoUrl: "#", // Update this if you have a live demo
+    liveDemoUrl: "#",
     githubRepoUrl: "https://github.com/MERNDevTinkal/Notes-Application",
     techStack: [
       { name: "React", Icon: CodeXml },
@@ -257,7 +260,7 @@ export const PROJECTS_DATA: Project[] = [
     id: "e-commerce",
     title: "E-commerce Frontend (Redux)",
     description: "A dynamic online shopping experience with product listings, cart functionality, and efficient global state management using Redux Toolkit, styled with Tailwind CSS for a modern, responsive UI.",
-    liveDemoUrl: "", // Update this if you have a live demo
+    liveDemoUrl: "", 
     githubRepoUrl: "https://github.com/MERNDevTinkal/Ecommerce-Using-Redux",
     techStack: [
       { name: "React", Icon: CodeXml },
@@ -268,7 +271,6 @@ export const PROJECTS_DATA: Project[] = [
     Icon: ShoppingCart,
   },
 ];
-// TODO: Update the liveDemoUrl for each project with the actual link if available, or remove/comment out the liveDemoUrl field.
 
 export const BLOG_SECTION_DETAILS = {
   title: "My Tech Narratives",
@@ -289,4 +291,6 @@ export const EMAILJS_CONFIG = {
   templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "YOUR_EMAILJS_TEMPLATE_ID",
   publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "YOUR_EMAILJS_PUBLIC_KEY",
 };
+    
+
     
