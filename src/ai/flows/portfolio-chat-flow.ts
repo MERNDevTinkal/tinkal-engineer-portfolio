@@ -30,7 +30,7 @@ export type PortfolioChatInput = z.infer<typeof PortfolioChatInputSchema>;
 
 const PortfolioChatOutputSchema = z.object({
   response: z.string().describe("The chatbot's response to the user query."),
-  suggestedFollowUps: z.array(z.string()).optional().describe('Up to 4 brief, relevant suggested follow-up questions (max 5-7 words each) a user might ask next, related to the conversation or key aspects of Tinkal\'s profile. Examples: "Tell me about his MERN project?", "What\'s his latest role?", "Any cloud skills?", "More on certifications?".'),
+  suggestedFollowUps: z.array(z.string()).optional().describe('Up to 4 brief, relevant suggested follow-up questions (max 5-7 words each) a user might ask next, based on the current query and conversation. These should be generated after each of your responses to guide the user. Examples: "Tell me about his MERN project?", "What\'s his latest role?", "Any cloud skills?", "More on certifications?".'),
 });
 export type PortfolioChatOutput = z.infer<typeof PortfolioChatOutputSchema>;
 
@@ -44,11 +44,10 @@ const certificationsString = CERTIFICATIONS_DATA.map(cert => `${cert.name} from 
 
 const systemPrompt = `
 You are a friendly, professional, and highly intelligent AI assistant for ${AUTHOR_NAME}'s portfolio.
-Your primary goal is to answer questions from recruiters and visitors about ${AUTHOR_NAME} in a positive and engaging manner.
-Use ONLY the following information about ${AUTHOR_NAME} to answer questions.
-Do NOT make up information or answer questions outside of this context.
-Always speak about ${AUTHOR_NAME} in a positive and professional light, highlighting his strengths and accomplishments based on the data provided.
-If a question cannot be answered with the provided information, politely state that you don't have that specific detail but can help with other information about ${AUTHOR_NAME}'s skills, experience, or projects.
+Your primary goal is to answer questions from recruiters and visitors about ${AUTHOR_NAME} in a positive, engaging, and comprehensive manner.
+Use ONLY the following information about ${AUTHOR_NAME} to answer questions. Do NOT make up information or answer questions outside of this context.
+Always speak about ${AUTHOR_NAME} in a positive and professional light, highlighting his strengths, skills, and accomplishments based on the data provided.
+Leverage the provided information smartly. Understand the user's query and try to provide the most relevant information from the context you have. If a user asks a broad question, try to summarize relevant points. If they ask a specific one, focus on that detail.
 
 Information about ${AUTHOR_NAME}:
 Name: ${AUTHOR_NAME}
@@ -73,9 +72,12 @@ ${certificationsString}
 Contact Information: ${contactString}
 
 When answering, be concise yet informative. Aim for 2-4 sentences unless more detail is clearly implied by the question and available in your knowledge base.
-Leverage the provided information smartly to answer questions comprehensively.
+If a question cannot be answered with the provided information, politely state that you don't have that specific detail but can help with other information about ${AUTHOR_NAME}'s skills, experience, or projects. Try to steer the conversation back to topics you can discuss.
 
-After providing your main answer, also generate up to 4 short (max 5-7 words each), relevant follow-up questions that a user might ask next based on the current query or other key aspects of the profile. These suggestions should be distinct from each other and encourage further interaction. Return these as an array of strings in the 'suggestedFollowUps' field of your JSON output. Examples: "Tell me about his MERN project?", "What's his latest role?", "Any cloud skills?", "More on his education?". If the conversation is just starting or no specific follow-up is obvious, suggest general questions about key areas like skills, prominent projects, or overall experience. If you cannot generate relevant suggestions based on the current context, you can provide an empty array for suggestedFollowUps.
+After providing your main answer, you MUST generate up to 4 short (max 5-7 words each), distinct, and relevant follow-up questions that a user might logically ask next based on the current query or other key aspects of ${AUTHOR_NAME}'s profile. These suggestions should encourage further interaction and exploration of his profile. Return these as an array of strings in the 'suggestedFollowUps' field of your JSON output.
+Examples of good follow-up suggestions: "Tell me about his MERN project?", "What's his latest role?", "Any cloud skills?", "More on his education?", "What are his certifications?".
+If the conversation is just starting or no specific follow-up is obvious from the immediate query, suggest general questions about key areas like skills, prominent projects, or overall experience.
+If you genuinely cannot generate relevant suggestions based on the current context, you can provide an empty array for suggestedFollowUps, but always try to offer some.
 
 Do not engage in general conversation or topics unrelated to ${AUTHOR_NAME}'s professional profile.
 When asked about contact, guide them to the contact section or provide the email/LinkedIn.
@@ -88,7 +90,7 @@ const chatPrompt = ai.definePrompt({
   system: systemPrompt,
   prompt: `User's question: {{userInput}}`,
   config: {
-    temperature: 0.45, 
+    temperature: 0.45,
      safetySettings: [
       { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
       { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
@@ -111,9 +113,14 @@ const portfolioChatFlowInternal = ai.defineFlow(
       return { response: "I'm sorry, I couldn't generate a response at this moment. Please try again or rephrase your question.", suggestedFollowUps: [] };
     }
 
+    // Ensure we always try to return an array for suggestedFollowUps, even if it's empty
+    const followUps = (output.suggestedFollowUps && Array.isArray(output.suggestedFollowUps))
+                      ? output.suggestedFollowUps.filter(s => s && s.trim() !== "").slice(0, 4)
+                      : [];
+
     return {
         ...output,
-        suggestedFollowUps: output.suggestedFollowUps ? output.suggestedFollowUps.filter(s => s && s.trim() !== "").slice(0, 4) : [],
+        suggestedFollowUps: followUps,
     };
   }
 );
@@ -121,3 +128,4 @@ const portfolioChatFlowInternal = ai.defineFlow(
 export async function getPortfolioChatResponse(input: PortfolioChatInput): Promise<PortfolioChatOutput> {
   return portfolioChatFlowInternal(input);
 }
+
