@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -26,6 +26,13 @@ const contactFormSchema = z.object({
 
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
+const LOCALSTORAGE_KEYS = {
+  NAME: 'contactFormDraft_name',
+  EMAIL: 'contactFormDraft_email',
+  PHONE: 'contactFormDraft_phone',
+  MESSAGE: 'contactFormDraft_message',
+};
+
 export function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
@@ -34,9 +41,46 @@ export function Contact() {
     handleSubmit,
     reset,
     formState: { errors },
+    watch,
+    setValue,
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
+    defaultValues: { // Initialize with empty strings or undefined
+      name: '',
+      email: '',
+      phone: '',
+      message: '',
+    }
   });
+
+  // Load from localStorage on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedName = localStorage.getItem(LOCALSTORAGE_KEYS.NAME);
+      const savedEmail = localStorage.getItem(LOCALSTORAGE_KEYS.EMAIL);
+      const savedPhone = localStorage.getItem(LOCALSTORAGE_KEYS.PHONE);
+      const savedMessage = localStorage.getItem(LOCALSTORAGE_KEYS.MESSAGE);
+
+      if (savedName) setValue('name', savedName);
+      if (savedEmail) setValue('email', savedEmail);
+      if (savedPhone) setValue('phone', savedPhone);
+      if (savedMessage) setValue('message', savedMessage);
+    }
+  }, [setValue]);
+
+  // Save to localStorage on change
+  useEffect(() => {
+    const subscription = watch((value, { name }) => {
+      if (typeof window !== 'undefined' && name) {
+        const fieldName = name as keyof ContactFormValues;
+        if (LOCALSTORAGE_KEYS[fieldName.toUpperCase() as keyof typeof LOCALSTORAGE_KEYS]) {
+            localStorage.setItem(LOCALSTORAGE_KEYS[fieldName.toUpperCase() as keyof typeof LOCALSTORAGE_KEYS], value[fieldName] || '');
+        }
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
+  
 
   const onSubmit: SubmitHandler<ContactFormValues> = async (data) => {
     setIsSubmitting(true);
@@ -51,7 +95,7 @@ export function Contact() {
         EMAILJS_CONFIG.templateId,
         {
           from_name: data.name,
-          to_name: AUTHOR_NAME, // Using AUTHOR_NAME from lib/data.ts
+          to_name: AUTHOR_NAME,
           from_email: data.email,
           to_email: AUTHOR_EMAIL, 
           phone_number: data.phone || "Not provided",
@@ -64,7 +108,13 @@ export function Contact() {
         description: "Thanks for reaching out. I'll get back to you soon.",
         variant: "default",
       });
-      reset();
+      reset({ name: '', email: '', phone: '', message: '' }); // Reset form to empty values
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem(LOCALSTORAGE_KEYS.NAME);
+        localStorage.removeItem(LOCALSTORAGE_KEYS.EMAIL);
+        localStorage.removeItem(LOCALSTORAGE_KEYS.PHONE);
+        localStorage.removeItem(LOCALSTORAGE_KEYS.MESSAGE);
+      }
     } catch (error) {
       console.error("EmailJS Error:", error);
       const errorMessage = (error instanceof Error && error.message.includes("credentials"))
@@ -169,6 +219,3 @@ export function Contact() {
     </SectionWrapper>
   );
 }
-
-
-    
