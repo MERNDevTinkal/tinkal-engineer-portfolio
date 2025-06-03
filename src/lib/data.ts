@@ -4,7 +4,7 @@ import {
   Github, Linkedin, Briefcase, MapPin, Mail, Phone, CodeXml, Database, 
   ServerCog, Wand2, Palette, Settings2, ShoppingCart, FileText, BookOpen, 
   GraduationCap, Building, Award, ExternalLink, UserCircle2, KeyRound, ShieldCheck,
-  UploadCloud, Smartphone, Architecture, Puzzle, Lightbulb, TerminalSquare, GitCommit, Wrench
+  UploadCloud, Smartphone, Layers, Puzzle, Lightbulb, TerminalSquare, GitCommit, Wrench
 } from 'lucide-react';
 
 export const APP_NAME = "Tinkal's HQ";
@@ -104,7 +104,7 @@ export const WORK_EXPERIENCE_DATA: ExperienceEntry[] = [
   {
     title: "MERN Stack Developer",
     company: "OweBest Technologies Pvt Ltd",
-    duration: "Feb 2025 – Present", // As provided by user
+    duration: "Feb 2025 – Present", 
     location: "Jaipur, Rajasthan",
     responsibilities: [
       "Building scalable full-stack web applications.",
@@ -117,7 +117,7 @@ export const WORK_EXPERIENCE_DATA: ExperienceEntry[] = [
   {
     title: "Web Developer",
     company: "Apex Hospitals, Jaipur",
-    duration: "Aug 2024 – Feb 2025", // As provided by user
+    duration: "Aug 2024 – Feb 2025",
     location: "Jaipur, Rajasthan",
     responsibilities: [
       "Maintained hospital website and app content.",
@@ -128,7 +128,7 @@ export const WORK_EXPERIENCE_DATA: ExperienceEntry[] = [
     Icon: Building,
   },
   {
-    title: "Software Development Intern", // Previous entry, retained
+    title: "Software Development Intern",
     company: "Celebal Technologies",
     duration: "January 2024 - June 2024",
     location: "Jaipur, Rajasthan (Remote)",
@@ -158,7 +158,7 @@ export const TECH_STACK: TechStackItem[] = [
   { name: "HTML5", Icon: CodeXml },
   { name: "CSS3", Icon: Palette },
   { name: "Tailwind CSS", Icon: Palette },
-  { name: "Redux", Icon: CodeXml }, // Or Settings2/Wand2 for logic
+  { name: "Redux", Icon: CodeXml }, 
   { name: "Zustand", Icon: CodeXml },
   // Backend
   { name: "Node.js", Icon: ServerCog },
@@ -176,17 +176,16 @@ export const TECH_STACK: TechStackItem[] = [
   // Tools
   { name: "Git", Icon: GitCommit },
   { name: "GitHub", Icon: Github },
-  { name: "Postman", Icon: Settings2 }, // Generic tool/config icon
-  { name: "Redux DevTools", Icon: Wrench }, // Or Settings2
+  { name: "Postman", Icon: Settings2 }, 
+  { name: "Redux DevTools", Icon: Wrench }, 
   // Other
   { name: "Responsive Design", Icon: Smartphone },
-  { name: "Clean Architecture", Icon: Architecture },
+  { name: "Clean Architecture", Icon: Layers }, // Changed from Architecture
   { name: "Component Reusability", Icon: Puzzle },
   { name: "Problem Solving", Icon: Lightbulb },
-  // General & Previously included
-  { name: "JavaScript (ES6+)", Icon: CodeXml }, // Retain for explicitness
-  { name: "Firebase", Icon: Wand2 }, // From original list
-  { name: "Genkit AI", Icon: Wand2 }, // From original list
+  { name: "JavaScript (ES6+)", Icon: CodeXml },
+  { name: "Firebase", Icon: Wand2 }, 
+  { name: "Genkit AI", Icon: Wand2 },
   { name: "DevOps", Icon: TerminalSquare },
 ];
 
@@ -198,7 +197,7 @@ export interface Project {
   dataAiHint: string;
   liveDemoUrl?: string; 
   githubRepoUrl: string;
-  techStack: TechStackItem[]; // Can reuse the TechStackItem interface
+  techStack: TechStackItem[]; 
   Icon: LucideIcon;
 }
 
@@ -228,7 +227,7 @@ export const PROJECTS_DATA: Project[] = [
     description: "A secure and intuitive MERN stack application for creating, organizing, and managing personal notes. Features JWT-based authentication, protected routes, and complete CRUD operations.",
     image: "https://placehold.co/600x400.png",
     dataAiHint: "note taking application",
-    liveDemoUrl: "#", 
+    liveDemoUrl: "#", // Example of a placeholder
     githubRepoUrl: "https://github.com/MERNDevTinkal/Notes-Application",
     techStack: [
       { name: "React", Icon: CodeXml },
@@ -244,7 +243,7 @@ export const PROJECTS_DATA: Project[] = [
     description: "A dynamic online shopping experience with product listings, cart functionality, and efficient global state management using Redux Toolkit, styled with Tailwind CSS.",
     image: "https://placehold.co/600x400.png",
     dataAiHint: "online store product",
-    liveDemoUrl: "", 
+    liveDemoUrl: "", // Example of an empty link
     githubRepoUrl: "https://github.com/MERNDevTinkal/Ecommerce-Using-Redux",
     techStack: [
       { name: "React", Icon: CodeXml },
@@ -258,7 +257,7 @@ export const PROJECTS_DATA: Project[] = [
 
 export const BLOG_SECTION_DETAILS = {
   title: "My Tech Narratives",
-  description: "Exploring the frontiers of technology, software craftsmanship, DevOps methodologies, AI advancements, and beyond. Join my musings on the ever-evolving tech landscape:",
+  description: "Exploring the frontiers of technology, software craftsmanship, DevOps methodologies, AI advancements, and beyond. Join my musings on the ever-evolving tech landscape.",
   Icon: BookOpen,
 };
 
