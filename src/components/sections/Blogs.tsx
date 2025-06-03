@@ -1,22 +1,22 @@
+
 "use client"; // Make this a client component
 
 import { SectionWrapper, SectionHeader } from "@/components/ui/SectionWrapper";
 import { BLOG_SECTION_DETAILS } from "@/lib/data";
 import { BookOpen } from "lucide-react"; // Import the icon here
-import { Suspense } from "react";
-import { BlogList } from "./BlogList"; // Import the new Server Component
+// Suspense is no longer needed here as BlogList will handle its own loading state
+import { BlogList } from "./BlogList"; 
 
-export default function Blogs() { // No longer async
+export default function Blogs() { 
   return (
     <SectionWrapper id="blogs">
       <SectionHeader
         title={BLOG_SECTION_DETAILS.title}
         subtitle={BLOG_SECTION_DETAILS.description}
-        Icon={BookOpen} // Pass the imported BookOpen component
+        Icon={BookOpen} 
       />
-      <Suspense fallback={<div className="text-center py-8"><p className="text-muted-foreground">Loading blog articles...</p></div>}>
-        <BlogList />
-      </Suspense>
+      {/* BlogList now handles its own loading/error states */}
+      <BlogList />
     </SectionWrapper>
   );
 }
