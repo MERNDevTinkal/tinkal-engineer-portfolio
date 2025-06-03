@@ -48,8 +48,15 @@ export function BlogList() {
         setError(null);
       } catch (err) {
         console.error("Failed to generate blog titles:", err);
-        setError("Failed to load blog titles. Please try again later.");
-        setBlogData({ titles: ["Error fetching titles. Please try again later.", "Exploring the latest in tech.", "DevOps best practices.", "Software engineering insights.", "The future of development.", "AI in modern applications.", "Cloud computing trends.", "Cybersecurity essentials.", "Data science breakthroughs.", "Web performance optimization.", "Mobile app development innovations.", "Blockchain technology explained."].slice(0,12) });
+        let errorMessage = "Failed to load blog titles. Please try again later.";
+        if (err instanceof Error) {
+            if (err.message.includes("503") || err.message.toLowerCase().includes("service unavailable") || err.message.toLowerCase().includes("model is overloaded")) {
+                errorMessage = "The AI service for generating blog titles is currently overloaded. Please try refreshing in a few moments.";
+            }
+        }
+        setError(errorMessage);
+        // Fallback titles in case of error
+        setBlogData({ titles: ["Exploring the Latest in Tech.", "DevOps Best Practices.", "Software Engineering Insights.", "The Future of Development.", "AI in Modern Applications.", "Cloud Computing Trends.", "Cybersecurity Essentials.", "Data Science Breakthroughs.", "Web Performance Optimization.", "Mobile App Development Innovations.", "Blockchain Technology Explained.", "Mastering New Programming Languages."].slice(0,12) });
       } finally {
         setIsLoading(false);
       }
@@ -69,11 +76,11 @@ export function BlogList() {
     );
   }
 
-  if (error && blogData.titles.some(t => t.startsWith("Error fetching"))) { // Show error state only if fallback titles are error messages
+  if (error) { // Display error and fallback titles
     return (
         <div className="text-center py-8">
-            <p className="text-destructive mb-4">{error}</p>
-            <h3 className="text-xl font-semibold mb-4">Meanwhile, here are some default topics:</h3>
+            <p className="text-destructive mb-4 text-lg">{error}</p>
+            <h3 className="text-xl font-semibold mb-6 text-muted-foreground">Meanwhile, here are some default topics:</h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blogData.titles.map((title, index) => (
                 <Card key={index} className="flex flex-col shadow-lg hover:shadow-primary/20 transition-shadow duration-300 bg-card">
@@ -139,3 +146,4 @@ export function BlogList() {
     </div>
   );
 }
+
