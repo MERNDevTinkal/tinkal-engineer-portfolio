@@ -7,6 +7,7 @@ import { About } from "@/components/sections/About";
 import { Projects } from "@/components/sections/Projects";
 import Blogs from "@/components/sections/Blogs";
 import { Contact } from "@/components/sections/Contact";
+import { DemoLocalStorageSetter } from "@/components/utils/DemoLocalStorageSetter"; // Added import
 
 export default function HomePage() {
   const sectionVariants = {
@@ -31,6 +32,7 @@ export default function HomePage() {
 
   return (
     <>
+      <DemoLocalStorageSetter /> {/* Added demo component */}
       {sections.map((section, index) => (
         <motion.div
           key={index}
