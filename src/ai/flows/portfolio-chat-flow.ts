@@ -44,8 +44,9 @@ const certificationsString = CERTIFICATIONS_DATA.map(cert => `${cert.name} from 
 
 const systemPrompt = `
 You are a friendly, professional, and highly intelligent AI assistant for ${AUTHOR_NAME}'s portfolio.
-Your primary goal is to answer questions from recruiters and visitors about ${AUTHOR_NAME} in a positive, engaging, and comprehensive manner, acting as his personal representative.
-Use ONLY the following information about ${AUTHOR_NAME} to answer questions. Do NOT make up information or answer questions outside of this context. If you are unsure or don't have the information, clearly state that.
+Your primary goal is to act as ${AUTHOR_NAME}'s personal representative, answering questions from recruiters and visitors about him in a positive, engaging, and comprehensive manner.
+Use ONLY the following information about ${AUTHOR_NAME} to answer questions. Do NOT make up information or answer questions outside of this context.
+If you are unsure or don't have the information, clearly state that you don't have that specific detail but can help with other aspects of his profile.
 Always speak about ${AUTHOR_NAME} (${AUTHOR_NAME}) in a positive and professional light, highlighting his strengths, skills, and accomplishments based on the data provided.
 Leverage the provided information smartly. Understand the user's query and try to provide the most relevant information from the context you have. If a user asks a broad question (e.g., "Tell me about Tinkal"), try to summarize relevant points. If they ask a specific one (e.g., "What was his role at Apex Hospitals?"), focus on that detail.
 If a query seems vague or ambiguous, you can ask a clarifying question before attempting to answer.
@@ -86,12 +87,13 @@ When asked about contact, guide them to the contact section or provide the email
 
 const chatPrompt = ai.definePrompt({
   name: 'portfolioChatPrompt',
+  model: 'googleai/gemini-1.5-flash-latest', // Explicitly set the model
   input: {schema: PortfolioChatInputSchema},
   output: {schema: PortfolioChatOutputSchema},
   system: systemPrompt,
   prompt: `User's question: {{userInput}}`,
   config: {
-    temperature: 0.45, // Balances factual accuracy with natural language
+    temperature: 0.45,
      safetySettings: [
       { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
       { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
@@ -110,17 +112,20 @@ const portfolioChatFlowInternal = ai.defineFlow(
   async (input) => {
     const llmResponse = await chatPrompt(input);
     const output = llmResponse.output;
-    if (!output || !output.response) {
-      return { response: "I'm sorry, I couldn't generate a response at this moment. My knowledge is focused on Tinkal Kumar's profile. Could you rephrase, or ask about his skills or projects?", suggestedFollowUps: [] };
+
+    if (!output || typeof output.response !== 'string') {
+      console.error('Invalid or missing response from LLM:', output);
+      return {
+        response: "I'm having a little trouble forming a response right now. My knowledge is focused on Tinkal Kumar's profile. Could you try asking in a slightly different way, perhaps about his skills or projects?",
+        suggestedFollowUps: []
+      };
     }
 
-    // Ensure we always try to return an array for suggestedFollowUps, even if it's empty
     const followUps = (output.suggestedFollowUps && Array.isArray(output.suggestedFollowUps))
-                      ? output.suggestedFollowUps.filter(s => s && s.trim() !== "").slice(0, 4)
+                      ? output.suggestedFollowUps.filter(s => typeof s === 'string' && s.trim() !== "").slice(0, 4)
                       : [];
-
     return {
-        ...output,
+        response: output.response,
         suggestedFollowUps: followUps,
     };
   }
