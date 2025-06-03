@@ -3,7 +3,7 @@
 /**
  * @fileOverview Generates blog titles for a portfolio.
  *
- * - generateBlogTitles - A function that generates 10-15 blog titles.
+ * - generateBlogTitles - A function that generates 11-20 blog titles.
  * - GenerateBlogTitlesInput - The input type for the generateBlogTitles function.
  * - GenerateBlogTitlesOutput - The return type for the generateBlogTitles function.
  */
@@ -14,14 +14,14 @@ import {z} from 'genkit';
 const GenerateBlogTitlesInputSchema = z.object({
   topic: z
     .string()
-    .default('web development')
+    .default('technology, software development, and DevOps practices')
     .describe('The topic for the blog titles.'),
   numTitles: z
     .number()
-    .default(10)
-    .describe('The number of blog titles to generate. Must be between 10 and 15.')
-    .refine(val => val >= 10 && val <= 15, {
-      message: 'Number of titles must be between 10 and 15.',
+    .default(12)
+    .describe('The number of blog titles to generate. Must be between 11 and 20.')
+    .refine(val => val >= 11 && val <= 20, {
+      message: 'Number of titles must be between 11 and 20.',
     }),
 });
 
@@ -41,14 +41,16 @@ const prompt = ai.definePrompt({
   name: 'generateBlogTitlesPrompt',
   input: {schema: GenerateBlogTitlesInputSchema},
   output: {schema: GenerateBlogTitlesOutputSchema},
-  prompt: `You are a blog title generator. You will generate {{numTitles}} blog titles for the topic of {{topic}}. Return the titles as a JSON array of strings.  The titles should be engaging and relevant to web developers.
+  prompt: `You are a blog title generator. You will generate {{numTitles}} blog titles for the topic of '{{topic}}'. 
+The titles should be engaging and relevant to professionals interested in technology, software development, and DevOps.
+Return the titles as a JSON array of strings.
 
-Example:
+Example for {{numTitles}} = 3 and topic = "cloud computing":
 {
   "titles": [
-    "Title 1",
-    "Title 2",
-    "Title 3"
+    "Unlocking Scalability: A Deep Dive into Cloud Architectures",
+    "Serverless vs. Containers: Choosing the Right Path for Your Next Project",
+    "The Future of Cloud-Native: Trends to Watch in 2024"
   ]
 }
 `,

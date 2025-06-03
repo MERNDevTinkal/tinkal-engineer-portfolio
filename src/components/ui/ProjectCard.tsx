@@ -4,11 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
-import { Github, ExternalLink } from "lucide-react";
+import { Github } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import type { Project, TechStackItem } from "@/lib/data";
+import type { Project } from "@/lib/data";
 import { Badge } from "./badge";
 
 
@@ -68,15 +68,10 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
             </div>
           </div>
         </CardContent>
-        <CardFooter className="mt-auto grid grid-cols-2 gap-2">
-          <Button asChild variant="outline">
-            <Link href={project.liveDemoUrl} target="_blank" rel="noopener noreferrer">
-              <ExternalLink className="mr-2 h-4 w-4" /> Live Demo
-            </Link>
-          </Button>
-          <Button asChild variant="outline">
+        <CardFooter className="mt-auto pt-4">
+          <Button asChild variant="outline" className="w-full">
             <Link href={project.githubRepoUrl} target="_blank" rel="noopener noreferrer">
-              <Github className="mr-2 h-4 w-4" /> GitHub
+              <Github className="mr-2 h-4 w-4" /> GitHub Repository
             </Link>
           </Button>
         </CardFooter>
