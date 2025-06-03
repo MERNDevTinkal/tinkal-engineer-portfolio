@@ -87,7 +87,7 @@ export function Contact() {
     try {
       if (!EMAILJS_CONFIG.serviceId || !EMAILJS_CONFIG.templateId || !EMAILJS_CONFIG.publicKey || 
           EMAILJS_CONFIG.serviceId.includes("YOUR_") || EMAILJS_CONFIG.templateId.includes("YOUR_") || EMAILJS_CONFIG.publicKey.includes("YOUR_")) {
-        throw new Error("EmailJS credentials are not configured. Please update them in lib/data.ts.");
+        throw new Error("EmailJS credentials (Service ID, Template ID, or Public Key) are missing or still contain placeholders. Please ensure they are correctly set in your .env file (e.g., NEXT_PUBLIC_EMAILJS_TEMPLATE_ID) and that you have restarted your development server.");
       }
 
       await emailjs.send(
@@ -211,7 +211,7 @@ export function Contact() {
           </Button>
            {(EMAILJS_CONFIG.serviceId.includes("YOUR_") || EMAILJS_CONFIG.templateId.includes("YOUR_") || EMAILJS_CONFIG.publicKey.includes("YOUR_")) && (
             <p className="mt-2 text-xs text-amber-600 dark:text-amber-400 text-center">
-              Note: EmailJS is not configured. Please update credentials in <code>src/lib/data.ts</code> for the form to work.
+              Note: EmailJS is not fully configured. Please check your <code>.env</code> file for placeholders and restart your server.
             </p>
           )}
         </motion.form>
@@ -219,3 +219,4 @@ export function Contact() {
     </SectionWrapper>
   );
 }
+
