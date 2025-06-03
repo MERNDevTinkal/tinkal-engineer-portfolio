@@ -52,7 +52,7 @@ export function ChatbotDialog() {
       setMessages([]); 
       setShowSuggestions(false);
     }
-  }, [isOpen]); // Removed AUTHOR_NAME from dependency array as it's a constant
+  }, [isOpen]); 
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -174,17 +174,16 @@ export function ChatbotDialog() {
               ))}
             </ScrollArea>
             
-            {/* Suggestions Area - Moved here */}
+            {/* Suggestions displayed directly above the footer */}
             {showSuggestions && currentSuggestions.length > 0 && (
-                <div className="p-3 border-t border-border bg-card/80"> {/* Use bg-card or similar for distinction */}
-                    <p className="text-xs text-muted-foreground mb-2 px-1">Suggestions:</p>
-                    <div className="flex flex-wrap gap-2 px-1">
+                <div className="p-3 border-t border-border"> 
+                    <div className="flex flex-wrap gap-2">
                         {currentSuggestions.map((q, index) => (
                             <Button
                             key={index}
                             variant="outline"
                             size="sm"
-                            className="text-xs h-auto py-1.5 px-3 rounded-full bg-background hover:bg-muted shadow-sm" // Ensure background helps it stand out
+                            className="text-xs h-auto py-1" 
                             onClick={() => handleSuggestionClick(q)}
                             disabled={isLoading}
                             >
@@ -195,7 +194,7 @@ export function ChatbotDialog() {
                 </div>
             )}
 
-            <footer className="p-4 border-t border-border bg-card"> {/* Ensure footer is distinct */}
+            <footer className="p-4 border-t border-border bg-card">
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
