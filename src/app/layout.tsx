@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
@@ -6,6 +7,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import { APP_NAME, AUTHOR_NAME } from "@/lib/data";
+import { ChatbotDialog } from "@/components/chatbot/ChatbotDialog"; // Added import
 
 const inter = Inter({
   subsets: ["latin"],
@@ -49,6 +51,7 @@ export default function RootLayout({
           </main>
           <Footer />
           <Toaster />
+          <ChatbotDialog /> {/* Added Chatbot Dialog */}
         </ThemeProvider>
       </body>
     </html>
