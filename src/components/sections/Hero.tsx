@@ -17,48 +17,72 @@ import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { HERO_TITLES, SOCIAL_LINKS, PROFILE_IMAGES, RESUME_PATH, AUTHOR_NAME } from "@/lib/data";
 
 export function Hero() {
-  const titleColors = [
-    "text-primary",
-    "text-accent",
-    "text-secondary-foreground dark:text-secondary-foreground", // ensure good contrast on light/dark
-  ];
+  const textContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3, // Delay after the main section animation
+      },
+    },
+  };
+
+  const textItemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
 
   return (
-    <SectionWrapper id="home" className="!min-h-screen pt-24 md:pt-32 bg-gradient-to-br from-background to-card">
+    <SectionWrapper id="home" className="!min-h-screen pt-24 md:pt-32 bg-gradient-to-br from-background via-card to-secondary/10 dark:to-secondary/20">
       <div className="grid md:grid-cols-2 gap-12 items-center">
         <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          variants={textContainerVariants}
+          initial="hidden"
+          animate="visible" // This will be controlled by the parent page.tsx animation if applicable
           className="space-y-6 text-center md:text-left"
         >
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight font-headline">
+          <motion.h1
+            variants={textItemVariants}
+            className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight font-headline"
+          >
             Hi, I&apos;m <span className="text-primary">{AUTHOR_NAME}</span>
-          </h1>
-          <div className="text-2xl sm:text-3xl md:text-4xl font-semibold h-20 md:h-12">
+          </motion.h1>
+
+          <motion.div
+            variants={textItemVariants}
+            className="text-2xl sm:text-3xl md:text-4xl font-semibold h-20 md:h-12 text-accent dark:text-accent"
+          >
             <Typewriter
               words={HERO_TITLES}
               loop={true}
               cursor
-              cursorStyle="|"
+              cursorStyle="_"
               typeSpeed={70}
               deleteSpeed={50}
-              delaySpeed={1000}
-              onLoopDone={() => {}}
-              onType={(count) => {
-                const currentWordIndex = count % HERO_TITLES.length;
-                const currentColorClass = titleColors[currentWordIndex % titleColors.length];
-                // This is a bit tricky with Typewriter; direct color manipulation per word is hard.
-                // We'll apply a consistent color to the whole typewriter component or make it subtle.
-                // For now, the wrapper span will have a dynamic color if possible, or a fixed one.
-              }}
+              delaySpeed={1500}
             />
-          </div>
-          <p className="text-lg text-muted-foreground max-w-xl mx-auto md:mx-0">
+          </motion.div>
+
+          <motion.p
+            variants={textItemVariants}
+            className="text-lg text-muted-foreground max-w-xl mx-auto md:mx-0"
+          >
             A passionate developer transforming ideas into powerful and engaging web experiences.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
-            <Button size="lg" asChild className="shadow-lg hover:shadow-primary/50 transition-shadow">
+          </motion.p>
+
+          <motion.div
+            variants={textItemVariants}
+            className="flex flex-col sm:flex-row items-center justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4"
+          >
+            <Button size="lg" asChild className="shadow-lg hover:shadow-primary/50 transition-shadow duration-300 ease-in-out transform hover:scale-105">
               <Link href={RESUME_PATH} target="_blank" download>
                 <span>
                   <Download className="mr-2 h-5 w-5 inline" />
@@ -66,7 +90,7 @@ export function Hero() {
                 </span>
               </Link>
             </Button>
-            <Button size="lg" variant="outline" asChild className="shadow-lg hover:shadow-accent/50 transition-shadow">
+            <Button size="lg" variant="outline" asChild className="shadow-lg hover:shadow-accent/50 transition-shadow duration-300 ease-in-out transform hover:scale-105">
               <Link href="#contact">
                 <span>
                   Contact Me
@@ -74,13 +98,18 @@ export function Hero() {
                 </span>
               </Link>
             </Button>
-          </div>
-          <div className="flex items-center justify-center md:justify-start space-x-4 pt-4">
+          </motion.div>
+
+          <motion.div
+            variants={textItemVariants}
+            className="flex items-center justify-center md:justify-start space-x-4 pt-4"
+          >
             {SOCIAL_LINKS.map(({ name, Icon, href }) => (
                <motion.div
                 key={name}
-                whileHover={{ scale: 1.2, rotate: 5 }}
+                whileHover={{ scale: 1.25, rotate: 5, y: -2 }}
                 whileTap={{ scale: 0.9 }}
+                transition={{ type: "spring", stiffness: 300 }}
               >
                 <Button variant="ghost" size="icon" asChild>
                   <Link href={href} target="_blank" rel="noopener noreferrer" aria-label={name}>
@@ -89,13 +118,13 @@ export function Hero() {
                 </Button>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          initial={{ opacity: 0, scale: 0.8, x: 50 }}
+          animate={{ opacity: 1, scale: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.6, type: "spring", stiffness: 100 }} // Added slight delay for image
           className="w-full max-w-md mx-auto"
         >
           <Swiper
@@ -104,14 +133,14 @@ export function Hero() {
             slidesPerView={1}
             loop={true}
             autoplay={{
-              delay: 5000,
+              delay: 4000,
               disableOnInteraction: false,
               pauseOnMouseEnter: true,
             }}
-            pagination={{ clickable: true }}
+            pagination={{ clickable: true, dynamicBullets: true }}
             effect="fade"
             fadeEffect={{ crossFade: true }}
-            className="rounded-xl shadow-2xl overflow-hidden aspect-[3/4]"
+            className="rounded-xl shadow-2xl overflow-hidden aspect-[3/4] border-4 border-card hover:border-primary/30 transition-colors duration-300"
           >
             {PROFILE_IMAGES.map((image, index) => (
               <SwiperSlide key={index}>
