@@ -20,12 +20,12 @@ interface Message {
 }
 
 const INITIAL_SUGGESTIONS = [
-  "What are Tinkal's key skills?",
-  "Tell me about a project Tinkal worked on.",
-  "What is Tinkal's work experience?",
-  "How can I contact Tinkal?",
-  "What certifications does Tinkal hold?",
-  "Describe Tinkal's education.",
+  `What are ${AUTHOR_NAME}'s key skills?`,
+  `Tell me about a project ${AUTHOR_NAME} worked on.`,
+  `What is ${AUTHOR_NAME}'s work experience?`,
+  `How can I contact ${AUTHOR_NAME}?`,
+  `What certifications does ${AUTHOR_NAME} hold?`,
+  `Describe ${AUTHOR_NAME}'s education.`,
 ];
 
 export function ChatbotDialog() {
@@ -53,9 +53,10 @@ export function ChatbotDialog() {
       setTimeout(() => inputRef.current?.focus(), 100);
     } else {
       document.body.style.overflow = '';
-      setMessages([]);
-      setCurrentInput("");
-      setSuggestionsExpanded(false);
+      // Optionally reset state if needed when closing
+      // setMessages([]);
+      // setCurrentInput("");
+      // setSuggestionsExpanded(false);
     }
     return () => {
         document.body.style.overflow = '';
@@ -64,9 +65,12 @@ export function ChatbotDialog() {
 
   useEffect(() => {
     if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTo({
-        top: scrollAreaRef.current.scrollHeight,
-        behavior: "smooth",
+      const scrollElement = scrollAreaRef.current;
+      requestAnimationFrame(() => {
+         scrollElement.scrollTo({
+           top: scrollElement.scrollHeight,
+           behavior: "smooth",
+         });
       });
     }
   }, [messages]);
@@ -103,7 +107,10 @@ export function ChatbotDialog() {
         setCurrentSuggestions(result.suggestedFollowUps.filter(s => s && s.trim() !== "").slice(0, 4));
       } else {
         // Fallback if AI provides no suggestions
-        const fallbackSuggestions = INITIAL_SUGGESTIONS.filter(s => s.toLowerCase() !== messageText.trim().toLowerCase()).slice(0,4);
+        const fallbackSuggestions = INITIAL_SUGGESTIONS
+          .filter(s => s.toLowerCase() !== messageText.trim().toLowerCase()) // Avoid suggesting the exact same question
+          .sort(() => 0.5 - Math.random()) // Shuffle for variety
+          .slice(0,4);
         setCurrentSuggestions(fallbackSuggestions.length > 0 ? fallbackSuggestions : INITIAL_SUGGESTIONS.slice(0,4));
       }
 
@@ -170,7 +177,7 @@ export function ChatbotDialog() {
             exit="closed"
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className="fixed bottom-24 right-6 z-40 w-full max-w-md rounded-xl bg-background shadow-2xl border border-border overflow-hidden flex flex-col"
-            style={{ height: 'min(75vh, 750px)'}} 
+            style={{ height: 'min(75vh, 700px)'}} // Adjusted height
           >
             <header className="bg-card p-4 border-b border-border flex items-center justify-between">
               <h3 className="font-semibold text-lg text-primary font-headline">Chat with {AUTHOR_NAME}'s Assistant</h3>
@@ -178,7 +185,7 @@ export function ChatbotDialog() {
                 <X className="h-5 w-5" />
               </Button>
             </header>
-
+            
             {currentSuggestions.length > 0 && (
               <div className="p-3 border-b border-border bg-card/50">
                 {!suggestionsExpanded ? (
@@ -239,7 +246,7 @@ export function ChatbotDialog() {
                 <Input
                   ref={inputRef}
                   type="text"
-                  placeholder="Ask about Tinkal..."
+                  placeholder={`Ask about ${AUTHOR_NAME}...`}
                   value={currentInput}
                   onChange={(e) => setCurrentInput(e.target.value)}
                   disabled={isLoading}
