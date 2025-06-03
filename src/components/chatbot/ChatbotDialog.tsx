@@ -52,7 +52,7 @@ export function ChatbotDialog() {
       setMessages([]); 
       setShowSuggestions(false);
     }
-  }, [isOpen, AUTHOR_NAME]);
+  }, [isOpen]); // Removed AUTHOR_NAME from dependency array as it's a constant
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -66,7 +66,7 @@ export function ChatbotDialog() {
   const processMessage = async (messageText: string) => {
     if (!messageText.trim() || isLoading) return;
 
-    setShowSuggestions(false);
+    setShowSuggestions(false); // Hide suggestions when a message is sent
 
     const userMessage: Message = {
       id: `${Date.now()}-user-${Math.random().toString(36).substring(7)}`,
@@ -94,6 +94,7 @@ export function ChatbotDialog() {
       if (result.suggestedFollowUps && result.suggestedFollowUps.length > 0) {
         setCurrentSuggestions(result.suggestedFollowUps);
       } else {
+        // Fallback to initial suggestions if AI doesn't provide any
         setCurrentSuggestions(INITIAL_SUGGESTIONS); 
       }
 
@@ -106,10 +107,10 @@ export function ChatbotDialog() {
           : msg
         )
       );
-      setCurrentSuggestions(INITIAL_SUGGESTIONS);
+      setCurrentSuggestions(INITIAL_SUGGESTIONS); // Fallback suggestions on error
     } finally {
       setIsLoading(false);
-      setShowSuggestions(true);
+      setShowSuggestions(true); // Show suggestions again (new or fallback)
       inputRef.current?.focus();
     }
   };
@@ -120,7 +121,7 @@ export function ChatbotDialog() {
   };
 
   const handleSuggestionClick = (suggestion: string) => {
-    setCurrentInput(""); 
+    setCurrentInput(""); // Clear input before processing suggestion
     processMessage(suggestion);
   };
   
@@ -161,7 +162,7 @@ export function ChatbotDialog() {
             exit="closed"
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className="fixed bottom-24 right-6 z-40 w-full max-w-sm rounded-xl bg-background shadow-2xl border border-border overflow-hidden flex flex-col"
-            style={{ height: 'min(70vh, 600px)'}}
+            style={{ height: 'min(70vh, 600px)'}} // Set max height for the chat window
           >
             <header className="bg-card p-4 border-b border-border">
               <h3 className="font-semibold text-lg text-primary font-headline">Chat with {AUTHOR_NAME}'s Assistant</h3>
@@ -173,8 +174,9 @@ export function ChatbotDialog() {
               ))}
             </ScrollArea>
             
+            {/* Suggestions Area - Moved here */}
             {showSuggestions && currentSuggestions.length > 0 && (
-                <div className="p-3 border-t border-border bg-card/80">
+                <div className="p-3 border-t border-border bg-card/80"> {/* Use bg-card or similar for distinction */}
                     <p className="text-xs text-muted-foreground mb-2 px-1">Suggestions:</p>
                     <div className="flex flex-wrap gap-2 px-1">
                         {currentSuggestions.map((q, index) => (
@@ -182,7 +184,7 @@ export function ChatbotDialog() {
                             key={index}
                             variant="outline"
                             size="sm"
-                            className="text-xs h-auto py-1.5 px-3 rounded-full bg-background hover:bg-muted shadow-sm"
+                            className="text-xs h-auto py-1.5 px-3 rounded-full bg-background hover:bg-muted shadow-sm" // Ensure background helps it stand out
                             onClick={() => handleSuggestionClick(q)}
                             disabled={isLoading}
                             >
@@ -193,7 +195,7 @@ export function ChatbotDialog() {
                 </div>
             )}
 
-            <footer className="p-4 border-t border-border bg-card">
+            <footer className="p-4 border-t border-border bg-card"> {/* Ensure footer is distinct */}
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
