@@ -4,25 +4,25 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%; /* Very light cool gray */
-    --foreground: 210 20% 11%; /* Very dark blue/charcoal */
-    --card: 210 40% 98%;
-    --card-foreground: 210 20% 11%;
-    --popover: 210 40% 98%;
-    --popover-foreground: 210 20% 11%;
-    --primary: 220 75% 55%; /* Strong, clear blue */
-    --primary-foreground: 210 40% 98%; /* Light for text on primary */
-    --secondary: 220 40% 90%; /* Lighter blue */
-    --secondary-foreground: 210 20% 25%; /* Darker text for secondary */
-    --muted: 210 30% 94%;
-    --muted-foreground: 210 15% 45%;
-    --accent: 30 90% 55%; /* Vibrant orange for contrast */
-    --accent-foreground: 0 0% 100%; /* White text on accent */
+    --background: 0 0% 100%; /* Pure White */
+    --foreground: 222 47% 11%; /* Dark Blue */
+    --card: 0 0% 98%; /* Very Light Gray (almost white) */
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%; /* Pure White */
+    --popover-foreground: 222 47% 11%;
+    --primary: 221 83% 53%; /* Strong, Clean Blue */
+    --primary-foreground: 0 0% 100%; /* White */
+    --secondary: 220 13% 91%; /* Light Neutral Gray-Blue */
+    --secondary-foreground: 222 47% 11%; /* Dark Blue */
+    --muted: 220 14% 96%; /* Very Light Gray */
+    --muted-foreground: 220 9% 46%; /* Softer Gray */
+    --accent: 24 94% 50%; /* Vibrant Orange */
+    --accent-foreground: 0 0% 100%; /* White */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 210 20% 88%;
-    --input: 210 20% 92%;
-    --ring: 220 75% 55%; /* Primary color for rings */
+    --border: 220 13% 89%; /* Light Clean Border */
+    --input: 220 13% 91%; /* Slightly Darker Input Background/Border */
+    --ring: 221 83% 53%; /* Primary color for rings */
     
     --chart-1: hsl(var(--primary));
     --chart-2: hsl(var(--accent));
@@ -32,13 +32,13 @@
 
     --radius: 0.5rem;
 
-    --sidebar-background: 210 40% 97%;
-    --sidebar-foreground: 210 20% 20%;
+    --sidebar-background: 0 0% 97%; /* Consistent with new card color or slightly different */
+    --sidebar-foreground: 222 47% 11%; /* Consistent with new foreground */
     --sidebar-primary: hsl(var(--primary));
     --sidebar-primary-foreground: hsl(var(--primary-foreground));
-    --sidebar-accent: 210 40% 92%;
-    --sidebar-accent-foreground: hsl(var(--primary));
-    --sidebar-border: 210 20% 85%;
+    --sidebar-accent: 220 14% 93%; /* Light gray for selected/hovered sidebar items */
+    --sidebar-accent-foreground: hsl(var(--primary)); /* Primary color for text on sidebar accent */
+    --sidebar-border: 220 13% 88%; /* Consistent with new border */
     --sidebar-ring: hsl(var(--ring));
   }
 
