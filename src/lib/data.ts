@@ -1,8 +1,13 @@
 
 import type { LucideIcon } from 'lucide-react';
-import { Github, Linkedin, Briefcase, MapPin, Mail, Phone, CodeXml, Database, ServerCog, Wand2, Palette, Settings2, ShoppingCart, FileText, BookOpen, GraduationCap, Building, Award, ExternalLink, UserCircle2 } from 'lucide-react';
+import { 
+  Github, Linkedin, Briefcase, MapPin, Mail, Phone, CodeXml, Database, 
+  ServerCog, Wand2, Palette, Settings2, ShoppingCart, FileText, BookOpen, 
+  GraduationCap, Building, Award, ExternalLink, UserCircle2, KeyRound, ShieldCheck,
+  UploadCloud, Smartphone, Architecture, Puzzle, Lightbulb, TerminalSquare, GitCommit, Wrench
+} from 'lucide-react';
 
-export const APP_NAME = "Tinkal's HQ"; // Updated App Name
+export const APP_NAME = "Tinkal's HQ";
 export const AUTHOR_NAME = "Tinkal Kumar";
 export const AUTHOR_EMAIL = "tinkalkumar67693@gmail.com";
 
@@ -21,16 +26,16 @@ export const SOCIAL_LINKS = [
 ];
 
 export const HERO_TITLES = [
-  "Full Stack Developer",
-  "MERN Stack Expert",
-  "Next.js Enthusiast",
+  "MERN Stack Developer",
+  "Full Stack Engineer",
+  "Next.js Specialist",
   "React Virtuoso",
   "Node.js Architect",
-  "TypeScript Pro",
-  "AI/ML Explorer",
+  "TypeScript Advocate",
+  "AI Integrationist",
   "Software Innovator",
-  "Problem Solver",
-  "Creative Technologist"
+  "Creative Problem Solver",
+  "Tech Enthusiast"
 ];
 
 export const PROFILE_IMAGES = [
@@ -42,7 +47,7 @@ export const PROFILE_IMAGES = [
 export const RESUME_PATH = "/Tinkal_Resume.pdf"; 
 
 export const ABOUT_ME = {
-  summary: "A results-driven Full Stack Developer with expertise in the MERN stack, Next.js, and modern web technologies. Passionate about crafting efficient, scalable, and user-centric applications. I thrive on solving complex problems and continuously learning to stay at the cutting edge of technology.",
+  summary: "A results-driven MERN Stack Developer with expertise in building scalable full-stack web applications using MongoDB, Express.js, React.js, and Node.js. Passionate about clean code, component reusability, performance optimization, and collaborating on real-world client projects. I thrive on solving complex challenges with innovation and continuously learning new technologies.",
   passion: "My journey in tech is fueled by a relentless curiosity and a love for building impactful digital solutions. I'm particularly excited by AI integration in web apps, advanced JavaScript frameworks, and contributing to the open-source community to drive innovation.",
   location: "Chandigarh, India",
   relocation: "Open to relocating for compelling opportunities",
@@ -82,7 +87,7 @@ export const EDUCATION_DATA: EducationEntry[] = [
       "Final Year Project: 'Inventory Management System' using Java and MySQL.",
       "Active member of the college coding club.",
     ],
-    Icon: Award, // Using Award for a different icon visual
+    Icon: Award,
   },
 ];
 
@@ -97,7 +102,33 @@ export interface ExperienceEntry {
 
 export const WORK_EXPERIENCE_DATA: ExperienceEntry[] = [
   {
-    title: "Software Development Intern",
+    title: "MERN Stack Developer",
+    company: "OweBest Technologies Pvt Ltd",
+    duration: "Feb 2025 – Present", // As provided by user
+    location: "Jaipur, Rajasthan",
+    responsibilities: [
+      "Building scalable full-stack web applications.",
+      "Tech stack: MongoDB, Express.js, React.js, Node.js.",
+      "Focused on clean code, component reusability, and performance.",
+      "Collaborated with team on real-world client projects.",
+    ],
+    Icon: Building,
+  },
+  {
+    title: "Web Developer",
+    company: "Apex Hospitals, Jaipur",
+    duration: "Aug 2024 – Feb 2025", // As provided by user
+    location: "Jaipur, Rajasthan",
+    responsibilities: [
+      "Maintained hospital website and app content.",
+      "Resolved technical issues in the hospital management system.",
+      "Acted as a bridge between medical staff and software vendors.",
+      "Built reusable UI components using HTML and CSS.",
+    ],
+    Icon: Building,
+  },
+  {
+    title: "Software Development Intern", // Previous entry, retained
     company: "Celebal Technologies",
     duration: "January 2024 - June 2024",
     location: "Jaipur, Rajasthan (Remote)",
@@ -111,7 +142,6 @@ export const WORK_EXPERIENCE_DATA: ExperienceEntry[] = [
     ],
     Icon: Building,
   },
-  // Add more experience entries here if applicable
 ];
 
 
@@ -121,18 +151,43 @@ export interface TechStackItem {
 }
 
 export const TECH_STACK: TechStackItem[] = [
-  { name: "React", Icon: CodeXml },
+  // Frontend
+  { name: "React.js", Icon: CodeXml },
   { name: "Next.js", Icon: CodeXml },
+  { name: "TypeScript", Icon: CodeXml },
+  { name: "HTML5", Icon: CodeXml },
+  { name: "CSS3", Icon: Palette },
+  { name: "Tailwind CSS", Icon: Palette },
+  { name: "Redux", Icon: CodeXml }, // Or Settings2/Wand2 for logic
+  { name: "Zustand", Icon: CodeXml },
+  // Backend
   { name: "Node.js", Icon: ServerCog },
   { name: "Express.js", Icon: ServerCog },
+  { name: "REST APIs", Icon: Settings2 },
+  { name: "JWT Auth", Icon: KeyRound },
+  { name: "Bcrypt", Icon: ShieldCheck },
+  { name: "Multer", Icon: UploadCloud },
+  { name: "Nodemailer", Icon: Mail },
+  // Databases
   { name: "MongoDB", Icon: Database },
-  { name: "TypeScript", Icon: CodeXml },
-  { name: "JavaScript (ES6+)", Icon: CodeXml },
-  { name: "Tailwind CSS", Icon: Palette },
-  { name: "Firebase", Icon: Wand2 },
-  { name: "Genkit AI", Icon: Wand2 },
-  { name: "Git & GitHub", Icon: Github },
-  { name: "RESTful APIs", Icon: Settings2 },
+  { name: "Mongoose", Icon: Database },
+  { name: "SQL", Icon: Database },
+  { name: "MySQL", Icon: Database },
+  // Tools
+  { name: "Git", Icon: GitCommit },
+  { name: "GitHub", Icon: Github },
+  { name: "Postman", Icon: Settings2 }, // Generic tool/config icon
+  { name: "Redux DevTools", Icon: Wrench }, // Or Settings2
+  // Other
+  { name: "Responsive Design", Icon: Smartphone },
+  { name: "Clean Architecture", Icon: Architecture },
+  { name: "Component Reusability", Icon: Puzzle },
+  { name: "Problem Solving", Icon: Lightbulb },
+  // General & Previously included
+  { name: "JavaScript (ES6+)", Icon: CodeXml }, // Retain for explicitness
+  { name: "Firebase", Icon: Wand2 }, // From original list
+  { name: "Genkit AI", Icon: Wand2 }, // From original list
+  { name: "DevOps", Icon: TerminalSquare },
 ];
 
 export interface Project {
@@ -143,17 +198,18 @@ export interface Project {
   dataAiHint: string;
   liveDemoUrl?: string; 
   githubRepoUrl: string;
-  techStack: TechStackItem[];
+  techStack: TechStackItem[]; // Can reuse the TechStackItem interface
   Icon: LucideIcon;
 }
 
 // PLEASE UPDATE liveDemoUrl for your projects where available.
-// If a project does not have a live demo, leave liveDemoUrl empty or as "#".
+// If a project does not have a live demo, leave liveDemoUrl empty, as "#", or undefined.
+// The ProjectCard component will handle missing/invalid live demo URLs gracefully.
 export const PROJECTS_DATA: Project[] = [
   {
     id: "job-portal",
     title: "Job Portal App",
-    description: "A comprehensive platform for job seekers and employers, featuring advanced search, application tracking, and user management. Built with MERN stack & TypeScript.",
+    description: "A comprehensive MERN stack platform for job seekers and employers, featuring advanced search, application tracking, user management, and built with TypeScript for robust development.",
     image: "https://placehold.co/600x400.png",
     dataAiHint: "job board interface",
     liveDemoUrl: "https://job-portal-tinkal.vercel.app/", 
@@ -169,10 +225,10 @@ export const PROJECTS_DATA: Project[] = [
   {
     id: "notes-app",
     title: "Notes App (MERN)",
-    description: "A secure and intuitive MERN stack application for creating, organizing, and managing personal notes with JWT authentication and CRUD operations.",
+    description: "A secure and intuitive MERN stack application for creating, organizing, and managing personal notes. Features JWT-based authentication, protected routes, and complete CRUD operations.",
     image: "https://placehold.co/600x400.png",
     dataAiHint: "note taking application",
-    liveDemoUrl: "#", // Example: No live demo or under maintenance
+    liveDemoUrl: "#", 
     githubRepoUrl: "https://github.com/MERNDevTinkal/Notes-Application",
     techStack: [
       { name: "React", Icon: CodeXml },
@@ -184,15 +240,15 @@ export const PROJECTS_DATA: Project[] = [
   },
   {
     id: "e-commerce",
-    title: "E-commerce Frontend",
-    description: "A feature-rich online shopping experience with product listings, cart management, and global state management using Redux Toolkit.",
+    title: "E-commerce Frontend (Redux)",
+    description: "A dynamic online shopping experience with product listings, cart functionality, and efficient global state management using Redux Toolkit, styled with Tailwind CSS.",
     image: "https://placehold.co/600x400.png",
     dataAiHint: "online store product",
-    liveDemoUrl: "", // Example: No live demo
+    liveDemoUrl: "", 
     githubRepoUrl: "https://github.com/MERNDevTinkal/Ecommerce-Using-Redux",
     techStack: [
       { name: "React", Icon: CodeXml },
-      { name: "Redux Toolkit", Icon: CodeXml }, // Representing Redux with CodeXml
+      { name: "Redux Toolkit", Icon: CodeXml }, 
       { name: "Tailwind CSS", Icon: Palette },
       { name: "JavaScript", Icon: CodeXml },
     ],
@@ -201,14 +257,14 @@ export const PROJECTS_DATA: Project[] = [
 ];
 
 export const BLOG_SECTION_DETAILS = {
-  title: "My Tech Insights",
-  description: "Diving into technology, software development, DevOps, AI, and more. Explore my thoughts on the evolving tech landscape:",
+  title: "My Tech Narratives",
+  description: "Exploring the frontiers of technology, software craftsmanship, DevOps methodologies, AI advancements, and beyond. Join my musings on the ever-evolving tech landscape:",
   Icon: BookOpen,
 };
 
 export const CONTACT_DETAILS = {
-  title: "Let's Collaborate",
-  description: "Have an exciting project, a question, or just want to connect? I'm always open to new ideas and collaborations. Reach out!",
+  title: "Let's Build Together",
+  description: "Have an innovative project, a burning question, or just want to connect? I'm eager to discuss new ideas and potential collaborations. Reach out!",
   Icon: Mail,
   phone: "+91-9102496140",
   PhoneIcon: Phone,
@@ -219,3 +275,5 @@ export const EMAILJS_CONFIG = {
   templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "YOUR_EMAILJS_TEMPLATE_ID",
   publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "YOUR_EMAILJS_PUBLIC_KEY",
 };
+
+    
