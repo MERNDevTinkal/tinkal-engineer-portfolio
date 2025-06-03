@@ -87,7 +87,7 @@ export const EDUCATION_DATA: EducationEntry[] = [
       "Final Year Project: 'Inventory Management System' using Java and MySQL.",
       "Active member of the college coding club.",
     ],
-    Icon: Award,
+    Icon: Award, // Using Award icon here, can be GraduationCap too
   },
 ];
 
@@ -119,7 +119,7 @@ export const WORK_EXPERIENCE_DATA: ExperienceEntry[] = [
     company: "Apex Hospitals, Jaipur",
     duration: "Aug 2024 – Feb 2025",
     location: "Jaipur, Rajasthan",
-    responsibilities: [
+    responsibilities: [ // Changed from Key Contributions to responsibilities for consistency
       "Maintained hospital website and app content.",
       "Resolved technical issues in the hospital management system.",
       "Acted as a bridge between medical staff and software vendors.",
@@ -141,6 +141,32 @@ export const WORK_EXPERIENCE_DATA: ExperienceEntry[] = [
       "Gained hands-on experience with CI/CD pipelines and cloud deployment basics.",
     ],
     Icon: Building,
+  },
+];
+
+export interface CertificationEntry {
+  name: string;
+  issuingOrganization: string;
+  dateAwarded: string;
+  credentialUrl?: string;
+  Icon: LucideIcon;
+}
+
+// Placeholder data for Certifications. Please update with your actual certifications.
+export const CERTIFICATIONS_DATA: CertificationEntry[] = [
+  {
+    name: "Certified JavaScript Developer",
+    issuingOrganization: "Tech Certification Board",
+    dateAwarded: "Dec 2023",
+    credentialUrl: "#", // Replace with actual URL
+    Icon: Award,
+  },
+  {
+    name: "Advanced React Patterns",
+    issuingOrganization: "Web Dev University",
+    dateAwarded: "Mar 2024",
+    // credentialUrl: "#", // Example: Optional URL
+    Icon: Award,
   },
 ];
 
@@ -180,7 +206,7 @@ export const TECH_STACK: TechStackItem[] = [
   { name: "Redux DevTools", Icon: Wrench }, 
   // Other
   { name: "Responsive Design", Icon: Smartphone },
-  { name: "Clean Architecture", Icon: Layers }, // Changed from Architecture
+  { name: "Clean Architecture", Icon: Layers },
   { name: "Component Reusability", Icon: Puzzle },
   { name: "Problem Solving", Icon: Lightbulb },
   { name: "JavaScript (ES6+)", Icon: CodeXml },
@@ -227,7 +253,7 @@ export const PROJECTS_DATA: Project[] = [
     description: "A secure and intuitive MERN stack application for creating, organizing, and managing personal notes. Features JWT-based authentication, protected routes, and complete CRUD operations.",
     image: "https://placehold.co/600x400.png",
     dataAiHint: "note taking application",
-    liveDemoUrl: "#", // Example of a placeholder
+    liveDemoUrl: "#", // Example of a placeholder, update if available
     githubRepoUrl: "https://github.com/MERNDevTinkal/Notes-Application",
     techStack: [
       { name: "React", Icon: CodeXml },
@@ -243,7 +269,7 @@ export const PROJECTS_DATA: Project[] = [
     description: "A dynamic online shopping experience with product listings, cart functionality, and efficient global state management using Redux Toolkit, styled with Tailwind CSS.",
     image: "https://placehold.co/600x400.png",
     dataAiHint: "online store product",
-    liveDemoUrl: "", // Example of an empty link
+    liveDemoUrl: "", // Example of an empty link, update if available
     githubRepoUrl: "https://github.com/MERNDevTinkal/Ecommerce-Using-Redux",
     techStack: [
       { name: "React", Icon: CodeXml },
@@ -253,6 +279,24 @@ export const PROJECTS_DATA: Project[] = [
     ],
     Icon: ShoppingCart,
   },
+  // Add more projects here from your GitHub if desired, following the same structure.
+  // For example:
+  // {
+  //   id: "todo-mern",
+  //   title: "Todo App (MERN)",
+  //   description: "A full-stack Todo app using MERN stack with JWT authentication. Users can manage their tasks efficiently.",
+  //   image: "https://placehold.co/600x400.png",
+  //   dataAiHint: "task manager interface",
+  //   liveDemoUrl: "#", // Update if available
+  //   githubRepoUrl: "https://github.com/MERNDevTinkal/Todo-Application-Using-MERN-Stack",
+  //   techStack: [
+  //     { name: "React", Icon: CodeXml },
+  //     { name: "Node.js", Icon: ServerCog },
+  //     { name: "MongoDB", Icon: Database },
+  //     { name: "JWT Auth", Icon: KeyRound },
+  //   ],
+  //   Icon: FileText,
+  // },
 ];
 
 export const BLOG_SECTION_DETAILS = {

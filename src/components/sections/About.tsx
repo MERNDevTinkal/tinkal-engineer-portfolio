@@ -4,10 +4,12 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { SectionWrapper, SectionHeader } from "@/components/ui/SectionWrapper";
-import { ABOUT_ME, TECH_STACK, AUTHOR_NAME, EDUCATION_DATA, WORK_EXPERIENCE_DATA } from "@/lib/data";
+import { ABOUT_ME, TECH_STACK, AUTHOR_NAME, EDUCATION_DATA, WORK_EXPERIENCE_DATA, CERTIFICATIONS_DATA } from "@/lib/data";
 import { TechBadge } from "@/components/ui/TechBadge";
-import { UserCircle2, Briefcase, GraduationCap } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { UserCircle2, Briefcase, GraduationCap, Award, ExternalLink } from "lucide-react"; // Added Award and ExternalLink
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"; // Added CardDescription & CardFooter
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export function About() {
   const containerVariants = {
@@ -87,7 +89,7 @@ export function About() {
         </h3>
         <div className="space-y-8">
           {EDUCATION_DATA.map((edu, index) => (
-            <motion.div key={`${edu.degree}-${index}`} variants={itemVariants}>
+            <motion.div key={`edu-${edu.degree}-${index}`} variants={itemVariants}>
               <Card className="shadow-lg hover:shadow-primary/20 transition-shadow duration-300">
                 <CardHeader>
                   <div className="flex items-start sm:items-center space-x-4">
@@ -102,7 +104,7 @@ export function About() {
                 {edu.details && edu.details.length > 0 && (
                   <CardContent>
                     <ul className="list-disc list-inside text-muted-foreground space-y-1 pl-2">
-                      {edu.details.map((detail, i) => <li key={i}>{detail}</li>)}
+                      {edu.details.map((detail, i) => <li key={`edu-detail-${index}-${i}`}>{detail}</li>)}
                     </ul>
                   </CardContent>
                 )}
@@ -125,14 +127,14 @@ export function About() {
         </h3>
         <div className="space-y-8">
           {WORK_EXPERIENCE_DATA.map((exp, index) => (
-             <motion.div key={`${exp.title}-${index}`} variants={itemVariants}>
+             <motion.div key={`exp-${exp.title}-${index}`} variants={itemVariants}>
               <Card className="shadow-lg hover:shadow-primary/20 transition-shadow duration-300">
                 <CardHeader>
                   <div className="flex items-start sm:items-center space-x-4">
                     {exp.Icon && <exp.Icon className="h-10 w-10 sm:h-12 sm:w-12 text-accent flex-shrink-0 mt-1 sm:mt-0" />}
                     <div>
                       <CardTitle className="text-xl lg:text-2xl font-headline text-primary">{exp.title}</CardTitle>
-                      <p className="text-md text-muted-foreground font-medium">{exp.company} ({exp.location})</p>
+                      <CardDescription className="text-md text-muted-foreground font-medium">{exp.company} ({exp.location})</CardDescription>
                       <p className="text-sm text-muted-foreground">{exp.duration}</p>
                     </div>
                   </div>
@@ -140,7 +142,7 @@ export function About() {
                 <CardContent>
                   <h4 className="font-semibold mb-2 text-foreground/90">Key Responsibilities:</h4>
                   <ul className="list-disc list-inside text-muted-foreground space-y-1 pl-2">
-                    {exp.responsibilities.map((resp, i) => <li key={i}>{resp}</li>)}
+                    {exp.responsibilities.map((resp, i) => <li key={`exp-resp-${index}-${i}`}>{resp}</li>)}
                   </ul>
                 </CardContent>
               </Card>
@@ -148,6 +150,51 @@ export function About() {
           ))}
         </div>
       </motion.div>
+
+      {/* Certifications Section */}
+      {CERTIFICATIONS_DATA && CERTIFICATIONS_DATA.length > 0 && (
+        <motion.div
+          className="mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={containerVariants}
+        >
+          <h3 className="text-3xl font-semibold text-center mb-10 text-primary font-headline flex items-center justify-center">
+            <Award className="h-10 w-10 mr-3 text-primary" /> My Certifications
+          </h3>
+          <div className="grid md:grid-cols-2 gap-8">
+            {CERTIFICATIONS_DATA.map((cert, index) => (
+              <motion.div key={`cert-${cert.name}-${index}`} variants={itemVariants}>
+                <Card className="shadow-lg hover:shadow-primary/20 transition-shadow duration-300 h-full flex flex-col">
+                  <CardHeader>
+                    <div className="flex items-start space-x-4">
+                      {cert.Icon && <cert.Icon className="h-10 w-10 text-accent flex-shrink-0 mt-1" />}
+                      <div>
+                        <CardTitle className="text-xl font-headline text-primary">{cert.name}</CardTitle>
+                        <CardDescription className="text-md text-muted-foreground font-medium">{cert.issuingOrganization}</CardDescription>
+                        <p className="text-sm text-muted-foreground">Awarded: {cert.dateAwarded}</p>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  {cert.credentialUrl && cert.credentialUrl !== "#" && (
+                    <CardFooter className="mt-auto pt-4">
+                      <Button asChild variant="outline" className="w-full">
+                        <Link href={cert.credentialUrl} target="_blank" rel="noopener noreferrer">
+                          <span>
+                            <ExternalLink className="mr-2 h-4 w-4" />
+                            View Credential
+                          </span>
+                        </Link>
+                      </Button>
+                    </CardFooter>
+                  )}
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      )}
       
       <motion.div
         className="mt-16"
@@ -159,10 +206,12 @@ export function About() {
         <h3 className="text-3xl font-semibold text-center mb-10 text-primary font-headline">My Tech Toolkit</h3>
         <div className="flex flex-wrap justify-center gap-4">
           {TECH_STACK.map((tech, index) => (
-            <TechBadge key={`${tech.name}-${index}`} name={tech.name} Icon={tech.Icon} index={index} />
+            <TechBadge key={`tech-${tech.name}-${index}`} name={tech.name} Icon={tech.Icon} index={index} />
           ))}
         </div>
       </motion.div>
     </SectionWrapper>
   );
 }
+
+    
