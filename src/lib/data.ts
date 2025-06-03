@@ -7,7 +7,7 @@ import {
   UploadCloud, Smartphone, Layers, Puzzle, Lightbulb, TerminalSquare, GitCommit, Wrench
 } from 'lucide-react';
 
-export const APP_NAME = "Tinkal's HQ";
+export const APP_NAME = "Tinkal"; // Updated from "Tinkal's HQ"
 export const AUTHOR_NAME = "Tinkal Kumar";
 export const AUTHOR_EMAIL = "tinkalkumar67693@gmail.com";
 
@@ -161,7 +161,6 @@ export const CERTIFICATIONS_DATA: CertificationEntry[] = [
     Icon: Award,
   },
 ];
-// Add a comment to remind the user to update these URLs:
 // TODO: Update the credentialUrl for each certification with the actual link.
 
 export interface TechStackItem {
@@ -217,8 +216,6 @@ export interface Project {
   githubRepoUrl: string;
   techStack: TechStackItem[]; 
   Icon: LucideIcon;
-  // image?: string; // Optional image URL
-  // dataAiHint?: string; // Optional AI hint for image
 }
 
 export const PROJECTS_DATA: Project[] = [
@@ -266,7 +263,6 @@ export const PROJECTS_DATA: Project[] = [
     Icon: ShoppingCart,
   },
 ];
-// Add a comment to remind the user to update these URLs:
 // TODO: Update the liveDemoUrl for each project with the actual link if available, or remove/comment out the liveDemoUrl field.
 
 export const BLOG_SECTION_DETAILS = {
@@ -288,5 +284,4 @@ export const EMAILJS_CONFIG = {
   templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "YOUR_EMAILJS_TEMPLATE_ID",
   publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "YOUR_EMAILJS_PUBLIC_KEY",
 };
-
     
