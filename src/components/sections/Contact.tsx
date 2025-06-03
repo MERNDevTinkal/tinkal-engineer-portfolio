@@ -1,0 +1,170 @@
+"use client";
+
+import { useState } from "react";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import emailjs from "@emailjs/browser";
+import { motion } from "framer-motion";
+
+import { SectionWrapper, SectionHeader } from "@/components/ui/SectionWrapper";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
+import { CONTACT_DETAILS, EMAILJS_CONFIG, SOCIAL_LINKS, AUTHOR_EMAIL } from "@/lib/data";
+import Link from "next/link";
+
+const contactFormSchema = z.object({
+  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  email: z.string().email({ message: "Invalid email address." }),
+  phone: z.string().optional(),
+  message: z.string().min(10, { message: "Message must be at least 10 characters." }),
+});
+
+type ContactFormValues = z.infer<typeof contactFormSchema>;
+
+export function Contact() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ContactFormValues>({
+    resolver: zodResolver(contactFormSchema),
+  });
+
+  const onSubmit: SubmitHandler<ContactFormValues> = async (data) => {
+    setIsSubmitting(true);
+    try {
+      if (!EMAILJS_CONFIG.serviceId || !EMAILJS_CONFIG.templateId || !EMAILJS_CONFIG.publicKey || 
+          EMAILJS_CONFIG.serviceId.includes("YOUR_") || EMAILJS_CONFIG.templateId.includes("YOUR_") || EMAILJS_CONFIG.publicKey.includes("YOUR_")) {
+        throw new Error("EmailJS credentials are not configured. Please update them in lib/data.ts.");
+      }
+
+      await emailjs.send(
+        EMAILJS_CONFIG.serviceId,
+        EMAILJS_CONFIG.templateId,
+        {
+          from_name: data.name,
+          to_name: "Tinkal Kumar",
+          from_email: data.email,
+          to_email: AUTHOR_EMAIL, // Your email address
+          phone_number: data.phone || "Not provided",
+          message: data.message,
+        },
+        EMAILJS_CONFIG.publicKey
+      );
+      toast({
+        title: "Message Sent!",
+        description: "Thanks for reaching out. I'll get back to you soon.",
+        variant: "default",
+      });
+      reset();
+    } catch (error) {
+      console.error("EmailJS Error:", error);
+      const errorMessage = (error instanceof Error && error.message.includes("credentials"))
+        ? error.message
+        : "Failed to send message. Please try again later or contact me directly.";
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <SectionWrapper id="contact" className="bg-secondary/30 dark:bg-card/50">
+      <SectionHeader 
+        title={CONTACT_DETAILS.title}
+        subtitle={CONTACT_DETAILS.description}
+        Icon={CONTACT_DETAILS.Icon} 
+      />
+      <div className="grid md:grid-cols-2 gap-12 items-start">
+        <motion.div 
+          className="space-y-6"
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <h3 className="text-2xl font-semibold text-primary font-headline">Get in Touch Directly</h3>
+          <p className="text-muted-foreground">
+            You can also reach me via email or connect on social media.
+          </p>
+          <div className="space-y-3">
+            <Link href={`mailto:${AUTHOR_EMAIL}`} className="flex items-center group">
+              <CONTACT_DETAILS.Icon className="h-5 w-5 mr-3 text-accent group-hover:text-primary transition-colors" />
+              <span className="text-foreground group-hover:text-primary transition-colors">{AUTHOR_EMAIL}</span>
+            </Link>
+            {CONTACT_DETAILS.phone && (
+               <div className="flex items-center">
+                <CONTACT_DETAILS.PhoneIcon className="h-5 w-5 mr-3 text-accent" />
+                <span className="text-foreground">{CONTACT_DETAILS.phone}</span>
+              </div>
+            )}
+          </div>
+          <div className="flex space-x-4 pt-2">
+            {SOCIAL_LINKS.filter(link => link.name !== "Email").map(({ name, Icon, href }) => (
+              <motion.div
+                key={name}
+                whileHover={{ scale: 1.2, rotate: 5 }}
+                whileTap={{ scale: 0.9 }}
+              >
+              <Button variant="outline" size="icon" asChild>
+                <Link href={href} target="_blank" rel="noopener noreferrer" aria-label={name}>
+                  <Icon className="h-6 w-6 text-muted-foreground hover:text-primary transition-colors" />
+                </Link>
+              </Button>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-6 p-6 sm:p-8 bg-card rounded-lg shadow-xl"
+          initial={{ opacity: 0, x: 50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+          <div>
+            <Label htmlFor="name" className="text-sm font-medium">Full Name</Label>
+            <Input id="name" {...register("name")} placeholder="John Doe" className="mt-1" />
+            {errors.name && <p className="mt-1 text-xs text-destructive">{errors.name.message}</p>}
+          </div>
+          <div>
+            <Label htmlFor="email" className="text-sm font-medium">Email Address</Label>
+            <Input id="email" type="email" {...register("email")} placeholder="john.doe@example.com" className="mt-1" />
+            {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email.message}</p>}
+          </div>
+          <div>
+            <Label htmlFor="phone" className="text-sm font-medium">Phone Number (Optional)</Label>
+            <Input id="phone" type="tel" {...register("phone")} placeholder="+1 234 567 8900" className="mt-1" />
+            {errors.phone && <p className="mt-1 text-xs text-destructive">{errors.phone.message}</p>}
+          </div>
+          <div>
+            <Label htmlFor="message" className="text-sm font-medium">Message</Label>
+            <Textarea id="message" {...register("message")} placeholder="Your message here..." rows={5} className="mt-1" />
+            {errors.message && <p className="mt-1 text-xs text-destructive">{errors.message.message}</p>}
+          </div>
+          <Button type="submit" disabled={isSubmitting} className="w-full shadow-md">
+            {isSubmitting ? "Sending..." : "Send Message"}
+          </Button>
+           {(EMAILJS_CONFIG.serviceId.includes("YOUR_") || EMAILJS_CONFIG.templateId.includes("YOUR_") || EMAILJS_CONFIG.publicKey.includes("YOUR_")) && (
+            <p className="mt-2 text-xs text-amber-600 dark:text-amber-400 text-center">
+              Note: EmailJS is not configured. Please update credentials in <code>src/lib/data.ts</code> for the form to work.
+            </p>
+          )}
+        </motion.form>
+      </div>
+    </SectionWrapper>
+  );
+}
