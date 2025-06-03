@@ -18,6 +18,14 @@ interface Message {
   isLoading?: boolean;
 }
 
+const suggestedQuestions = [
+  "What are Tinkal's key skills?",
+  "Tell me about a project.",
+  "What is Tinkal's experience?",
+  "How can I contact Tinkal?",
+  "What certifications does Tinkal have?",
+];
+
 export function ChatbotDialog() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -32,12 +40,12 @@ export function ChatbotDialog() {
         {
           id: "initial-bot-message",
           sender: "bot",
-          text: `Hello! I'm ${AUTHOR_NAME}'s AI assistant. How can I help you learn more about ${AUTHOR_NAME}?`,
+          text: `Hello! I'm ${AUTHOR_NAME}'s AI assistant. Ask me about skills, projects, experience, or how to get in touch! You can also use the suggestions below.`,
         },
       ]);
       setTimeout(() => inputRef.current?.focus(), 100);
     } else {
-      setMessages([]); // Clear messages when closed
+      setMessages([]); 
     }
   }, [isOpen]);
 
@@ -50,25 +58,22 @@ export function ChatbotDialog() {
     }
   }, [messages]);
 
-  const handleSendMessage = async () => {
-    const trimmedInput = currentInput.trim();
-    if (!trimmedInput || isLoading) return;
+  const processMessage = async (messageText: string) => {
+    if (!messageText.trim() || isLoading) return;
 
     const userMessage: Message = {
-      id: Date.now().toString() + "-user",
+      id: `${Date.now()}-user-${Math.random().toString(36).substring(7)}`,
       sender: "user",
-      text: trimmedInput,
+      text: messageText.trim(),
     };
     setMessages((prev) => [...prev, userMessage]);
-    setCurrentInput("");
+    
     setIsLoading(true);
-
-    // Add a temporary loading message for the bot
-    const loadingBotMessageId = Date.now().toString() + "-bot-loading";
+    const loadingBotMessageId = `${Date.now()}-bot-loading-${Math.random().toString(36).substring(7)}`;
     setMessages((prev) => [...prev, { id: loadingBotMessageId, sender: 'bot', text: '...', isLoading: true }]);
     
     try {
-      const chatInput: PortfolioChatInput = { userInput: trimmedInput };
+      const chatInput: PortfolioChatInput = { userInput: messageText.trim() };
       const result: PortfolioChatOutput = await getPortfolioChatResponse(chatInput);
       
       setMessages((prevMessages) => 
@@ -84,7 +89,7 @@ export function ChatbotDialog() {
        setMessages((prevMessages) => 
         prevMessages.map(msg => 
           msg.id === loadingBotMessageId 
-          ? { ...msg, text: "Sorry, I encountered an error. Please try again.", isLoading: false } 
+          ? { ...msg, text: "Sorry, I encountered an issue. Please try asking in a different way or check back later.", isLoading: false } 
           : msg
         )
       );
@@ -92,6 +97,16 @@ export function ChatbotDialog() {
       setIsLoading(false);
       inputRef.current?.focus();
     }
+  };
+
+  const handleSendCurrentInput = () => {
+    processMessage(currentInput);
+    setCurrentInput(""); 
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setCurrentInput(""); // Clear input field if user was typing
+    processMessage(suggestion);
   };
   
   const chatWindowVariants = {
@@ -131,7 +146,7 @@ export function ChatbotDialog() {
             exit="closed"
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className="fixed bottom-24 right-6 z-40 w-full max-w-sm rounded-xl bg-background shadow-2xl border border-border overflow-hidden flex flex-col"
-            style={{ height: 'min(70vh, 600px)'}} // Responsive height
+            style={{ height: 'min(70vh, 600px)'}}
           >
             <header className="bg-card p-4 border-b border-border">
               <h3 className="font-semibold text-lg text-primary font-headline">Chat with {AUTHOR_NAME}'s Assistant</h3>
@@ -142,12 +157,30 @@ export function ChatbotDialog() {
                 <ChatMessage key={msg.id} sender={msg.sender} text={msg.text} isLoading={msg.isLoading} />
               ))}
             </ScrollArea>
+            
+            <div className="p-2 border-t border-border bg-card">
+                <p className="text-xs text-muted-foreground mb-2 px-2">Suggestions:</p>
+                <div className="flex flex-wrap gap-2 px-2 pb-2">
+                    {suggestedQuestions.map((q) => (
+                        <Button
+                        key={q}
+                        variant="outline"
+                        size="sm"
+                        className="text-xs h-auto py-1 px-2.5 rounded-full bg-background hover:bg-muted"
+                        onClick={() => handleSuggestionClick(q)}
+                        disabled={isLoading}
+                        >
+                        {q}
+                        </Button>
+                    ))}
+                </div>
+            </div>
 
             <footer className="p-4 border-t border-border bg-card">
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  handleSendMessage();
+                  handleSendCurrentInput();
                 }}
                 className="flex items-center gap-2"
               >
