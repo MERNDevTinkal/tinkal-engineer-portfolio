@@ -30,7 +30,7 @@ export type PortfolioChatInput = z.infer<typeof PortfolioChatInputSchema>;
 
 const PortfolioChatOutputSchema = z.object({
   response: z.string().describe("The chatbot's response to the user query."),
-  suggestedFollowUps: z.array(z.string()).optional().describe('Up to 3 brief, relevant suggested follow-up questions (max 5-7 words each) a user might ask next, related to the conversation or key aspects of Tinkal\'s profile.'),
+  suggestedFollowUps: z.array(z.string()).optional().describe('Up to 3 brief, relevant suggested follow-up questions (max 5-7 words each) a user might ask next, related to the conversation or key aspects of Tinkal\'s profile. Examples: "Tell me about his MERN project?", "What\'s his latest role?", "Any cloud skills?".'),
 });
 export type PortfolioChatOutput = z.infer<typeof PortfolioChatOutputSchema>;
 
@@ -43,11 +43,12 @@ const contactString = `Email: ${AUTHOR_EMAIL}, Phone: ${CONTACT_DETAILS.phone ||
 const certificationsString = CERTIFICATIONS_DATA.map(cert => `${cert.name} from ${cert.issuingOrganization}.`).join('\n');
 
 const systemPrompt = `
-You are a friendly, professional, and concise AI assistant for ${AUTHOR_NAME}'s portfolio.
-Your goal is to answer questions from recruiters and visitors about ${AUTHOR_NAME}.
+You are a friendly, professional, and highly intelligent AI assistant for ${AUTHOR_NAME}'s portfolio.
+Your primary goal is to answer questions from recruiters and visitors about ${AUTHOR_NAME} in a positive and engaging manner.
 Use ONLY the following information about ${AUTHOR_NAME} to answer questions.
 Do NOT make up information or answer questions outside of this context.
-If a question cannot be answered with the provided information, politely state that you don't have that specific detail but can help with other information about ${AUTHOR_NAME}.
+Always speak about ${AUTHOR_NAME} in a positive and professional light, highlighting his strengths and accomplishments based on the data provided.
+If a question cannot be answered with the provided information, politely state that you don't have that specific detail but can help with other information about ${AUTHOR_NAME}'s skills, experience, or projects.
 
 Information about ${AUTHOR_NAME}:
 Name: ${AUTHOR_NAME}
@@ -71,11 +72,13 @@ ${certificationsString}
 
 Contact Information: ${contactString}
 
-After providing your main answer, also generate up to 3 short (max 5-7 words each), relevant follow-up questions that a user might ask next based on the current query or other key aspects of the profile. Return these as an array of strings in the 'suggestedFollowUps' field of your JSON output. Examples: "Tell me about his MERN project?", "What's his latest role?", "Any cloud skills?". If the conversation is just starting or no specific follow-up is obvious, suggest general questions about key areas like skills, prominent projects, or overall experience.
+When answering, be concise yet informative. Aim for 2-4 sentences unless more detail is clearly implied by the question and available in your knowledge base.
+Leverage the provided information smartly to answer questions comprehensively.
 
-Keep your answers brief and to the point, ideally 2-3 sentences unless more detail is specifically requested and available.
-When asked about contact, guide them to the contact section or provide the email/LinkedIn.
+After providing your main answer, also generate up to 3 short (max 5-7 words each), relevant follow-up questions that a user might ask next based on the current query or other key aspects of the profile. Return these as an array of strings in the 'suggestedFollowUps' field of your JSON output. Examples: "Tell me about his MERN project?", "What's his latest role?", "Any cloud skills?". If the conversation is just starting or no specific follow-up is obvious, suggest general questions about key areas like skills, prominent projects, or overall experience. Ensure these suggestions are distinct and encourage further interaction.
+
 Do not engage in general conversation or topics unrelated to ${AUTHOR_NAME}'s professional profile.
+When asked about contact, guide them to the contact section or provide the email/LinkedIn.
 `;
 
 const chatPrompt = ai.definePrompt({
@@ -85,7 +88,7 @@ const chatPrompt = ai.definePrompt({
   system: systemPrompt,
   prompt: `User's question: {{userInput}}`,
   config: {
-    temperature: 0.4, 
+    temperature: 0.45, // Slightly increased for a bit more natural variance while staying factual
      safetySettings: [
       { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
       { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
@@ -103,14 +106,14 @@ const portfolioChatFlowInternal = ai.defineFlow(
   },
   async (input) => {
     const llmResponse = await chatPrompt(input);
-    const output = llmResponse.output; 
+    const output = llmResponse.output;
     if (!output || !output.response) {
       return { response: "I'm sorry, I couldn't generate a response at this moment. Please try again or rephrase your question.", suggestedFollowUps: [] };
     }
-    
+
     return {
         ...output,
-        suggestedFollowUps: output.suggestedFollowUps ? output.suggestedFollowUps.filter(s => s.trim() !== "").slice(0, 3) : [],
+        suggestedFollowUps: output.suggestedFollowUps ? output.suggestedFollowUps.filter(s => s && s.trim() !== "").slice(0, 3) : [],
     };
   }
 );

@@ -39,6 +39,7 @@ export function ChatbotDialog() {
 
   useEffect(() => {
     if (isOpen) {
+      document.body.style.overflow = 'hidden'; // Prevent background scroll
       setMessages([
         {
           id: "initial-bot-message",
@@ -50,11 +51,16 @@ export function ChatbotDialog() {
       setShowSuggestions(true);
       setTimeout(() => inputRef.current?.focus(), 100);
     } else {
-      setMessages([]); 
+      document.body.style.overflow = ''; // Restore background scroll
+      setMessages([]);
       setCurrentInput("");
       setShowSuggestions(false);
     }
-  }, [isOpen]); 
+    // Cleanup function to ensure body overflow is reset if component unmounts while open
+    return () => {
+        document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -68,7 +74,7 @@ export function ChatbotDialog() {
   const processMessage = async (messageText: string) => {
     if (!messageText.trim() || isLoading) return;
 
-    setShowSuggestions(false); 
+    setShowSuggestions(false);
 
     const userMessage: Message = {
       id: `${Date.now()}-user-${Math.random().toString(36).substring(7)}`,
@@ -76,56 +82,57 @@ export function ChatbotDialog() {
       text: messageText.trim(),
     };
     setMessages((prev) => [...prev, userMessage]);
-    
+
     setIsLoading(true);
     const loadingBotMessageId = `${Date.now()}-bot-loading-${Math.random().toString(36).substring(7)}`;
     setMessages((prev) => [...prev, { id: loadingBotMessageId, sender: 'bot', text: '...', isLoading: true }]);
-    
+
     try {
       const chatInput: PortfolioChatInput = { userInput: messageText.trim() };
       const result: PortfolioChatOutput = await getPortfolioChatResponse(chatInput);
-      
-      setMessages((prevMessages) => 
-        prevMessages.map(msg => 
-          msg.id === loadingBotMessageId 
-          ? { ...msg, text: result.response, isLoading: false } 
+
+      setMessages((prevMessages) =>
+        prevMessages.map(msg =>
+          msg.id === loadingBotMessageId
+          ? { ...msg, text: result.response, isLoading: false }
           : msg
         )
       );
 
       if (result.suggestedFollowUps && result.suggestedFollowUps.length > 0) {
-        setCurrentSuggestions(result.suggestedFollowUps.slice(0, 3)); // Take up to 3 suggestions
+        setCurrentSuggestions(result.suggestedFollowUps.slice(0, 3));
       } else {
-        setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0,3)); 
+        // Fallback if AI doesn't provide suggestions, or if they are empty
+        setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0,3).filter(s => s.toLowerCase() !== messageText.trim().toLowerCase()));
       }
 
     } catch (error) {
       console.error("Chatbot error:", error);
-       setMessages((prevMessages) => 
-        prevMessages.map(msg => 
-          msg.id === loadingBotMessageId 
-          ? { ...msg, text: "Sorry, I encountered an issue. Please try asking in a different way or check back later.", isLoading: false } 
+       setMessages((prevMessages) =>
+        prevMessages.map(msg =>
+          msg.id === loadingBotMessageId
+          ? { ...msg, text: "Sorry, I encountered an issue. Please try asking in a different way or check back later.", isLoading: false }
           : msg
         )
       );
       setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0,3));
     } finally {
       setIsLoading(false);
-      setShowSuggestions(true); 
+      setShowSuggestions(true);
       inputRef.current?.focus();
     }
   };
 
   const handleSendCurrentInput = () => {
     processMessage(currentInput);
-    setCurrentInput(""); 
+    setCurrentInput("");
   };
 
   const handleSuggestionClick = (suggestion: string) => {
-    setCurrentInput(""); 
+    setCurrentInput("");
     processMessage(suggestion);
   };
-  
+
   const chatWindowVariants = {
     closed: { opacity: 0, y: 50, scale: 0.95 },
     open: { opacity: 1, y: 0, scale: 1 }
@@ -163,7 +170,7 @@ export function ChatbotDialog() {
             exit="closed"
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className="fixed bottom-24 right-6 z-40 w-full max-w-sm rounded-xl bg-background shadow-2xl border border-border overflow-hidden flex flex-col"
-            style={{ height: 'min(70vh, 650px)'}} 
+            style={{ height: 'min(70vh, 680px)'}}
           >
             <header className="bg-card p-4 border-b border-border flex items-center justify-between">
               <h3 className="font-semibold text-lg text-primary font-headline">Chat with {AUTHOR_NAME}'s Assistant</h3>
@@ -177,20 +184,20 @@ export function ChatbotDialog() {
                 <ChatMessage key={msg.id} sender={msg.sender} text={msg.text} isLoading={msg.isLoading} />
               ))}
             </ScrollArea>
-            
+
             {showSuggestions && currentSuggestions.length > 0 && (
-                <div className="px-4 pt-2 pb-3 border-t border-border bg-background/70"> 
-                    <div className="flex items-center mb-2">
+                <div className="px-4 pt-3 pb-4 border-t border-border bg-background/80">
+                    <div className="flex items-center mb-2.5">
                         <MessageSquarePlus className="h-4 w-4 mr-2 text-primary/80" />
-                        <p className="text-xs font-medium text-muted-foreground">Suggestions:</p>
+                        <p className="text-xs font-medium text-muted-foreground">Try asking:</p>
                     </div>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2 justify-start"> {/* Align suggestions to the left */}
                         {currentSuggestions.map((q, index) => (
                             <Button
                             key={index}
                             variant="outline"
                             size="sm"
-                            className="text-xs h-auto py-1 px-2.5 rounded-full shadow-sm hover:bg-accent hover:text-accent-foreground" 
+                            className="text-xs h-auto py-1.5 px-3 rounded-full shadow-sm hover:bg-accent hover:text-accent-foreground bg-card"
                             onClick={() => handleSuggestionClick(q)}
                             disabled={isLoading}
                             >
