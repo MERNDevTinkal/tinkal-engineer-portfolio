@@ -29,7 +29,7 @@ export function Hero() {
   };
 
   const textItemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 25 }, // Slightly increased y for more pronounced entry
     visible: {
       opacity: 1,
       y: 0,
@@ -113,7 +113,7 @@ export function Hero() {
               >
                 <Button variant="ghost" size="icon" asChild>
                   <Link href={href} target="_blank" rel="noopener noreferrer" aria-label={name}>
-                    <span> {/* Ensure single child for Link when Button is asChild */}
+                    <span> 
                       <Icon className="h-7 w-7 text-muted-foreground hover:text-primary transition-colors" />
                     </span>
                   </Link>
@@ -126,8 +126,8 @@ export function Hero() {
         <motion.div
           initial={{ opacity: 0, scale: 0.8, x: 50 }}
           animate={{ opacity: 1, scale: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.6, type: "spring", stiffness: 100 }}
-          className="w-full max-w-md mx-auto"
+          transition={{ duration: 0.8, delay: 0.8, type: "spring", stiffness: 100 }} // Updated delay
+          className="w-full max-w-md md:max-w-lg lg:max-w-xl mx-auto" // Updated max-width for desktop
         >
           <Swiper
             modules={[Autoplay, Pagination, EffectFade]}
