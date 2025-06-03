@@ -40,12 +40,13 @@ export function About() {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <Image
-            src="https://placehold.co/500x600.png?text=Tinkal+Coding"
-            alt={`${AUTHOR_NAME} coding`}
+            src={ABOUT_ME.image.src}
+            alt={ABOUT_ME.image.alt}
             width={500}
             height={600}
             className="rounded-lg shadow-xl object-cover w-full aspect-[4/5]"
-            data-ai-hint="developer workspace"
+            data-ai-hint={ABOUT_ME.image.dataAiHint}
+            priority
           />
         </motion.div>
         <motion.div
@@ -174,7 +175,6 @@ export function About() {
                       <div>
                         <CardTitle className="text-xl font-headline text-primary">{cert.name}</CardTitle>
                         <CardDescription className="text-md text-muted-foreground font-medium">{cert.issuingOrganization}</CardDescription>
-                        {/* Date Awarded removed from display */}
                       </div>
                     </div>
                   </CardHeader>

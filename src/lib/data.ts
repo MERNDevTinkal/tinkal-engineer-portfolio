@@ -7,7 +7,7 @@ import {
   UploadCloud, Smartphone, Layers, Puzzle, Lightbulb, TerminalSquare, GitCommit, Wrench
 } from 'lucide-react';
 
-export const APP_NAME = "Tinkal"; // Updated from "Tinkal's HQ"
+export const APP_NAME = "Tinkal";
 export const AUTHOR_NAME = "Tinkal Kumar";
 export const AUTHOR_EMAIL = "tinkalkumar67693@gmail.com";
 
@@ -37,12 +37,12 @@ export const HERO_TITLES = [
 ];
 
 export const PROFILE_IMAGES = [
-  { src: "https://placehold.co/600x800.png", alt: "Tinkal Kumar Profile 1", dataAiHint: "professional portrait" },
-  { src: "https://placehold.co/600x800.png", alt: "Tinkal Kumar Profile 2", dataAiHint: "developer coding" },
-  { src: "https://placehold.co/600x800.png", alt: "Tinkal Kumar Profile 3", dataAiHint: "casual outdoor tech" },
+  { src: "/images/profile-1.jpg", alt: "Tinkal Kumar - Professional Profile", dataAiHint: "professional portrait" },
+  { src: "/images/profile-2.jpg", alt: "Tinkal Kumar - Coding Environment", dataAiHint: "developer coding" },
+  { src: "/images/profile-3.jpg", alt: "Tinkal Kumar - Casual Tech Look", dataAiHint: "casual tech" },
 ];
 
-export const RESUME_PATH = "/Tinkal_Resume.pdf"; 
+export const RESUME_PATH = "/Tinkal_Resume.pdf"; // Ensure Tinkal_Resume.pdf is in the /public folder
 
 export const ABOUT_ME = {
   summary: `An Indian software engineer hailing from Jamui district, Bihar, I am a results-driven MERN Stack Developer with expertise in building scalable full-stack web applications using MongoDB, Express.js, React.js, and Node.js. Passionate about clean code, component reusability, performance optimization, and collaborating on real-world client projects. I thrive on solving complex challenges with innovation and continuously learning new technologies.`,
@@ -52,6 +52,11 @@ export const ABOUT_ME = {
   IconLocation: MapPin,
   IconRelocation: Briefcase,
   IconAbout: UserCircle2,
+  image: {
+    src: "/images/about-me-image.jpg", // Ensure about-me-image.jpg is in /public/images/
+    alt: "Tinkal Kumar at work or a professional setting",
+    dataAiHint: "developer workspace",
+  },
 };
 
 export interface EducationEntry {
