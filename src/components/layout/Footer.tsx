@@ -1,3 +1,4 @@
+
 import { SOCIAL_LINKS, AUTHOR_NAME } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -15,7 +16,10 @@ export function Footer() {
           {SOCIAL_LINKS.map(({ name, Icon, href }) => (
             <Button variant="ghost" size="icon" asChild key={name}>
               <Link href={href} target="_blank" rel="noopener noreferrer" aria-label={name}>
-                <Icon className="h-5 w-5 text-muted-foreground hover:text-primary transition-colors" />
+                {/* Wrap icon in a span to ensure Link has a single child for asChild prop on Button */}
+                <span>
+                  <Icon className="h-5 w-5 text-muted-foreground hover:text-primary transition-colors" />
+                </span>
               </Link>
             </Button>
           ))}
