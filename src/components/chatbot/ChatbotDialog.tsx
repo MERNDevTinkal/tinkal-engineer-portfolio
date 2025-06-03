@@ -18,12 +18,12 @@ interface Message {
   isLoading?: boolean;
 }
 
-const suggestedQuestions = [
+const INITIAL_SUGGESTIONS = [
   "What are Tinkal's key skills?",
-  "Tell me about a project.",
-  "What is Tinkal's experience?",
+  "Tell me about a project Tinkal worked on.",
+  "What is Tinkal's work experience?",
   "How can I contact Tinkal?",
-  "What certifications does Tinkal have?",
+  "What certifications does Tinkal hold?",
 ];
 
 export function ChatbotDialog() {
@@ -31,6 +31,8 @@ export function ChatbotDialog() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [currentInput, setCurrentInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [currentSuggestions, setCurrentSuggestions] = useState<string[]>(INITIAL_SUGGESTIONS);
+  const [showSuggestions, setShowSuggestions] = useState(true);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -43,11 +45,14 @@ export function ChatbotDialog() {
           text: `Hello! I'm ${AUTHOR_NAME}'s AI assistant. Ask me about skills, projects, experience, or how to get in touch! You can also use the suggestions below.`,
         },
       ]);
+      setCurrentSuggestions(INITIAL_SUGGESTIONS);
+      setShowSuggestions(true);
       setTimeout(() => inputRef.current?.focus(), 100);
     } else {
       setMessages([]); 
+      setShowSuggestions(false);
     }
-  }, [isOpen]);
+  }, [isOpen, AUTHOR_NAME]);
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -60,6 +65,8 @@ export function ChatbotDialog() {
 
   const processMessage = async (messageText: string) => {
     if (!messageText.trim() || isLoading) return;
+
+    setShowSuggestions(false);
 
     const userMessage: Message = {
       id: `${Date.now()}-user-${Math.random().toString(36).substring(7)}`,
@@ -84,6 +91,12 @@ export function ChatbotDialog() {
         )
       );
 
+      if (result.suggestedFollowUps && result.suggestedFollowUps.length > 0) {
+        setCurrentSuggestions(result.suggestedFollowUps);
+      } else {
+        setCurrentSuggestions(INITIAL_SUGGESTIONS); 
+      }
+
     } catch (error) {
       console.error("Chatbot error:", error);
        setMessages((prevMessages) => 
@@ -93,8 +106,10 @@ export function ChatbotDialog() {
           : msg
         )
       );
+      setCurrentSuggestions(INITIAL_SUGGESTIONS);
     } finally {
       setIsLoading(false);
+      setShowSuggestions(true);
       inputRef.current?.focus();
     }
   };
@@ -105,7 +120,7 @@ export function ChatbotDialog() {
   };
 
   const handleSuggestionClick = (suggestion: string) => {
-    setCurrentInput(""); // Clear input field if user was typing
+    setCurrentInput(""); 
     processMessage(suggestion);
   };
   
@@ -158,23 +173,25 @@ export function ChatbotDialog() {
               ))}
             </ScrollArea>
             
-            <div className="p-2 border-t border-border bg-card">
-                <p className="text-xs text-muted-foreground mb-2 px-2">Suggestions:</p>
-                <div className="flex flex-wrap gap-2 px-2 pb-2">
-                    {suggestedQuestions.map((q) => (
-                        <Button
-                        key={q}
-                        variant="outline"
-                        size="sm"
-                        className="text-xs h-auto py-1 px-2.5 rounded-full bg-background hover:bg-muted"
-                        onClick={() => handleSuggestionClick(q)}
-                        disabled={isLoading}
-                        >
-                        {q}
-                        </Button>
-                    ))}
+            {showSuggestions && currentSuggestions.length > 0 && (
+                <div className="p-3 border-t border-border bg-card/80">
+                    <p className="text-xs text-muted-foreground mb-2 px-1">Suggestions:</p>
+                    <div className="flex flex-wrap gap-2 px-1">
+                        {currentSuggestions.map((q, index) => (
+                            <Button
+                            key={index}
+                            variant="outline"
+                            size="sm"
+                            className="text-xs h-auto py-1.5 px-3 rounded-full bg-background hover:bg-muted shadow-sm"
+                            onClick={() => handleSuggestionClick(q)}
+                            disabled={isLoading}
+                            >
+                            {q}
+                            </Button>
+                        ))}
+                    </div>
                 </div>
-            </div>
+            )}
 
             <footer className="p-4 border-t border-border bg-card">
               <form
