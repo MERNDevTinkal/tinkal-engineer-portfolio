@@ -45,9 +45,9 @@ export const PROFILE_IMAGES = [
 export const RESUME_PATH = "/Tinkal_Resume.pdf"; 
 
 export const ABOUT_ME = {
-  summary: "A results-driven MERN Stack Developer with expertise in building scalable full-stack web applications using MongoDB, Express.js, React.js, and Node.js. Passionate about clean code, component reusability, performance optimization, and collaborating on real-world client projects. I thrive on solving complex challenges with innovation and continuously learning new technologies.",
+  summary: `An Indian software engineer hailing from Jamui district, Bihar, I am a results-driven MERN Stack Developer with expertise in building scalable full-stack web applications using MongoDB, Express.js, React.js, and Node.js. Passionate about clean code, component reusability, performance optimization, and collaborating on real-world client projects. I thrive on solving complex challenges with innovation and continuously learning new technologies.`,
   passion: "My journey in tech is fueled by a relentless curiosity and a love for building impactful digital solutions. I'm particularly excited by AI integration in web apps, advanced JavaScript frameworks, and contributing to the open-source community to drive innovation.",
-  location: "Chandigarh, India",
+  location: "Chandigarh, India (Originally from Jamui, Bihar)",
   relocation: "Open to relocating for compelling opportunities",
   IconLocation: MapPin,
   IconRelocation: Briefcase,
@@ -110,7 +110,7 @@ export const WORK_EXPERIENCE_DATA: ExperienceEntry[] = [
       "Managed and updated content for the hospital's official website and internal applications, ensuring accuracy and timeliness.",
       "Provided technical support and troubleshooting for the Hospital Management System (HMS), resolving issues to ensure smooth operations.",
       "Facilitated communication between medical staff and software vendors to address system requirements and enhancements.",
-      "Developed and maintained reusable UI components using HTML, CSS, and JavaScript to improve website consistency and development speed."
+      "Built reusable UI components using HTML, CSS, and JavaScript to improve website consistency and development speed."
     ],
     Icon: Building,
   },
@@ -119,7 +119,7 @@ export const WORK_EXPERIENCE_DATA: ExperienceEntry[] = [
 export interface CertificationEntry {
   name: string;
   issuingOrganization: string;
-  credentialUrl?: string; // Date Awarded removed
+  credentialUrl?: string;
   Icon: LucideIcon;
 }
 
@@ -149,7 +149,7 @@ export const CERTIFICATIONS_DATA: CertificationEntry[] = [
     Icon: Award,
   },
   {
-    name: "DevOps Fundamentals", // Updated from "DevOps" to "DevOps Fundamentals"
+    name: "DevOps Fundamentals",
     issuingOrganization: "PW Skills",
     credentialUrl: "#", // Replace with actual URL
     Icon: Award,
@@ -161,7 +161,8 @@ export const CERTIFICATIONS_DATA: CertificationEntry[] = [
     Icon: Award,
   },
 ];
-
+// Add a comment to remind the user to update these URLs:
+// TODO: Update the credentialUrl for each certification with the actual link.
 
 export interface TechStackItem {
   name: string;
@@ -216,6 +217,8 @@ export interface Project {
   githubRepoUrl: string;
   techStack: TechStackItem[]; 
   Icon: LucideIcon;
+  // image?: string; // Optional image URL
+  // dataAiHint?: string; // Optional AI hint for image
 }
 
 export const PROJECTS_DATA: Project[] = [
@@ -238,7 +241,7 @@ export const PROJECTS_DATA: Project[] = [
     id: "notes-app",
     title: "Notes App (MERN)",
     description: "A secure and intuitive MERN stack application for creating, organizing, and managing personal notes. Features JWT-based authentication, protected routes, and complete CRUD operations for effective note management.",
-    liveDemoUrl: "#", 
+    liveDemoUrl: "#", // Update this if you have a live demo
     githubRepoUrl: "https://github.com/MERNDevTinkal/Notes-Application",
     techStack: [
       { name: "React", Icon: CodeXml },
@@ -252,7 +255,7 @@ export const PROJECTS_DATA: Project[] = [
     id: "e-commerce",
     title: "E-commerce Frontend (Redux)",
     description: "A dynamic online shopping experience with product listings, cart functionality, and efficient global state management using Redux Toolkit, styled with Tailwind CSS for a modern, responsive UI.",
-    liveDemoUrl: "", 
+    liveDemoUrl: "", // Update this if you have a live demo
     githubRepoUrl: "https://github.com/MERNDevTinkal/Ecommerce-Using-Redux",
     techStack: [
       { name: "React", Icon: CodeXml },
@@ -263,6 +266,8 @@ export const PROJECTS_DATA: Project[] = [
     Icon: ShoppingCart,
   },
 ];
+// Add a comment to remind the user to update these URLs:
+// TODO: Update the liveDemoUrl for each project with the actual link if available, or remove/comment out the liveDemoUrl field.
 
 export const BLOG_SECTION_DETAILS = {
   title: "My Tech Narratives",
