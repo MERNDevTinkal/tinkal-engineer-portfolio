@@ -1,30 +1,29 @@
+
 "use client"
 
 import type { HTMLAttributes } from "react";
-import { motion } from "framer-motion";
+// Removed motion import as SectionWrapper itself will no longer be a motion component
 import { cn } from "@/lib/utils";
 
 interface SectionWrapperProps extends HTMLAttributes<HTMLElement> {
   id: string;
   className?: string;
-  delay?: number;
+  // delay prop is no longer used by SectionWrapper if it's not animating itself
 }
 
-export function SectionWrapper({ id, className, children, delay = 0.2, ...props }: SectionWrapperProps) {
+export function SectionWrapper({ id, className, children, ...props }: SectionWrapperProps) {
   return (
-    <motion.section
+    // Changed from motion.section to section
+    // Removed initial, whileInView, viewport, transition props
+    <section
       id={id}
       className={cn("py-16 md:py-24 min-h-screen flex flex-col justify-center", className)}
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.6, delay }}
       {...props}
     >
       <div className="container mx-auto px-4 md:px-6">
         {children}
       </div>
-    </motion.section>
+    </section>
   );
 }
 

@@ -36,9 +36,8 @@ export default function HomePage() {
           key={index}
           custom={index}
           initial="hidden"
-          animate="visible" // Changed to animate on initial load
-          // whileInView="visible" // Could also use whileInView for scroll-triggered animation per section
-          // viewport={{ once: true, amount: 0.1 }} // if using whileInView
+          whileInView="visible" // Animate when section scrolls into view
+          viewport={{ once: true, amount: 0.1 }} // Trigger when 10% of the section is visible, only once
           variants={sectionVariants}
         >
           {section}
