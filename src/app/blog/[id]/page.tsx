@@ -1,4 +1,6 @@
 
+"use client"; // Make this a Client Component
+
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -7,12 +9,14 @@ import { SectionWrapper } from '@/components/ui/SectionWrapper';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { AUTHOR_NAME, AUTHOR_EMAIL } from '@/lib/data';
+import { useEffect, useState } from 'react';
 
 type BlogPageProps = {
   params: { id: string };
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
+// generateMetadata remains a server-side function
 export async function generateMetadata({ searchParams }: BlogPageProps): Promise<Metadata> {
   const title = searchParams.title ? decodeURIComponent(searchParams.title as string) : 'Blog Post';
   return {
@@ -24,11 +28,19 @@ export async function generateMetadata({ searchParams }: BlogPageProps): Promise
 export default function BlogPostPage({ params, searchParams }: BlogPageProps) {
   const { id } = params;
   const title = searchParams.title ? decodeURIComponent(searchParams.title as string) : 'Untitled Blog Post';
-  const publicationDate = new Date().toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  
+  const [publicationDate, setPublicationDate] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Calculate date on the client-side after hydration
+    setPublicationDate(
+      new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    );
+  }, []);
 
   // Simple way to vary placeholder content slightly
   const contentVariant = parseInt(id, 10) % 3;
@@ -67,7 +79,11 @@ export default function BlogPostPage({ params, searchParams }: BlogPageProps) {
             <div className="text-sm text-muted-foreground flex items-center space-x-4">
               <span>By {AUTHOR_NAME}</span>
               <span>&bull;</span>
-              <span>Published on {publicationDate}</span>
+              {publicationDate ? (
+                <span>Published on {publicationDate}</span>
+              ) : (
+                <span>Loading date...</span>
+              )}
             </div>
           </header>
 

@@ -93,7 +93,7 @@ export function Footer() {
               {currentYear !== null ? (
                 `© ${currentYear} ${AUTHOR_NAME}. All rights reserved.`
               ) : (
-                `© ${new Date().getFullYear()} ${AUTHOR_NAME}. All rights reserved.` // Fallback if currentYear is null
+                `© ${AUTHOR_NAME}. All rights reserved.` // Avoid new Date() in initial render
               )}
             </p>
           </div>
