@@ -30,7 +30,7 @@ export type PortfolioChatInput = z.infer<typeof PortfolioChatInputSchema>;
 
 const PortfolioChatOutputSchema = z.object({
   response: z.string().describe("The chatbot's response to the user query."),
-  suggestedFollowUps: z.array(z.string()).optional().describe('Up to 3 brief, relevant suggested follow-up questions (max 5-7 words each) a user might ask next, related to the conversation or key aspects of Tinkal\'s profile. Examples: "Tell me about his MERN project?", "What\'s his latest role?", "Any cloud skills?".'),
+  suggestedFollowUps: z.array(z.string()).optional().describe('Up to 4 brief, relevant suggested follow-up questions (max 5-7 words each) a user might ask next, related to the conversation or key aspects of Tinkal\'s profile. Examples: "Tell me about his MERN project?", "What\'s his latest role?", "Any cloud skills?", "More on certifications?".'),
 });
 export type PortfolioChatOutput = z.infer<typeof PortfolioChatOutputSchema>;
 
@@ -75,7 +75,7 @@ Contact Information: ${contactString}
 When answering, be concise yet informative. Aim for 2-4 sentences unless more detail is clearly implied by the question and available in your knowledge base.
 Leverage the provided information smartly to answer questions comprehensively.
 
-After providing your main answer, also generate up to 3 short (max 5-7 words each), relevant follow-up questions that a user might ask next based on the current query or other key aspects of the profile. Return these as an array of strings in the 'suggestedFollowUps' field of your JSON output. Examples: "Tell me about his MERN project?", "What's his latest role?", "Any cloud skills?". If the conversation is just starting or no specific follow-up is obvious, suggest general questions about key areas like skills, prominent projects, or overall experience. Ensure these suggestions are distinct and encourage further interaction.
+After providing your main answer, also generate up to 4 short (max 5-7 words each), relevant follow-up questions that a user might ask next based on the current query or other key aspects of the profile. These suggestions should be distinct from each other and encourage further interaction. Return these as an array of strings in the 'suggestedFollowUps' field of your JSON output. Examples: "Tell me about his MERN project?", "What's his latest role?", "Any cloud skills?", "More on his education?". If the conversation is just starting or no specific follow-up is obvious, suggest general questions about key areas like skills, prominent projects, or overall experience. If you cannot generate relevant suggestions based on the current context, you can provide an empty array for suggestedFollowUps.
 
 Do not engage in general conversation or topics unrelated to ${AUTHOR_NAME}'s professional profile.
 When asked about contact, guide them to the contact section or provide the email/LinkedIn.
@@ -88,7 +88,7 @@ const chatPrompt = ai.definePrompt({
   system: systemPrompt,
   prompt: `User's question: {{userInput}}`,
   config: {
-    temperature: 0.45, // Slightly increased for a bit more natural variance while staying factual
+    temperature: 0.45, 
      safetySettings: [
       { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
       { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
@@ -113,7 +113,7 @@ const portfolioChatFlowInternal = ai.defineFlow(
 
     return {
         ...output,
-        suggestedFollowUps: output.suggestedFollowUps ? output.suggestedFollowUps.filter(s => s && s.trim() !== "").slice(0, 3) : [],
+        suggestedFollowUps: output.suggestedFollowUps ? output.suggestedFollowUps.filter(s => s && s.trim() !== "").slice(0, 4) : [],
     };
   }
 );

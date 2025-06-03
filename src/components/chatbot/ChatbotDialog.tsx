@@ -25,6 +25,7 @@ const INITIAL_SUGGESTIONS = [
   "What is Tinkal's work experience?",
   "How can I contact Tinkal?",
   "What certifications does Tinkal hold?",
+  "Describe Tinkal's education.",
 ];
 
 export function ChatbotDialog() {
@@ -32,8 +33,8 @@ export function ChatbotDialog() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [currentInput, setCurrentInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [currentSuggestions, setCurrentSuggestions] = useState<string[]>(INITIAL_SUGGESTIONS);
-  const [suggestionsExpanded, setSuggestionsExpanded] = useState(false); // New state
+  const [currentSuggestions, setCurrentSuggestions] = useState<string[]>(INITIAL_SUGGESTIONS.slice(0,4));
+  const [suggestionsExpanded, setSuggestionsExpanded] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -47,8 +48,8 @@ export function ChatbotDialog() {
           text: `Hello! I'm ${AUTHOR_NAME}'s AI assistant. Ask me about skills, projects, experience, or how to get in touch! You can also use the suggestions.`,
         },
       ]);
-      setCurrentSuggestions(INITIAL_SUGGESTIONS);
-      setSuggestionsExpanded(false); // Reset suggestions view
+      setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0,4));
+      setSuggestionsExpanded(false); 
       setTimeout(() => inputRef.current?.focus(), 100);
     } else {
       document.body.style.overflow = '';
@@ -73,7 +74,7 @@ export function ChatbotDialog() {
   const processMessage = async (messageText: string) => {
     if (!messageText.trim() || isLoading) return;
 
-    setSuggestionsExpanded(false); // Collapse suggestions on send
+    setSuggestionsExpanded(false); 
 
     const userMessage: Message = {
       id: `${Date.now()}-user-${Math.random().toString(36).substring(7)}`,
@@ -99,9 +100,11 @@ export function ChatbotDialog() {
       );
 
       if (result.suggestedFollowUps && result.suggestedFollowUps.length > 0) {
-        setCurrentSuggestions(result.suggestedFollowUps.filter(s => s && s.trim() !== "").slice(0, 3));
+        setCurrentSuggestions(result.suggestedFollowUps.filter(s => s && s.trim() !== "").slice(0, 4));
       } else {
-        setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0,3).filter(s => s.toLowerCase() !== messageText.trim().toLowerCase()));
+        // Fallback if AI provides no suggestions
+        const fallbackSuggestions = INITIAL_SUGGESTIONS.filter(s => s.toLowerCase() !== messageText.trim().toLowerCase()).slice(0,4);
+        setCurrentSuggestions(fallbackSuggestions.length > 0 ? fallbackSuggestions : INITIAL_SUGGESTIONS.slice(0,4));
       }
 
     } catch (error) {
@@ -113,7 +116,7 @@ export function ChatbotDialog() {
           : msg
         )
       );
-      setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0,3));
+      setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0,4));
     } finally {
       setIsLoading(false);
       inputRef.current?.focus();
@@ -126,7 +129,7 @@ export function ChatbotDialog() {
   };
 
   const handleSuggestionClick = (suggestion: string) => {
-    setCurrentInput(""); // Clear input before processing suggestion
+    setCurrentInput(""); 
     processMessage(suggestion);
   };
 
@@ -167,7 +170,7 @@ export function ChatbotDialog() {
             exit="closed"
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className="fixed bottom-24 right-6 z-40 w-full max-w-md rounded-xl bg-background shadow-2xl border border-border overflow-hidden flex flex-col"
-            style={{ height: 'min(75vh, 720px)'}} // Slightly increased height
+            style={{ height: 'min(75vh, 750px)'}} 
           >
             <header className="bg-card p-4 border-b border-border flex items-center justify-between">
               <h3 className="font-semibold text-lg text-primary font-headline">Chat with {AUTHOR_NAME}'s Assistant</h3>
@@ -176,7 +179,6 @@ export function ChatbotDialog() {
               </Button>
             </header>
 
-            {/* Suggestions Area - MOVED TO TOP */}
             {currentSuggestions.length > 0 && (
               <div className="p-3 border-b border-border bg-card/50">
                 {!suggestionsExpanded ? (
