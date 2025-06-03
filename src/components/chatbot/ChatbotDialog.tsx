@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Bot, Send, Loader2, X, MessageSquarePlus } from "lucide-react";
+import { Bot, Send, Loader2, X, MessageSquarePlus, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -10,7 +10,7 @@ import { ChatMessage } from "./ChatMessage";
 import { getPortfolioChatResponse, type PortfolioChatInput, type PortfolioChatOutput } from "@/ai/flows/portfolio-chat-flow";
 import { AUTHOR_NAME } from "@/lib/data";
 import { motion, AnimatePresence } from "framer-motion";
-import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 interface Message {
   id: string;
@@ -33,30 +33,29 @@ export function ChatbotDialog() {
   const [currentInput, setCurrentInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [currentSuggestions, setCurrentSuggestions] = useState<string[]>(INITIAL_SUGGESTIONS);
-  const [showSuggestions, setShowSuggestions] = useState(true);
+  const [suggestionsExpanded, setSuggestionsExpanded] = useState(false); // New state
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden'; // Prevent background scroll
+      document.body.style.overflow = 'hidden';
       setMessages([
         {
           id: "initial-bot-message",
           sender: "bot",
-          text: `Hello! I'm ${AUTHOR_NAME}'s AI assistant. Ask me about skills, projects, experience, or how to get in touch! You can also use the suggestions below.`,
+          text: `Hello! I'm ${AUTHOR_NAME}'s AI assistant. Ask me about skills, projects, experience, or how to get in touch! You can also use the suggestions.`,
         },
       ]);
       setCurrentSuggestions(INITIAL_SUGGESTIONS);
-      setShowSuggestions(true);
+      setSuggestionsExpanded(false); // Reset suggestions view
       setTimeout(() => inputRef.current?.focus(), 100);
     } else {
-      document.body.style.overflow = ''; // Restore background scroll
+      document.body.style.overflow = '';
       setMessages([]);
       setCurrentInput("");
-      setShowSuggestions(false);
+      setSuggestionsExpanded(false);
     }
-    // Cleanup function to ensure body overflow is reset if component unmounts while open
     return () => {
         document.body.style.overflow = '';
     };
@@ -74,7 +73,7 @@ export function ChatbotDialog() {
   const processMessage = async (messageText: string) => {
     if (!messageText.trim() || isLoading) return;
 
-    setShowSuggestions(false);
+    setSuggestionsExpanded(false); // Collapse suggestions on send
 
     const userMessage: Message = {
       id: `${Date.now()}-user-${Math.random().toString(36).substring(7)}`,
@@ -100,9 +99,8 @@ export function ChatbotDialog() {
       );
 
       if (result.suggestedFollowUps && result.suggestedFollowUps.length > 0) {
-        setCurrentSuggestions(result.suggestedFollowUps.slice(0, 3));
+        setCurrentSuggestions(result.suggestedFollowUps.filter(s => s && s.trim() !== "").slice(0, 3));
       } else {
-        // Fallback if AI doesn't provide suggestions, or if they are empty
         setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0,3).filter(s => s.toLowerCase() !== messageText.trim().toLowerCase()));
       }
 
@@ -118,7 +116,6 @@ export function ChatbotDialog() {
       setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0,3));
     } finally {
       setIsLoading(false);
-      setShowSuggestions(true);
       inputRef.current?.focus();
     }
   };
@@ -129,7 +126,7 @@ export function ChatbotDialog() {
   };
 
   const handleSuggestionClick = (suggestion: string) => {
-    setCurrentInput("");
+    setCurrentInput(""); // Clear input before processing suggestion
     processMessage(suggestion);
   };
 
@@ -169,8 +166,8 @@ export function ChatbotDialog() {
             animate="open"
             exit="closed"
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed bottom-24 right-6 z-40 w-full max-w-sm rounded-xl bg-background shadow-2xl border border-border overflow-hidden flex flex-col"
-            style={{ height: 'min(70vh, 680px)'}}
+            className="fixed bottom-24 right-6 z-40 w-full max-w-md rounded-xl bg-background shadow-2xl border border-border overflow-hidden flex flex-col"
+            style={{ height: 'min(75vh, 720px)'}} // Slightly increased height
           >
             <header className="bg-card p-4 border-b border-border flex items-center justify-between">
               <h3 className="font-semibold text-lg text-primary font-headline">Chat with {AUTHOR_NAME}'s Assistant</h3>
@@ -179,34 +176,55 @@ export function ChatbotDialog() {
               </Button>
             </header>
 
+            {/* Suggestions Area - MOVED TO TOP */}
+            {currentSuggestions.length > 0 && (
+              <div className="p-3 border-b border-border bg-card/50">
+                {!suggestionsExpanded ? (
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start text-sm text-primary hover:bg-primary/10"
+                    onClick={() => setSuggestionsExpanded(true)}
+                    disabled={isLoading}
+                  >
+                    <MessageSquarePlus className="h-4 w-4 mr-2 opacity-80" />
+                    View Suggestions
+                    <ChevronDown className="h-4 w-4 ml-auto opacity-70" />
+                  </Button>
+                ) : (
+                  <>
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-start text-sm text-muted-foreground mb-2 hover:bg-muted/80"
+                      onClick={() => setSuggestionsExpanded(false)}
+                    >
+                      <MessageSquarePlus className="h-4 w-4 mr-2 opacity-80" />
+                      Hide Suggestions
+                      <ChevronUp className="h-4 w-4 ml-auto opacity-70" />
+                    </Button>
+                    <div className="flex flex-wrap gap-2 justify-start">
+                      {currentSuggestions.map((q, index) => (
+                        <Button
+                          key={index}
+                          variant="outline"
+                          size="sm"
+                          className="text-xs h-auto py-1.5 px-3 rounded-full shadow-sm hover:bg-accent hover:text-accent-foreground bg-card"
+                          onClick={() => handleSuggestionClick(q)}
+                          disabled={isLoading}
+                        >
+                          {q}
+                        </Button>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+
             <ScrollArea className="flex-grow p-4" ref={scrollAreaRef}>
               {messages.map((msg) => (
                 <ChatMessage key={msg.id} sender={msg.sender} text={msg.text} isLoading={msg.isLoading} />
               ))}
             </ScrollArea>
-
-            {showSuggestions && currentSuggestions.length > 0 && (
-                <div className="px-4 pt-3 pb-4 border-t border-border bg-background/80">
-                    <div className="flex items-center mb-2.5">
-                        <MessageSquarePlus className="h-4 w-4 mr-2 text-primary/80" />
-                        <p className="text-xs font-medium text-muted-foreground">Try asking:</p>
-                    </div>
-                    <div className="flex flex-wrap gap-2 justify-start"> {/* Align suggestions to the left */}
-                        {currentSuggestions.map((q, index) => (
-                            <Button
-                            key={index}
-                            variant="outline"
-                            size="sm"
-                            className="text-xs h-auto py-1.5 px-3 rounded-full shadow-sm hover:bg-accent hover:text-accent-foreground bg-card"
-                            onClick={() => handleSuggestionClick(q)}
-                            disabled={isLoading}
-                            >
-                            {q}
-                            </Button>
-                        ))}
-                    </div>
-                </div>
-            )}
 
             <footer className="p-4 border-t border-border bg-card">
               <form
@@ -237,4 +255,3 @@ export function ChatbotDialog() {
     </>
   );
 }
-
