@@ -103,6 +103,7 @@ export function About() {
                 </CardHeader>
                 {edu.details && edu.details.length > 0 && (
                   <CardContent>
+                    <h4 className="font-semibold mb-2 text-foreground/90">Key Learnings & Skills:</h4>
                     <ul className="list-disc list-inside text-muted-foreground space-y-1 pl-2">
                       {edu.details.map((detail, i) => <li key={`edu-detail-${index}-${i}`}>{detail}</li>)}
                     </ul>
@@ -173,7 +174,7 @@ export function About() {
                       <div>
                         <CardTitle className="text-xl font-headline text-primary">{cert.name}</CardTitle>
                         <CardDescription className="text-md text-muted-foreground font-medium">{cert.issuingOrganization}</CardDescription>
-                        <p className="text-sm text-muted-foreground">Awarded: {cert.dateAwarded}</p>
+                        {/* Date Awarded removed from display */}
                       </div>
                     </div>
                   </CardHeader>

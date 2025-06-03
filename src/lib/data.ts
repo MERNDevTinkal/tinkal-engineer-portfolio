@@ -33,9 +33,7 @@ export const HERO_TITLES = [
   "Node.js Architect",
   "TypeScript Advocate",
   "AI Integration Specialist",
-  "Software Innovator",
-  "Creative Problem Solver",
-  "Tech Enthusiast"
+  "Innovative Problem Solver"
 ];
 
 export const PROFILE_IMAGES = [
@@ -67,13 +65,12 @@ export interface EducationEntry {
 export const EDUCATION_DATA: EducationEntry[] = [
   {
     degree: "Bachelor of Technology (B.Tech) in Computer Science & Engineering",
-    institution: "Raj Kumar Goel Institute of Technology, Ghaziabad",
+    institution: "Raj Kumar Goel Institute of Technology, Ghaziabad (Affiliated to Dr. A.P.J. Abdul Kalam Technical University, Lucknow)",
     graduationYear: "2020 - 2024",
     details: [
-      "Specialized in software development and full-stack technologies.",
-      "Affiliated to Dr. A.P.J. Abdul Kalam Technical University, Lucknow.",
-      "Key Coursework: Data Structures & Algorithms, Web Development (HTML, CSS, JavaScript), Database Management Systems, Operating Systems, Computer Networks.",
-      "Final Year Project: 'AI-Powered Personalized Learning Platform' (conceptual)."
+      "Specialized in software development principles and full-stack technologies.",
+      "Key Coursework: Data Structures & Algorithms, Web Development (HTML, CSS, JavaScript), Database Management Systems (SQL, NoSQL), Operating Systems, Computer Networks, Object-Oriented Programming, Software Engineering.",
+      "Skills Gained: Proficient in C++ and Java for core concepts; Strong analytical and problem-solving abilities developed through coursework and projects; Practical experience with version control systems (Git); Understanding of agile development methodologies and teamwork in project settings."
     ],
     Icon: GraduationCap,
   },
@@ -95,10 +92,12 @@ export const WORK_EXPERIENCE_DATA: ExperienceEntry[] = [
     duration: "Feb 2025 – Present", 
     location: "Jaipur, Rajasthan",
     responsibilities: [
-      "Building scalable full-stack web applications.",
-      "Tech stack: MongoDB, Express.js, React.js, Node.js.",
-      "Focused on clean code, component reusability, and performance.",
-      "Collaborated with team on real-world client projects.",
+      "Developing and maintaining scalable full-stack web applications using the MERN stack (MongoDB, Express.js, React.js, Node.js) and TypeScript.",
+      "Designing and implementing RESTful APIs for seamless frontend-backend communication.",
+      "Focusing on writing clean, maintainable, and efficient code with an emphasis on component reusability and performance optimization.",
+      "Collaborating closely with cross-functional teams in an agile environment to deliver high-quality software solutions for real-world client projects.",
+      "Implementing user authentication and authorization mechanisms using JWT and Bcrypt.",
+      "Integrating third-party services and APIs as per project requirements."
     ],
     Icon: Building,
   },
@@ -108,10 +107,10 @@ export const WORK_EXPERIENCE_DATA: ExperienceEntry[] = [
     duration: "Aug 2024 – Feb 2025",
     location: "Jaipur, Rajasthan",
     responsibilities: [ 
-      "Maintained hospital website and app content.",
-      "Resolved technical issues in the hospital management system.",
-      "Acted as a bridge between medical staff and software vendors.",
-      "Built reusable UI components using HTML and CSS.",
+      "Managed and updated content for the hospital's official website and internal applications, ensuring accuracy and timeliness.",
+      "Provided technical support and troubleshooting for the Hospital Management System (HMS), resolving issues to ensure smooth operations.",
+      "Facilitated communication between medical staff and software vendors to address system requirements and enhancements.",
+      "Developed and maintained reusable UI components using HTML, CSS, and JavaScript to improve website consistency and development speed."
     ],
     Icon: Building,
   },
@@ -120,53 +119,45 @@ export const WORK_EXPERIENCE_DATA: ExperienceEntry[] = [
 export interface CertificationEntry {
   name: string;
   issuingOrganization: string;
-  dateAwarded: string; // Please update with actual year or full date
-  credentialUrl?: string;
+  credentialUrl?: string; // Date Awarded removed
   Icon: LucideIcon;
 }
 
-// PLEASE UPDATE dateAwarded for your certifications
 export const CERTIFICATIONS_DATA: CertificationEntry[] = [
   {
     name: "Full Stack Web Development",
     issuingOrganization: "Internshala Trainings",
-    dateAwarded: "2023", // Update this
-    credentialUrl: "#", // Replace with actual URL if available
+    credentialUrl: "#", // Replace with actual URL
     Icon: Award,
   },
   {
     name: "MERN Stack Web Development",
     issuingOrganization: "Coding Ninjas",
-    dateAwarded: "2024", // Update this
-    credentialUrl: "#", // Replace with actual URL if available
+    credentialUrl: "#", // Replace with actual URL
     Icon: Award,
   },
   {
     name: "Frontend Web Development",
     issuingOrganization: "PW Skills",
-    dateAwarded: "2023", // Update this
-    credentialUrl: "#", // Replace with actual URL if available
+    credentialUrl: "#", // Replace with actual URL
     Icon: Award,
   },
   {
     name: "Backend Web Development",
     issuingOrganization: "PW Skills",
-    dateAwarded: "2023", // Update this
-    credentialUrl: "#", // Replace with actual URL if available
+    credentialUrl: "#", // Replace with actual URL
     Icon: Award,
   },
   {
-    name: "DevOps Fundamentals",
+    name: "DevOps Fundamentals", // Updated from "DevOps" to "DevOps Fundamentals"
     issuingOrganization: "PW Skills",
-    dateAwarded: "2024", // Update this
-    credentialUrl: "#", // Replace with actual URL if available
+    credentialUrl: "#", // Replace with actual URL
     Icon: Award,
   },
   {
     name: "Skills India Program Completion",
-    issuingOrganization: "Skills India", // Or the specific authority
-    dateAwarded: "2023", // Update this
-    credentialUrl: "#", // Replace with actual URL if available
+    issuingOrganization: "Skills India", 
+    credentialUrl: "#", // Replace with actual URL
     Icon: Award,
   },
 ];
@@ -212,7 +203,7 @@ export const TECH_STACK: TechStackItem[] = [
   // Methodologies & Other
   { name: "DevOps", Icon: TerminalSquare },
   { name: "Responsive Design", Icon: Smartphone },
-  { name: "Clean Architecture", Icon: Layers }, // Changed from Architecture
+  { name: "Clean Architecture", Icon: Layers }, 
   { name: "Component Reusability", Icon: Puzzle },
   { name: "Problem Solving", Icon: Lightbulb },
 ];
@@ -221,24 +212,17 @@ export interface Project {
   id: string;
   title: string;
   description: string;
-  image?: string; // Image is now optional
-  dataAiHint?: string; // Optional if image is removed
   liveDemoUrl?: string; 
   githubRepoUrl: string;
   techStack: TechStackItem[]; 
   Icon: LucideIcon;
 }
 
-// PLEASE UPDATE liveDemoUrl for your projects where available.
-// The ProjectCard component will handle missing/invalid live demo URLs gracefully.
-// Images are no longer displayed on the project cards.
 export const PROJECTS_DATA: Project[] = [
   {
     id: "job-portal",
-    title: "Job Portal App",
-    description: "A comprehensive MERN stack platform for job seekers and employers, featuring advanced search, application tracking, user management, and built with TypeScript for robust development.",
-    // image: "https://placehold.co/600x400.png", // Image removed
-    // dataAiHint: "job board interface", // dataAiHint removed as image is removed
+    title: "Job Portal App (MERN, TypeScript)",
+    description: "A comprehensive MERN stack platform for job seekers and employers, featuring advanced search, application tracking, user management, and built with TypeScript for robust development. Includes JWT authentication and protected routes.",
     liveDemoUrl: "https://job-portal-tinkal.vercel.app/", 
     githubRepoUrl: "https://github.com/MERNDevTinkal/Job-Portal-App",
     techStack: [
@@ -246,15 +230,15 @@ export const PROJECTS_DATA: Project[] = [
       { name: "Node.js", Icon: ServerCog },
       { name: "MongoDB", Icon: Database },
       { name: "TypeScript", Icon: CodeXml },
+      { name: "Express.js", Icon: ServerCog},
     ],
     Icon: Briefcase,
   },
   {
     id: "notes-app",
     title: "Notes App (MERN)",
-    description: "A secure and intuitive MERN stack application for creating, organizing, and managing personal notes. Features JWT-based authentication, protected routes, and complete CRUD operations.",
-    // image: "https://placehold.co/600x400.png", // Image removed
-    liveDemoUrl: "#", // Example: No valid live demo
+    description: "A secure and intuitive MERN stack application for creating, organizing, and managing personal notes. Features JWT-based authentication, protected routes, and complete CRUD operations for effective note management.",
+    liveDemoUrl: "#", 
     githubRepoUrl: "https://github.com/MERNDevTinkal/Notes-Application",
     techStack: [
       { name: "React", Icon: CodeXml },
@@ -267,9 +251,8 @@ export const PROJECTS_DATA: Project[] = [
   {
     id: "e-commerce",
     title: "E-commerce Frontend (Redux)",
-    description: "A dynamic online shopping experience with product listings, cart functionality, and efficient global state management using Redux Toolkit, styled with Tailwind CSS.",
-    // image: "https://placehold.co/600x400.png", // Image removed
-    liveDemoUrl: "", // Example: Empty live demo URL
+    description: "A dynamic online shopping experience with product listings, cart functionality, and efficient global state management using Redux Toolkit, styled with Tailwind CSS for a modern, responsive UI.",
+    liveDemoUrl: "", 
     githubRepoUrl: "https://github.com/MERNDevTinkal/Ecommerce-Using-Redux",
     techStack: [
       { name: "React", Icon: CodeXml },
@@ -279,8 +262,6 @@ export const PROJECTS_DATA: Project[] = [
     ],
     Icon: ShoppingCart,
   },
-  // You can add more projects here if you want them displayed on the main page
-  // or keep it concise and rely on the "View More on GitHub" button.
 ];
 
 export const BLOG_SECTION_DETAILS = {
@@ -302,3 +283,5 @@ export const EMAILJS_CONFIG = {
   templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "YOUR_EMAILJS_TEMPLATE_ID",
   publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "YOUR_EMAILJS_PUBLIC_KEY",
 };
+
+    
