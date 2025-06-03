@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -59,14 +60,18 @@ export function Hero() {
           <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
             <Button size="lg" asChild className="shadow-lg hover:shadow-primary/50 transition-shadow">
               <Link href={RESUME_PATH} target="_blank" download>
-                <Download className="mr-2 h-5 w-5" />
-                Download Resume
+                <span>
+                  <Download className="mr-2 h-5 w-5 inline" />
+                  Download Resume
+                </span>
               </Link>
             </Button>
             <Button size="lg" variant="outline" asChild className="shadow-lg hover:shadow-accent/50 transition-shadow">
               <Link href="#contact">
-                Contact Me
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <span>
+                  Contact Me
+                  <ArrowRight className="ml-2 h-5 w-5 inline" />
+                </span>
               </Link>
             </Button>
           </div>

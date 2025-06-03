@@ -60,7 +60,7 @@ export function About() {
           <div>
             <h3 className="text-2xl font-semibold mb-3 text-primary font-headline">Passion for Technology</h3>
             <p className="text-muted-foreground leading-relaxed">{ABOUT_ME.passion}</p>
-          </div>
+          </div> 
           <div className="space-y-2">
             <div className="flex items-center text-muted-foreground">
               <ABOUT_ME.IconLocation className="h-5 w-5 mr-2 text-accent" />

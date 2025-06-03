@@ -1,7 +1,8 @@
-import type { LucideIcon } from 'lucide-react';
-import { Github, Linkedin, Briefcase, MapPin, Mail, Phone, CodeXml, Database, ServerCog, Wand2, Palette, Settings2, ShoppingCart, FileText, BookOpen, GraduationCap, Building, Award } from 'lucide-react';
 
-export const APP_NAME = "Tinkal's HQ";
+import type { LucideIcon } from 'lucide-react';
+import { Github, Linkedin, Briefcase, MapPin, Mail, Phone, CodeXml, Database, ServerCog, Wand2, Palette, Settings2, ShoppingCart, FileText, BookOpen, GraduationCap, Building, Award, ExternalLink } from 'lucide-react';
+
+export const APP_NAME = "Tinkal's Portfolio";
 export const AUTHOR_NAME = "Tinkal Kumar";
 export const AUTHOR_EMAIL = "tinkalkumar67693@gmail.com";
 
@@ -39,12 +40,12 @@ export const PROFILE_IMAGES = [
   { src: "https://placehold.co/600x800.png?text=Profile+3", alt: "Tinkal Kumar Profile 3", dataAiHint: "casual outdoor" },
 ];
 
-export const RESUME_PATH = "/Tinkal_Resume.pdf";
+export const RESUME_PATH = "/Tinkal_Resume.pdf"; // Ensure this file exists in your /public folder
 
 export const ABOUT_ME = {
   summary: "A passionate and results-driven Full Stack Developer with expertise in the MERN stack and a strong affinity for creating efficient, scalable, and user-friendly web applications. I thrive on tackling complex challenges and continuously expanding my skillset to stay at the forefront of technology.",
   passion: "My journey in tech is fueled by a deep curiosity and a love for building things that make a difference. I'm particularly excited about leveraging modern JavaScript frameworks, exploring new architectural patterns, and contributing to open-source projects.",
-  location: "Currently based in [Your City, Country].", // Please update this
+  location: "Currently based in Chandigarh, India.",
   relocation: "Open to relocation for exciting opportunities.",
   IconLocation: MapPin,
   IconRelocation: Briefcase,
@@ -62,19 +63,21 @@ export const EDUCATION_DATA: EducationEntry[] = [
   {
     degree: "Master of Computer Applications (MCA)",
     institution: "Chandigarh University",
-    graduationYear: "2024",
+    graduationYear: "2022 - 2024",
     details: [
       "Specialized in Full Stack Development and Cloud Computing.",
-      "Key coursework: Advanced Web Technologies, Database Management, Software Engineering.",
+      "CGPA: 7.8/10",
+      "Key coursework: Advanced Web Technologies, Database Management, Software Engineering, AI & ML.",
     ],
     Icon: GraduationCap,
   },
   {
     degree: "Bachelor of Computer Applications (BCA)",
-    institution: "Your Previous University Name", // Please update this
-    graduationYear: "2021",
+    institution: "Patliputra University",
+    graduationYear: "2018 - 2021",
     details: [
       "Focused on core computer science principles and application development.",
+      "Percentage: 75%",
       "Capstone Project: 'Inventory Management System'.",
     ],
     Icon: GraduationCap,
@@ -92,31 +95,20 @@ export interface ExperienceEntry {
 
 export const WORK_EXPERIENCE_DATA: ExperienceEntry[] = [
   {
-    title: "Full Stack Developer Intern",
-    company: "Company X Technologies", // Please update this
-    duration: "Jun 2023 - Dec 2023",
-    location: "City, Country", // Please update this
+    title: "Software Development Intern",
+    company: "Celebal Technologies",
+    duration: "Jan 2024 - Jun 2024",
+    location: "Jaipur, Rajasthan (Remote)",
     responsibilities: [
-      "Developed and maintained web applications using the MERN stack (MongoDB, Express.js, React, Node.js).",
-      "Collaborated with senior developers on feature implementation and bug fixing.",
-      "Participated in agile development cycles and contributed to API design.",
-      "Gained experience with version control systems like Git and project management tools.",
+      "Developed and maintained web applications using the MERN stack (MongoDB, Express.js, React, Node.js) and Next.js.",
+      "Contributed to the development of a data analytics dashboard, improving data visualization and user interaction.",
+      "Collaborated with senior developers on feature implementation, API integration, and bug fixing.",
+      "Participated in agile development cycles, daily stand-ups, and code reviews.",
+      "Gained experience with version control systems like Git and project management tools like Jira.",
     ],
     Icon: Building,
   },
   // Add more experience entries if you have them
-  // {
-  //   title: "Junior Software Engineer",
-  //   company: "Another Tech Company",
-  //   duration: "Jan 2022 - May 2023",
-  //   location: "Another City, Country",
-  //   responsibilities: [
-  //     "Contributed to developing new features for a SaaS product.",
-  //     "Worked with TypeScript, React, and Node.js.",
-  //     "Wrote unit and integration tests to ensure code quality.",
-  //   ],
-  //   Icon: Building,
-  // },
 ];
 
 
@@ -137,7 +129,7 @@ export const TECH_STACK: TechStackItem[] = [
   { name: "Firebase", Icon: Wand2 },
   { name: "Git", Icon: Github },
   { name: "REST APIs", Icon: Settings2 },
-  { name: "GraphQL", Icon: Settings2 }, // Placeholder
+  { name: "Genkit AI", Icon: Wand2 },
 ];
 
 export interface Project {
@@ -146,10 +138,10 @@ export interface Project {
   description: string;
   image: string;
   dataAiHint: string;
-  liveDemoUrl: string; // Kept for structure, but won't be used in card
+  liveDemoUrl?: string; // Optional: URL for the live demo
   githubRepoUrl: string;
   techStack: TechStackItem[];
-  Icon: LucideIcon;
+  Icon: LucideIcon; // Icon for the project type (e.g., Briefcase, ShoppingCart)
 }
 
 export const PROJECTS_DATA: Project[] = [
@@ -159,8 +151,8 @@ export const PROJECTS_DATA: Project[] = [
     description: "A comprehensive platform for job seekers and employers, featuring advanced search, application tracking, and user management.",
     image: "https://placehold.co/600x400.png?text=Job+Portal",
     dataAiHint: "job board interface",
-    liveDemoUrl: "#", // Not shown
-    githubRepoUrl: "https://github.com/MERNDevTinkal/Job-Portal-App", 
+    liveDemoUrl: "https://job-portal-tinkal.vercel.app/", // Example live link
+    githubRepoUrl: "https://github.com/MERNDevTinkal/Job-Portal-App",
     techStack: [
       { name: "React", Icon: CodeXml },
       { name: "Node.js", Icon: ServerCog },
@@ -175,7 +167,7 @@ export const PROJECTS_DATA: Project[] = [
     description: "A secure and intuitive MERN stack application for creating, organizing, and managing personal notes with JWT authentication.",
     image: "https://placehold.co/600x400.png?text=Notes+App",
     dataAiHint: "note taking application",
-    liveDemoUrl: "#", // Not shown
+    // liveDemoUrl: "#", // Example: No live demo or maintenance
     githubRepoUrl: "https://github.com/MERNDevTinkal/Notes-Application",
     techStack: [
       { name: "React", Icon: CodeXml },
@@ -191,11 +183,11 @@ export const PROJECTS_DATA: Project[] = [
     description: "A feature-rich online shopping experience with product listings, cart management, and secure checkout, built using modern web technologies.",
     image: "https://placehold.co/600x400.png?text=E-commerce",
     dataAiHint: "online store product",
-    liveDemoUrl: "#", // Not shown
-    githubRepoUrl: "https://github.com/MERNDevTinkal/Ecommerce-Using-Redux", 
+    liveDemoUrl: "", // Example: Empty string, treated as no live demo
+    githubRepoUrl: "https://github.com/MERNDevTinkal/Ecommerce-Using-Redux",
     techStack: [
       { name: "React", Icon: CodeXml },
-      { name: "Redux", Icon: CodeXml }, 
+      { name: "Redux", Icon: CodeXml },
       { name: "Tailwind CSS", Icon: Palette },
       { name: "Firebase", Icon: Wand2 },
     ],
@@ -213,12 +205,14 @@ export const CONTACT_DETAILS = {
   title: "Let's Connect",
   description: "Have a project in mind, a question, or just want to say hi? Feel free to reach out!",
   Icon: Mail,
-  phone: "+91-XXXXXXXXXX", // Please update this
+  phone: "+91-9102496140",
   PhoneIcon: Phone,
 };
 
+// IMPORTANT: Replace with your actual EmailJS credentials for the contact form to work.
+// You can get these from your EmailJS account dashboard.
 export const EMAILJS_CONFIG = {
-  serviceId: "YOUR_EMAILJS_SERVICE_ID", 
-  templateId: "YOUR_EMAILJS_TEMPLATE_ID", 
-  publicKey: "YOUR_EMAILJS_PUBLIC_KEY", 
+  serviceId: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "YOUR_EMAILJS_SERVICE_ID",
+  templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "YOUR_EMAILJS_TEMPLATE_ID",
+  publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "YOUR_EMAILJS_PUBLIC_KEY",
 };
