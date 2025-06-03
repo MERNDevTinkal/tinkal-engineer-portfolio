@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -86,11 +87,11 @@ export function About() {
         </h3>
         <div className="space-y-8">
           {EDUCATION_DATA.map((edu, index) => (
-            <motion.div key={index} variants={itemVariants}>
+            <motion.div key={`${edu.degree}-${index}`} variants={itemVariants}>
               <Card className="shadow-lg hover:shadow-primary/20 transition-shadow duration-300">
                 <CardHeader>
                   <div className="flex items-start sm:items-center space-x-4">
-                    <edu.Icon className="h-10 w-10 sm:h-12 sm:w-12 text-accent flex-shrink-0 mt-1 sm:mt-0" />
+                    {edu.Icon && <edu.Icon className="h-10 w-10 sm:h-12 sm:w-12 text-accent flex-shrink-0 mt-1 sm:mt-0" />}
                     <div>
                       <CardTitle className="text-xl lg:text-2xl font-headline text-primary">{edu.degree}</CardTitle>
                       <p className="text-md text-muted-foreground font-medium">{edu.institution}</p>
@@ -124,11 +125,11 @@ export function About() {
         </h3>
         <div className="space-y-8">
           {WORK_EXPERIENCE_DATA.map((exp, index) => (
-             <motion.div key={index} variants={itemVariants}>
+             <motion.div key={`${exp.title}-${index}`} variants={itemVariants}>
               <Card className="shadow-lg hover:shadow-primary/20 transition-shadow duration-300">
                 <CardHeader>
                   <div className="flex items-start sm:items-center space-x-4">
-                    <exp.Icon className="h-10 w-10 sm:h-12 sm:w-12 text-accent flex-shrink-0 mt-1 sm:mt-0" />
+                    {exp.Icon && <exp.Icon className="h-10 w-10 sm:h-12 sm:w-12 text-accent flex-shrink-0 mt-1 sm:mt-0" />}
                     <div>
                       <CardTitle className="text-xl lg:text-2xl font-headline text-primary">{exp.title}</CardTitle>
                       <p className="text-md text-muted-foreground font-medium">{exp.company} ({exp.location})</p>
@@ -158,7 +159,7 @@ export function About() {
         <h3 className="text-3xl font-semibold text-center mb-10 text-primary font-headline">My Tech Toolkit</h3>
         <div className="flex flex-wrap justify-center gap-4">
           {TECH_STACK.map((tech, index) => (
-            <TechBadge key={tech.name} name={tech.name} Icon={tech.Icon} index={index} />
+            <TechBadge key={`${tech.name}-${index}`} name={tech.name} Icon={tech.Icon} index={index} />
           ))}
         </div>
       </motion.div>
