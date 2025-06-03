@@ -18,6 +18,7 @@ import {
   PROJECTS_DATA,
   EDUCATION_DATA,
   WORK_EXPERIENCE_DATA,
+  CERTIFICATIONS_DATA, // Added import for certifications
   CONTACT_DETAILS,
   SOCIAL_LINKS
 } from '@/lib/data';
@@ -38,6 +39,7 @@ const projectsString = PROJECTS_DATA.map(p => `- ${p.title}: ${p.description.sub
 const educationString = EDUCATION_DATA.map(e => `${e.degree} from ${e.institution} (${e.graduationYear}). Key learnings included: ${e.details ? e.details.slice(0,2).join(', ') : 'various CS topics'}.`).join('\n');
 const experienceString = WORK_EXPERIENCE_DATA.map(w => `${w.title} at ${w.company} (${w.duration}). Responsibilities included: ${w.responsibilities.slice(0, 2).join(', ')}.`).join('\n');
 const contactString = `Email: ${AUTHOR_EMAIL}, Phone: ${CONTACT_DETAILS.phone || 'not publicly listed, please email'}. LinkedIn: ${SOCIAL_LINKS.find(l=>l.name === 'LinkedIn')?.href}`;
+const certificationsString = CERTIFICATIONS_DATA.map(cert => `${cert.name} from ${cert.issuingOrganization}.`).join('\n'); // Prepared certifications string
 
 const systemPrompt = `
 You are a friendly, professional, and concise AI assistant for ${AUTHOR_NAME}'s portfolio.
@@ -63,6 +65,9 @@ ${experienceString}
 Projects:
 ${projectsString}
 
+Certifications:
+${certificationsString}
+
 Contact Information: ${contactString}
 
 Keep your answers brief and to the point, ideally 2-3 sentences unless more detail is specifically requested and available.
@@ -75,7 +80,7 @@ const chatPrompt = ai.definePrompt({
   input: {schema: PortfolioChatInputSchema},
   output: {schema: PortfolioChatOutputSchema},
   system: systemPrompt,
-  prompt: `User's question: {{{userInput}}}`,
+  prompt: `User's question: {{userInput}}`, // Changed to {{userInput}} for safer templating
   config: {
     temperature: 0.3, // Lower temperature for more factual, less creative responses
      safetySettings: [
