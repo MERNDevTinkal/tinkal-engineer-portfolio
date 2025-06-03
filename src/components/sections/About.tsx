@@ -84,7 +84,7 @@ export function About() {
         viewport={{ once: true, amount: 0.1 }}
         variants={containerVariants}
       >
-        <h3 className="text-3xl font-semibold text-center mb-10 text-primary font-headline flex items-center justify-center">
+        <h3 className="text-3xl font-semibold mb-10 text-primary font-headline flex items-center justify-center">
           <GraduationCap className="h-10 w-10 mr-3 text-primary" /> My Education
         </h3>
         <div className="space-y-8">
@@ -123,7 +123,7 @@ export function About() {
         viewport={{ once: true, amount: 0.1 }}
         variants={containerVariants}
       >
-        <h3 className="text-3xl font-semibold text-center mb-10 text-primary font-headline flex items-center justify-center">
+        <h3 className="text-3xl font-semibold mb-10 text-primary font-headline flex items-center justify-center">
           <Briefcase className="h-10 w-10 mr-3 text-primary" /> Work Experience
         </h3>
         <div className="space-y-8">
