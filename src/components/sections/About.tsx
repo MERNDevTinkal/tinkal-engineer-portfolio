@@ -6,8 +6,8 @@ import { motion } from "framer-motion";
 import { SectionWrapper, SectionHeader } from "@/components/ui/SectionWrapper";
 import { ABOUT_ME, TECH_STACK, AUTHOR_NAME, EDUCATION_DATA, WORK_EXPERIENCE_DATA, CERTIFICATIONS_DATA } from "@/lib/data";
 import { TechBadge } from "@/components/ui/TechBadge";
-import { UserCircle2, Briefcase, GraduationCap, Award, ExternalLink } from "lucide-react"; // Added Award and ExternalLink
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"; // Added CardDescription & CardFooter
+import { UserCircle2, Briefcase, GraduationCap, Award, ExternalLink } from "lucide-react"; 
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"; 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -89,14 +89,14 @@ export function About() {
         </h3>
         <div className="space-y-8">
           {EDUCATION_DATA.map((edu, index) => (
-            <motion.div key={`edu-${edu.degree}-${index}`} variants={itemVariants}>
+            <motion.div key={`edu-${edu.degree.replace(/\s+/g, '-')}-${index}`} variants={itemVariants}>
               <Card className="shadow-lg hover:shadow-primary/20 transition-shadow duration-300">
                 <CardHeader>
                   <div className="flex items-start sm:items-center space-x-4">
                     {edu.Icon && <edu.Icon className="h-10 w-10 sm:h-12 sm:w-12 text-accent flex-shrink-0 mt-1 sm:mt-0" />}
                     <div>
                       <CardTitle className="text-xl lg:text-2xl font-headline text-primary">{edu.degree}</CardTitle>
-                      <p className="text-md text-muted-foreground font-medium">{edu.institution}</p>
+                      <CardDescription className="text-md text-muted-foreground font-medium">{edu.institution}</CardDescription>
                       <p className="text-sm text-muted-foreground">{edu.graduationYear}</p>
                     </div>
                   </div>
@@ -127,7 +127,7 @@ export function About() {
         </h3>
         <div className="space-y-8">
           {WORK_EXPERIENCE_DATA.map((exp, index) => (
-             <motion.div key={`exp-${exp.title}-${index}`} variants={itemVariants}>
+             <motion.div key={`exp-${exp.title.replace(/\s+/g, '-')}-${index}`} variants={itemVariants}>
               <Card className="shadow-lg hover:shadow-primary/20 transition-shadow duration-300">
                 <CardHeader>
                   <div className="flex items-start sm:items-center space-x-4">
@@ -165,7 +165,7 @@ export function About() {
           </h3>
           <div className="grid md:grid-cols-2 gap-8">
             {CERTIFICATIONS_DATA.map((cert, index) => (
-              <motion.div key={`cert-${cert.name}-${index}`} variants={itemVariants}>
+              <motion.div key={`cert-${cert.name.replace(/\s+/g, '-')}-${index}`} variants={itemVariants}>
                 <Card className="shadow-lg hover:shadow-primary/20 transition-shadow duration-300 h-full flex flex-col">
                   <CardHeader>
                     <div className="flex items-start space-x-4">
@@ -206,7 +206,7 @@ export function About() {
         <h3 className="text-3xl font-semibold text-center mb-10 text-primary font-headline">My Tech Toolkit</h3>
         <div className="flex flex-wrap justify-center gap-4">
           {TECH_STACK.map((tech, index) => (
-            <TechBadge key={`tech-${tech.name}-${index}`} name={tech.name} Icon={tech.Icon} index={index} />
+            <TechBadge key={`tech-${tech.name.replace(/\s+/g, '-')}-${index}`} name={tech.name} Icon={tech.Icon} index={index} />
           ))}
         </div>
       </motion.div>
