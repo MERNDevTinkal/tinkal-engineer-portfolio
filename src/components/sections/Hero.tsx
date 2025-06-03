@@ -23,7 +23,7 @@ export function Hero() {
       opacity: 1,
       transition: {
         staggerChildren: 0.2,
-        delayChildren: 0.3, // Delay after the main section animation
+        delayChildren: 0.3, 
       },
     },
   };
@@ -46,7 +46,7 @@ export function Hero() {
         <motion.div
           variants={textContainerVariants}
           initial="hidden"
-          animate="visible" // This will be controlled by the parent page.tsx animation if applicable
+          animate="visible" 
           className="space-y-6 text-center md:text-left"
         >
           <motion.h1
@@ -113,7 +113,9 @@ export function Hero() {
               >
                 <Button variant="ghost" size="icon" asChild>
                   <Link href={href} target="_blank" rel="noopener noreferrer" aria-label={name}>
-                    <Icon className="h-7 w-7 text-muted-foreground hover:text-primary transition-colors" />
+                    <span> {/* Ensure single child for Link when Button is asChild */}
+                      <Icon className="h-7 w-7 text-muted-foreground hover:text-primary transition-colors" />
+                    </span>
                   </Link>
                 </Button>
               </motion.div>
@@ -124,7 +126,7 @@ export function Hero() {
         <motion.div
           initial={{ opacity: 0, scale: 0.8, x: 50 }}
           animate={{ opacity: 1, scale: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.6, type: "spring", stiffness: 100 }} // Added slight delay for image
+          transition={{ duration: 0.8, delay: 0.6, type: "spring", stiffness: 100 }}
           className="w-full max-w-md mx-auto"
         >
           <Swiper
