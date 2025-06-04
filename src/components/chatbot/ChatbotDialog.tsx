@@ -52,7 +52,7 @@ export function ChatbotDialog() {
   
   const inputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const scrollAreaRef = useRef<HTMLDivElement>(null); // Ref for the ScrollArea component itself
+  const scrollAreaRef = useRef<HTMLDivElement>(null); 
 
   const { toast } = useToast();
 
@@ -113,10 +113,9 @@ export function ChatbotDialog() {
     }
   }, [messages, isOpen]);
 
- useEffect(() => {
+  useEffect(() => {
     if (messagesEndRef.current) {
-        // console.log("Scrolling to messagesEndRef");
-        requestAnimationFrame(() => { // Ensure DOM update before scrolling
+        requestAnimationFrame(() => { 
             messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
         });
     }
@@ -247,7 +246,7 @@ export function ChatbotDialog() {
         variants={triggerButtonVariants}
         initial="initial"
         animate="animate"
-        className="fixed bottom-6 right-6 z-50"
+        className="fixed bottom-6 right-6 z-50" // z-index for trigger button
       >
         <Button
           onClick={() => setIsOpen(!isOpen)}
@@ -279,8 +278,8 @@ export function ChatbotDialog() {
             animate="open"
             exit="closed"
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed bottom-24 right-6 z-40 w-full max-w-md rounded-xl bg-background shadow-2xl border border-border overflow-hidden flex flex-col"
-            style={{ height: 'min(80vh, 750px)' }} 
+            className="fixed bottom-24 right-6 z-40 w-full max-w-md rounded-xl bg-background shadow-2xl border border-border overflow-hidden flex flex-col" // z-index for chat window
+            style={{ height: 'min(80vh, 700px)' }} // Slightly reduced max height to avoid top overlap
           >
             <header className="bg-card p-3 border-b border-border flex items-center justify-between">
               <h3 className="font-semibold text-lg text-primary font-headline pl-2">Sora - Tinkal's Assistant</h3>

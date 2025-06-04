@@ -7,7 +7,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import { APP_NAME, AUTHOR_NAME } from "@/lib/data";
-import { ChatbotDialog } from "@/components/chatbot/ChatbotDialog"; // Added import
+import { ChatbotDialog } from "@/components/chatbot/ChatbotDialog";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -46,12 +46,12 @@ export default function RootLayout({
       <body className={`${inter.variable} ${spaceGrotesk.variable} font-body antialiased`}>
         <ThemeProvider>
           <Navbar />
-          <main className="flex-grow">
+          <main className="flex-grow pt-20"> {/* Added pt-20 for navbar height */}
             {children}
           </main>
           <Footer />
           <Toaster />
-          <ChatbotDialog /> {/* Added Chatbot Dialog */}
+          <ChatbotDialog />
         </ThemeProvider>
       </body>
     </html>

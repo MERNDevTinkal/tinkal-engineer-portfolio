@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from "next/link";
-import { ArrowUp, Mail } from "lucide-react"; // Ensure Mail is imported
+import { ArrowUp, Mail } from "lucide-react";
 import { SOCIAL_LINKS, AUTHOR_NAME, NAV_LINKS, APP_NAME, AUTHOR_EMAIL } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { cn } from '@/lib/utils';
@@ -59,7 +59,7 @@ export function Footer() {
               <ul className="space-y-2">
                 <li>
                   <Link href={`mailto:${AUTHOR_EMAIL}`} className="text-muted-foreground hover:text-primary transition-colors text-sm flex items-center justify-center md:justify-start">
-                    <Mail className="h-4 w-4 mr-2" /> {/* Mail icon usage */}
+                    <Mail className="h-4 w-4 mr-2" />
                     {AUTHOR_EMAIL}
                   </Link>
                 </li>
@@ -95,7 +95,7 @@ export function Footer() {
               {currentYear !== null ? (
                 `© ${currentYear} ${AUTHOR_NAME}. All rights reserved.`
               ) : (
-                `© ${AUTHOR_NAME}. All rights reserved.` // Avoid new Date() in initial render
+                `© ${AUTHOR_NAME}. All rights reserved.` 
               )}
             </p>
           </div>
@@ -107,7 +107,7 @@ export function Footer() {
         variant="default"
         size="icon"
         className={cn(
-          "fixed bottom-6 right-6 h-12 w-12 rounded-full shadow-lg z-50 transition-all duration-300 ease-in-out hover:scale-110",
+          "fixed bottom-6 left-6 h-12 w-12 rounded-full shadow-lg z-50 transition-all duration-300 ease-in-out hover:scale-110", // Changed right-6 to left-6
           isVisible ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         )}
         aria-label="Scroll to top"
