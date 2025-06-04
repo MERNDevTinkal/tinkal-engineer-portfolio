@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Button } from "@/components/ui/button";
-import { APP_NAME, NAV_LINKS, LOGO_PATH } from "@/lib/data"; // Added LOGO_PATH
+import { APP_NAME, NAV_LINKS, LOGO_PATH } from "@/lib/data";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,8 +59,8 @@ export function Navbar() {
             alt={`${APP_NAME} Logo`} 
             width={32} 
             height={32} 
-            className="h-8 w-8"
-            data-ai-hint="company logo"
+            className="h-8 w-8 rounded-md" // Added rounded-md
+            data-ai-hint="website logo"
             priority // Logo is important for LCP
           />
           <span>{APP_NAME}</span>
@@ -123,3 +123,5 @@ export function Navbar() {
     </motion.nav>
   );
 }
+
+    

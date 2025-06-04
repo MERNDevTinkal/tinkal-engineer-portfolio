@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import Link from "next/link";
 import { ArrowUp, Mail } from "lucide-react";
-import { SOCIAL_LINKS, AUTHOR_NAME, NAV_LINKS, APP_NAME, AUTHOR_EMAIL, LOGO_PATH } from "@/lib/data";
+import { SOCIAL_LINKS, AUTHOR_NAME, NAV_LINKS, APP_NAME, AUTHOR_EMAIL } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { cn } from '@/lib/utils';
 
@@ -40,8 +40,17 @@ export function Footer() {
 
   return (
     <>
-      <footer className="relative border-t border-border/50 py-12 bg-card dark:bg-background"> {/* Simplified background */}
-        <div className="container mx-auto px-4 md:px-6 text-card-foreground">
+      <footer className="relative border-t border-border/50 py-12 bg-card dark:bg-background overflow-hidden">
+        {/* Background Image and Overlay */}
+        <div
+          className="absolute inset-0 z-0 bg-cover bg-center"
+          style={{ backgroundImage: `url('/tech-stackmern.png')` }}
+          data-ai-hint="tech abstract background"
+        />
+        <div className="absolute inset-0 z-10 bg-card/40 dark:bg-background/40" /> {/* Reduced opacity, removed blur */}
+
+        {/* Footer Content */}
+        <div className="container relative z-20 mx-auto px-4 md:px-6 text-card-foreground">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 text-center md:text-left">
             <div>
               <h3 className="text-lg font-semibold text-primary font-headline mb-4">Quick Links</h3>
@@ -125,3 +134,5 @@ export function Footer() {
     </>
   );
 }
+
+    

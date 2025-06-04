@@ -61,7 +61,8 @@ export function Hero() {
   };
 
   return (
-    <SectionWrapper id="home" className="!min-h-screen pt-24 md:pt-32 bg-gradient-to-br from-background via-card to-secondary/10 dark:to-secondary/20">
+    // Removed pt-24 md:pt-32, relying on main tag's pt-20 and internal content flow
+    <SectionWrapper id="home" className="!min-h-screen bg-gradient-to-br from-background via-card to-secondary/10 dark:to-secondary/20">
       <div className="grid md:grid-cols-2 gap-12 items-center">
         <motion.div
           variants={textContainerVariants}
@@ -170,7 +171,7 @@ export function Hero() {
             className="rounded-xl shadow-2xl overflow-hidden aspect-[3/4] border-4 border-card hover:border-primary/30 transition-colors duration-300"
           >
             {PROFILE_IMAGES.map((image, index) => (
-              <SwiperSlide key={image.src}>
+              <SwiperSlide key={image.src}> {/* Used image.src for key for better stability if array order changes but src is unique */}
                 <Image
                   src={image.src}
                   alt={image.alt}

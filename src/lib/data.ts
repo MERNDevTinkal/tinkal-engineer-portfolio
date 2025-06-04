@@ -15,7 +15,7 @@ export const AUTHOR_EMAIL = "tinkalkumar67693@gmail.com"; // General author emai
 // Email address that will RECEIVE contact form submissions. Configured via .env
 export const CONTACT_FORM_RECEIVER_EMAIL = process.env.NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL || AUTHOR_EMAIL;
 
-export const LOGO_PATH = "/tech-stackmern.png"; // Assumes tech-stackmern.png is directly in /public
+export const LOGO_PATH = "/websitelogo.png"; // Updated logo path
 
 export const NAV_LINKS = [
   { name: "Home", href: "#home" },
@@ -94,11 +94,12 @@ export const HERO_TITLES = [
 ];
 
 // Note: .HEIC files might have limited browser support. Consider converting to JPG/PNG for better compatibility.
+// Ensure these images are directly in the /public folder.
 export const PROFILE_IMAGES = [
   { src: "/profile-1.jpg", alt: "Tinkal Kumar - Professional Headshot", dataAiHint: "professional man" },
   { src: "/profile-2.jpg", alt: "Tinkal Kumar - Working at a desk", dataAiHint: "developer coding" },
-  { src: "/profile-3.HEIC", alt: "Tinkal Kumar - Outdoor casual portrait", dataAiHint: "casual man heic" },
-  { src: "/profile-4.HEIC", alt: "Tinkal Kumar - Tech event or conference", dataAiHint: "tech conference heic" },
+  { src: "/profile-3.HEIC", alt: "Tinkal Kumar - Outdoor casual portrait", dataAiHint: "casual man heic" }, // Potential browser compatibility issue with HEIC
+  { src: "/profile-4.HEIC", alt: "Tinkal Kumar - Tech event or conference", dataAiHint: "tech conference heic" }, // Potential browser compatibility issue with HEIC
 ];
 
 export const RESUME_PATH = "/Tinkal_Resume.pdf"; // Assumes Tinkal_Resume.pdf is directly in /public
@@ -362,3 +363,5 @@ export const EMAILJS_CONFIG = {
   templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "YOUR_EMAILJS_TEMPLATE_ID",
   publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "YOUR_EMAILJS_PUBLIC_KEY",
 };
+
+    
