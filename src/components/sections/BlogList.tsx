@@ -2,11 +2,11 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-// Removed Link import as titles are no longer direct links
+// Link import removed as titles are no longer direct links
 import { generateBlogTitles, type GenerateBlogTitlesOutput } from "@/ai/flows/generate-blog-titles";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ChevronUp, Loader2, AlertTriangle } from "lucide-react"; // Added ChevronUp, Loader2, AlertTriangle
+import { ArrowRight, ChevronUp, Loader2, AlertTriangle } from "lucide-react"; // ChevronUp for expanded state
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion, AnimatePresence } from "framer-motion";
@@ -19,7 +19,7 @@ interface CachedBlogTitles {
   data: GenerateBlogTitlesOutput;
 }
 
-// Hardcoded blog posts - moved here for inline expansion
+// Hardcoded blog posts (content for expansion)
 const hardcodedBlogPosts = [
   {
     id: "0",
@@ -124,7 +124,7 @@ export function BlogList() {
         if (cachedItem) {
           const cached: CachedBlogTitles = JSON.parse(cachedItem);
           if (cached && cached.timestamp && cached.data && cached.data.titles && (Date.now() - cached.timestamp < CACHE_DURATION_MS)) {
-            const validCachedTitles = cached.data.titles.filter(title => title && title.trim() !== "").slice(0, 12); // Ensure we get up to 12
+            const validCachedTitles = cached.data.titles.filter(title => title && title.trim() !== "").slice(0, 12);
             if (validCachedTitles.length > 0) {
               setBlogData({ titles: validCachedTitles });
               setIsLoading(false);
@@ -195,7 +195,7 @@ export function BlogList() {
             return (
               <Card key={index} className="flex flex-col shadow-lg hover:shadow-primary/20 transition-shadow duration-300 bg-card">
                 <CardHeader>
-                  <CardTitle className="text-xl font-headline text-primary">{title}</CardTitle>
+                  <CardTitle className="text-xl font-headline text-primary cursor-default">{title}</CardTitle>
                 </CardHeader>
                 <CardContent className="flex-grow">
                   <div className="flex flex-wrap gap-2 mb-4">
@@ -211,11 +211,11 @@ export function BlogList() {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="mt-4 prose dark:prose-invert max-w-none text-sm"
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className="mt-4 prose dark:prose-invert max-w-none text-sm overflow-hidden"
                       >
                         {postContent.paragraphs.map((paragraph, pIndex) => (
-                          <p key={pIndex}>{paragraph}</p>
+                          <p key={pIndex} className="mb-2">{paragraph}</p>
                         ))}
                       </motion.div>
                     )}
@@ -224,8 +224,8 @@ export function BlogList() {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="mt-4 text-muted-foreground text-sm"
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className="mt-4 text-muted-foreground text-sm overflow-hidden"
                       >
                         <p>Full content for this topic is coming soon!</p>
                       </motion.div>
@@ -251,14 +251,12 @@ export function BlogList() {
   return (
     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
       {(blogData.titles || []).map((title, index) => {
-        const isExpanded = expandedPostIndex === index;
-        // Use index to get content. AI generates 12, hardcoded is 6.
-        const postContent = hardcodedBlogPosts[index]; // This might be undefined if index >= 6
+        const isExpanded = expandedPostIndex === index; // This determines if THIS card is expanded
+        const postContent = hardcodedBlogPosts[index]; // Content for THIS card
 
         return (
           <Card key={index} className="flex flex-col shadow-lg hover:shadow-primary/20 transition-shadow duration-300 bg-card">
             <CardHeader>
-              {/* Title is no longer a link */}
               <CardTitle className="text-xl font-headline text-primary cursor-default">{title}</CardTitle>
             </CardHeader>
             <CardContent className="flex-grow">
@@ -279,11 +277,11 @@ export function BlogList() {
                     className="mt-4 prose dark:prose-invert max-w-none text-sm overflow-hidden"
                   >
                     {postContent.paragraphs.map((paragraph, pIndex) => (
-                      <p key={pIndex} className="mb-2">{paragraph}</p>
+                      <p key={`content-${index}-${pIndex}`} className="mb-2">{paragraph}</p>
                     ))}
                   </motion.div>
                 )}
-                {isExpanded && !postContent && ( // Handle cases where AI title index > hardcoded content
+                {isExpanded && !postContent && ( 
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
@@ -300,10 +298,10 @@ export function BlogList() {
               <Button 
                 variant="link" 
                 className="text-accent p-0 hover:text-accent/80" 
-                onClick={() => handleToggleExpand(index)}
+                onClick={() => handleToggleExpand(index)} // Crucially, this uses the specific 'index'
               >
                 <span>
-                  {isExpanded ? "Read Less" : "Read More"}
+                  {isExpanded ? "Read Less" : "Read More"} {/* Text and icon depend on 'isExpanded' for THIS card */}
                   {isExpanded ? <ChevronUp className="ml-2 h-4 w-4 inline" /> : <ArrowRight className="ml-2 h-4 w-4 inline" />}
                 </span>
               </Button>
@@ -314,4 +312,3 @@ export function BlogList() {
     </div>
   );
 }
-
