@@ -44,11 +44,11 @@ export function Footer() {
         {/* Background Image Layer */}
         <div
           className="absolute inset-0 z-0 bg-no-repeat bg-cover bg-center"
-          style={{ backgroundImage: `url('${LOGO_PATH}')` }} // Using LOGO_PATH which should be /tech-stackmern.png
+          style={{ backgroundImage: `url('${LOGO_PATH}')` }} // Using LOGO_PATH
           aria-hidden="true"
         />
-        {/* Overlay for Readability */}
-        <div className="absolute inset-0 z-10 bg-card/90 dark:bg-background/90 backdrop-blur-sm" />
+        {/* Overlay for Readability - Adjusted opacity */}
+        <div className="absolute inset-0 z-10 bg-card/80 dark:bg-background/80 backdrop-blur-sm" />
         
         {/* Footer Content Layer */}
         <div className="relative z-20 container mx-auto px-4 md:px-6 text-card-foreground">
