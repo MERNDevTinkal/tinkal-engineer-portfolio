@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowUp, Mail } from "lucide-react"; // Ensure Mail is imported
 import { SOCIAL_LINKS, AUTHOR_NAME, NAV_LINKS, APP_NAME, AUTHOR_EMAIL } from "@/lib/data";
 import { Button } from "@/components/ui/button";
+import { cn } from '@/lib/utils';
 
 export function Footer() {
   const [currentYear, setCurrentYear] = useState<number | null>(null);
@@ -23,6 +24,7 @@ export function Footer() {
     };
 
     window.addEventListener("scroll", toggleVisibility);
+    toggleVisibility(); // Call once to set initial state
     return () => window.removeEventListener("scroll", toggleVisibility);
   }, []);
 
@@ -99,17 +101,19 @@ export function Footer() {
           </div>
         </div>
       </footer>
-      {isVisible && (
-        <Button
-          onClick={scrollToTop}
-          variant="default"
-          size="icon"
-          className="fixed bottom-6 right-6 h-12 w-12 rounded-full shadow-lg z-50 transition-opacity duration-300 hover:scale-110"
-          aria-label="Scroll to top"
-        >
-          <ArrowUp className="h-6 w-6" />
-        </Button>
-      )}
+      
+      <Button
+        onClick={scrollToTop}
+        variant="default"
+        size="icon"
+        className={cn(
+          "fixed bottom-6 right-6 h-12 w-12 rounded-full shadow-lg z-50 transition-all duration-300 ease-in-out hover:scale-110",
+          isVisible ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        )}
+        aria-label="Scroll to top"
+      >
+        <ArrowUp className="h-6 w-6" />
+      </Button>
     </>
   );
 }

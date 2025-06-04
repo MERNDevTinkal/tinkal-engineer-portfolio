@@ -22,7 +22,12 @@ export function ChatMessage({ sender, text, isLoading = false }: ChatMessageProp
     <div className={cn("flex items-start gap-3 mb-4", isUser ? "justify-end" : "justify-start")}>
       {!isUser && (
         <Avatar className="h-8 w-8 border border-primary/50">
-          <AvatarImage src="https://static.vecteezy.com/system/resources/previews/038/281/907/large_2x/portrait-of-a-beautiful-woman-wearing-headset-photo.jpg" alt="Sora AI Assistant" data-ai-hint="headset portrait" />
+          <AvatarImage 
+            src="https://static.vecteezy.com/system/resources/previews/038/281/907/large_2x/portrait-of-a-beautiful-woman-wearing-headset-photo.jpg" 
+            alt="Sora AI Assistant" 
+            data-ai-hint="headset portrait"
+            className="object-cover"
+          />
           <AvatarFallback className="bg-primary text-primary-foreground">
             {soraInitials}
           </AvatarFallback>

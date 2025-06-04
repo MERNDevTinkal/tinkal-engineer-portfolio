@@ -52,7 +52,7 @@ export function ChatbotDialog() {
   
   const inputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null); // Ref for the ScrollArea component itself
 
   const { toast } = useToast();
 
@@ -115,7 +115,8 @@ export function ChatbotDialog() {
 
  useEffect(() => {
     if (messagesEndRef.current) {
-        requestAnimationFrame(() => {
+        // console.log("Scrolling to messagesEndRef");
+        requestAnimationFrame(() => { // Ensure DOM update before scrolling
             messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
         });
     }
@@ -258,7 +259,12 @@ export function ChatbotDialog() {
             <X className="h-7 w-7" />
           ) : (
             <Avatar className="h-full w-full">
-              <AvatarImage src="https://static.vecteezy.com/system/resources/previews/038/281/907/large_2x/portrait-of-a-beautiful-woman-wearing-headset-photo.jpg" alt="Sora AI Assistant" data-ai-hint="headset portrait" />
+              <AvatarImage 
+                src="https://static.vecteezy.com/system/resources/previews/038/281/907/large_2x/portrait-of-a-beautiful-woman-wearing-headset-photo.jpg" 
+                alt="Sora AI Assistant" 
+                data-ai-hint="headset portrait"
+                className="object-cover"
+              />
               <AvatarFallback className="bg-primary text-primary-foreground text-xl">SA</AvatarFallback>
             </Avatar>
           )}
