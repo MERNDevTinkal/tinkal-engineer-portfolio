@@ -153,10 +153,12 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
   return (
     <SectionWrapper id={`blog-post-${id}`} className="min-h-screen bg-card dark:bg-background py-12 md:py-16 lg:py-20">
       <div className="max-w-4xl mx-auto">
-        <Link href="/#blogs" className="inline-flex items-center text-sm text-primary hover:underline mb-8 group">
-          <ArrowLeft className="h-4 w-4 mr-2 transition-transform group-hover:-translate-x-1" />
-          Back to Blogs
-        </Link>
+        <Button variant="link" asChild className="inline-flex items-center text-sm text-primary hover:underline mb-8 group p-0">
+          <Link href="/#blogs">
+            <ArrowLeft className="h-4 w-4 mr-2 transition-transform group-hover:-translate-x-1" />
+            Back to Blogs
+          </Link>
+        </Button>
 
         <article className="bg-background dark:bg-card p-6 sm:p-8 md:p-10 rounded-xl shadow-xl">
           <header className="mb-8">

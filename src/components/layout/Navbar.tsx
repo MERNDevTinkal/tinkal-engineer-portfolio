@@ -19,6 +19,7 @@ export function Navbar() {
       setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Call once on mount to set initial state
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -57,9 +58,9 @@ export function Navbar() {
           <Image
             src={LOGO_PATH}
             alt={`${APP_NAME} Logo`}
-            width={40} // Increased size
-            height={40} // Increased size
-            className="h-10 w-10 rounded-md" // Adjusted class for new size
+            width={48} 
+            height={48} 
+            className="h-12 w-12 rounded-md" 
             data-ai-hint="website logo"
             priority
           />
@@ -78,7 +79,7 @@ export function Navbar() {
               whileTap={{ scale: 0.95 }}
             >
               <Button variant="link" asChild>
-                <Link href={link.href} className="text-foreground hover:text-primary transition-colors duration-200 px-3 py-2 text-sm">
+                <Link href={link.href} className="text-foreground hover:text-primary transition-colors duration-300 ease-in-out px-3 py-2 text-sm">
                   {link.name}
                 </Link>
               </Button>
@@ -109,7 +110,7 @@ export function Navbar() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className="text-lg text-foreground hover:text-primary transition-colors duration-200"
+                  className="text-lg text-foreground hover:text-primary transition-colors duration-300 ease-in-out"
                   onClick={() => setIsOpen(false)}
                 >
                   {link.name}

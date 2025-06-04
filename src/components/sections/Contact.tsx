@@ -155,8 +155,8 @@ export function Contact() {
           </p>
           <div className="space-y-3">
             <Link href={`mailto:${AUTHOR_EMAIL}`} className="flex items-center group">
-              <CONTACT_DETAILS.Icon className="h-5 w-5 mr-3 text-accent group-hover:text-primary transition-colors" />
-              <span className="text-foreground group-hover:text-primary transition-colors">{AUTHOR_EMAIL}</span>
+              <CONTACT_DETAILS.Icon className="h-5 w-5 mr-3 text-accent group-hover:text-primary transition-colors duration-300 ease-in-out" />
+              <span className="text-foreground group-hover:text-primary transition-colors duration-300 ease-in-out">{AUTHOR_EMAIL}</span>
             </Link>
             {CONTACT_DETAILS.phone && (
                <div className="flex items-center">
@@ -174,7 +174,7 @@ export function Contact() {
               >
               <Button variant="outline" size="icon" asChild>
                 <Link href={href} target="_blank" rel="noopener noreferrer" aria-label={name}>
-                  <Icon className="h-6 w-6 text-muted-foreground hover:text-primary transition-colors" />
+                  <Icon className="h-6 w-6 text-muted-foreground hover:text-primary transition-colors duration-300 ease-in-out" />
                 </Link>
               </Button>
               </motion.div>

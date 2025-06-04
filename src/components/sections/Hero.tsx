@@ -7,7 +7,7 @@ import { Typewriter } from "react-simple-typewriter";
 import dynamic from 'next/dynamic';
 import { motion } from "framer-motion";
 import { Download, ArrowRight } from "lucide-react";
-import { useState, useEffect } from 'react'; // Added useState and useEffect
+import { useState, useEffect } from 'react'; 
 
 import { Button } from "@/components/ui/button";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
@@ -22,7 +22,6 @@ const Swiper = dynamic(() => import('swiper/react').then(mod => mod.Swiper), {
 const SwiperSlide = dynamic(() => import('swiper/react').then(mod => mod.SwiperSlide), { ssr: false });
 
 // CSS imports are fine here as this is a client component.
-// Ensure they are imported only once if Hero is used multiple times.
 if (typeof window !== 'undefined') {
   import('swiper/css');
   import('swiper/css/pagination');
@@ -66,7 +65,6 @@ export function Hero() {
   };
 
   return (
-    // Adjusted padding: pt-8 md:pt-12. Removed min-h-screen and justify-center to allow natural flow.
     <SectionWrapper id="home" className="pt-8 md:pt-12 bg-gradient-to-br from-background via-card to-secondary/10 dark:to-secondary/20">
       <div className="grid md:grid-cols-2 gap-12 items-center">
         <motion.div
@@ -110,7 +108,7 @@ export function Hero() {
             variants={textItemVariants}
             className="flex flex-col sm:flex-row items-center justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4 mb-8"
           >
-            <Button size="lg" asChild className="shadow-lg hover:shadow-primary/50 transition-shadow duration-300 ease-in-out transform hover:scale-105">
+            <Button size="lg" asChild className="shadow-lg hover:shadow-primary/50 transition-all duration-300 ease-in-out transform hover:scale-105">
               <Link href={RESUME_PATH} target="_blank" download>
                 <span>
                   <Download className="mr-2 h-5 w-5 inline" />
@@ -118,7 +116,7 @@ export function Hero() {
                 </span>
               </Link>
             </Button>
-            <Button size="lg" variant="outline" asChild className="shadow-lg hover:shadow-accent/50 transition-shadow duration-300 ease-in-out transform hover:scale-105">
+            <Button size="lg" variant="outline" asChild className="shadow-lg hover:shadow-accent/50 transition-all duration-300 ease-in-out transform hover:scale-105">
               <Link href="#contact">
                 <span>
                   Contact Me
@@ -142,7 +140,7 @@ export function Hero() {
                 <Button variant="ghost" size="icon" asChild>
                   <Link href={href} target="_blank" rel="noopener noreferrer" aria-label={name}>
                     <span>
-                      <Icon className="h-7 w-7 text-muted-foreground hover:text-primary transition-colors" />
+                      <Icon className="h-7 w-7 text-muted-foreground hover:text-primary transition-colors duration-300 ease-in-out" />
                     </span>
                   </Link>
                 </Button>
@@ -157,7 +155,7 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.8, type: "spring", stiffness: 100 }}
           className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto"
         >
-          {swiperModules ? ( // Conditionally render Swiper once modules are loaded
+          {swiperModules ? ( 
             <Swiper
               modules={swiperModules}
               spaceBetween={30}
