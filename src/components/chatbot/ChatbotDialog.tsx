@@ -278,7 +278,11 @@ export function ChatbotDialog() {
             animate="open"
             exit="closed"
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed bottom-24 right-6 z-40 w-full max-w-md rounded-xl bg-background shadow-2xl border border-border overflow-hidden flex flex-col" 
+            className={cn(
+              "fixed bottom-24 z-40 rounded-xl bg-background shadow-2xl border border-border overflow-hidden flex flex-col",
+              "left-4 right-4 w-auto", // Mobile: small margins, auto width
+              "md:left-auto md:right-6 md:w-full md:max-w-md" // Desktop: anchored right, specific max-width
+            )}
             style={{ maxHeight: 'min(calc(100vh - 12rem), 700px)' }} 
           >
             <header className="bg-card p-3 border-b border-border flex items-center justify-between">
