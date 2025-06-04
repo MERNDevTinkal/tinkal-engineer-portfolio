@@ -2,11 +2,10 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-// Link import removed as titles are no longer direct links
 import { generateBlogTitles, type GenerateBlogTitlesOutput } from "@/ai/flows/generate-blog-titles";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ChevronUp, Loader2, AlertTriangle } from "lucide-react"; // ChevronUp for expanded state
+import { ArrowRight, ChevronUp, Loader2, AlertTriangle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion, AnimatePresence } from "framer-motion";
@@ -105,7 +104,7 @@ const FALLBACK_TITLES: GenerateBlogTitlesOutput = {
     "The Future of Development: Trends to Watch",
     "AI in Modern Applications: An Overview",
     "Cloud Computing Trends and Strategies",
-  ].slice(0, 6) // Adjusted to match hardcoded content length for fallback
+  ].slice(0, 6)
 };
 
 export function BlogList() {
@@ -176,7 +175,7 @@ export function BlogList() {
     return (
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {Array.from({ length: 6 }).map((_, index) => (
-          <BlogCardSkeleton key={index} />
+          <BlogCardSkeleton key={`skeleton-${index}`} />
         ))}
       </div>
     );
@@ -193,7 +192,7 @@ export function BlogList() {
             const isExpanded = expandedPostIndex === index;
             const postContent = hardcodedBlogPosts[index];
             return (
-              <Card key={index} className="flex flex-col shadow-lg hover:shadow-primary/20 transition-shadow duration-300 bg-card">
+              <Card key={`fallback-card-${index}`} className="flex flex-col shadow-lg hover:shadow-primary/20 transition-shadow duration-300 bg-card">
                 <CardHeader>
                   <CardTitle className="text-xl font-headline text-primary cursor-default">{title}</CardTitle>
                 </CardHeader>
@@ -208,6 +207,7 @@ export function BlogList() {
                   <AnimatePresence>
                     {isExpanded && postContent && (
                       <motion.div
+                        key={`fallback-content-details-${index}`}
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
@@ -215,12 +215,13 @@ export function BlogList() {
                         className="mt-4 prose dark:prose-invert max-w-none text-sm overflow-hidden"
                       >
                         {postContent.paragraphs.map((paragraph, pIndex) => (
-                          <p key={pIndex} className="mb-2">{paragraph}</p>
+                          <p key={`fallback-content-paragraph-${index}-${pIndex}`} className="mb-2">{paragraph}</p>
                         ))}
                       </motion.div>
                     )}
                     {isExpanded && !postContent && (
                        <motion.div
+                        key={`fallback-content-nocontent-${index}`}
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
@@ -251,11 +252,11 @@ export function BlogList() {
   return (
     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
       {(blogData.titles || []).map((title, index) => {
-        const isExpanded = expandedPostIndex === index; // This determines if THIS card is expanded
-        const postContent = hardcodedBlogPosts[index]; // Content for THIS card
+        const isExpanded = expandedPostIndex === index;
+        const postContent = hardcodedBlogPosts[index];
 
         return (
-          <Card key={index} className="flex flex-col shadow-lg hover:shadow-primary/20 transition-shadow duration-300 bg-card">
+          <Card key={`card-${index}`} className="flex flex-col shadow-lg hover:shadow-primary/20 transition-shadow duration-300 bg-card">
             <CardHeader>
               <CardTitle className="text-xl font-headline text-primary cursor-default">{title}</CardTitle>
             </CardHeader>
@@ -270,6 +271,7 @@ export function BlogList() {
               <AnimatePresence>
                 {isExpanded && postContent && (
                   <motion.div
+                    key={`content-details-${index}`}
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
@@ -277,12 +279,13 @@ export function BlogList() {
                     className="mt-4 prose dark:prose-invert max-w-none text-sm overflow-hidden"
                   >
                     {postContent.paragraphs.map((paragraph, pIndex) => (
-                      <p key={`content-${index}-${pIndex}`} className="mb-2">{paragraph}</p>
+                      <p key={`content-paragraph-${index}-${pIndex}`} className="mb-2">{paragraph}</p>
                     ))}
                   </motion.div>
                 )}
                 {isExpanded && !postContent && ( 
                   <motion.div
+                    key={`content-nocontent-${index}`}
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
@@ -298,10 +301,10 @@ export function BlogList() {
               <Button 
                 variant="link" 
                 className="text-accent p-0 hover:text-accent/80" 
-                onClick={() => handleToggleExpand(index)} // Crucially, this uses the specific 'index'
+                onClick={() => handleToggleExpand(index)}
               >
                 <span>
-                  {isExpanded ? "Read Less" : "Read More"} {/* Text and icon depend on 'isExpanded' for THIS card */}
+                  {isExpanded ? "Read Less" : "Read More"}
                   {isExpanded ? <ChevronUp className="ml-2 h-4 w-4 inline" /> : <ArrowRight className="ml-2 h-4 w-4 inline" />}
                 </span>
               </Button>
@@ -312,3 +315,4 @@ export function BlogList() {
     </div>
   );
 }
+
