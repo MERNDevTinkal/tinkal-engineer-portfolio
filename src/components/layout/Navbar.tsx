@@ -58,9 +58,9 @@ export function Navbar() {
           <Image
             src={LOGO_PATH}
             alt={`${APP_NAME} Logo`}
-            width={48} 
-            height={48} 
-            className="h-12 w-12 rounded-lg" 
+            width={56} 
+            height={56} 
+            className="h-14 w-14 rounded-lg" // Increased logo size and rounding
             data-ai-hint="website logo"
             priority
           />
@@ -90,7 +90,7 @@ export function Navbar() {
 
         <div className="md:hidden">
           <Button variant="ghost" size="icon" onClick={toggleMenu} aria-label="Toggle menu">
-            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {isOpen ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />} {/* Icon size for menu toggle */}
           </Button>
         </div>
       </div>

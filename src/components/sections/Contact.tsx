@@ -155,12 +155,12 @@ export function Contact() {
           </p>
           <div className="space-y-3">
             <Link href={`mailto:${AUTHOR_EMAIL}`} className="flex items-center group">
-              <CONTACT_DETAILS.Icon className="h-5 w-5 mr-3 text-accent group-hover:text-primary transition-colors duration-300 ease-in-out" />
+              <CONTACT_DETAILS.Icon className="h-6 w-6 mr-3 text-accent group-hover:text-primary transition-colors duration-300 ease-in-out" /> {/* Increased icon size */}
               <span className="text-foreground group-hover:text-primary transition-colors duration-300 ease-in-out">{AUTHOR_EMAIL}</span>
             </Link>
             {CONTACT_DETAILS.phone && (
                <div className="flex items-center">
-                <CONTACT_DETAILS.PhoneIcon className="h-5 w-5 mr-3 text-accent" />
+                <CONTACT_DETAILS.PhoneIcon className="h-6 w-6 mr-3 text-accent" /> {/* Increased icon size */}
                 <span className="text-foreground">{CONTACT_DETAILS.phone}</span>
               </div>
             )}
@@ -172,9 +172,9 @@ export function Contact() {
                 whileHover={{ scale: 1.2, rotate: 5 }}
                 whileTap={{ scale: 0.9 }}
               >
-              <Button variant="outline" size="icon" asChild>
+              <Button variant="outline" size="icon" asChild className="h-11 w-11"> {/* Custom size for social icons */}
                 <Link href={href} target="_blank" rel="noopener noreferrer" aria-label={name}>
-                  <Icon className="h-6 w-6 text-muted-foreground hover:text-primary transition-colors duration-300 ease-in-out" />
+                  <Icon className="h-6 w-6 text-muted-foreground hover:text-primary transition-colors duration-300 ease-in-out" /> {/* Increased icon size */}
                 </Link>
               </Button>
               </motion.div>
@@ -210,7 +210,7 @@ export function Contact() {
             <Textarea id="message" {...register("message")} placeholder="Your message here..." rows={5} className="mt-1" />
             {errors.message && <p className="mt-1 text-xs text-destructive">{errors.message.message}</p>}
           </div>
-          <Button type="submit" disabled={isSubmitting} className="w-full shadow-md">
+          <Button type="submit" disabled={isSubmitting} className="w-full shadow-md transform hover:scale-105">
             {isSubmitting ? "Sending..." : "Send Message"}
           </Button>
            {(EMAILJS_CONFIG.serviceId.includes("YOUR_") || EMAILJS_CONFIG.templateId.includes("YOUR_") || EMAILJS_CONFIG.publicKey.includes("YOUR_") || (process.env.NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL && process.env.NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL.includes("YOUR_")) ) && (

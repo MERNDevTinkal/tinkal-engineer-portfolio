@@ -111,7 +111,7 @@ export function Hero() {
             <Button size="lg" asChild className="shadow-lg hover:shadow-primary/50 transition-all duration-300 ease-in-out transform hover:scale-105">
               <Link href={RESUME_PATH} target="_blank" download>
                 <span>
-                  <Download className="mr-2 h-5 w-5 inline" />
+                  <Download className="mr-2 h-5 w-5 inline" /> {/* Default icon size from button.tsx will apply */}
                   Download Resume
                 </span>
               </Link>
@@ -120,7 +120,7 @@ export function Hero() {
               <Link href="#contact">
                 <span>
                   Contact Me
-                  <ArrowRight className="ml-2 h-5 w-5 inline" />
+                  <ArrowRight className="ml-2 h-5 w-5 inline" /> {/* Default icon size from button.tsx will apply */}
                 </span>
               </Link>
             </Button>
@@ -133,14 +133,14 @@ export function Hero() {
             {SOCIAL_LINKS.map(({ name, Icon, href }) => (
                <motion.div
                 key={name}
-                whileHover={{ scale: 1.25, rotate: 5, y: -2 }}
-                whileTap={{ scale: 0.9 }}
+                whileHover={{ scale: 1.2, rotate: 3, y: -2 }} // Adjusted hover for social icons
+                whileTap={{ scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
-                <Button variant="ghost" size="icon" asChild>
+                <Button variant="ghost" size="icon" asChild className="h-12 w-12"> {/* Custom size for Hero social icons */}
                   <Link href={href} target="_blank" rel="noopener noreferrer" aria-label={name}>
                     <span>
-                      <Icon className="h-7 w-7 text-muted-foreground hover:text-primary transition-colors duration-300 ease-in-out" />
+                      <Icon className="h-8 w-8 text-muted-foreground hover:text-primary" /> {/* Increased icon size */}
                     </span>
                   </Link>
                 </Button>

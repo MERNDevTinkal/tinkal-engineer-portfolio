@@ -29,7 +29,7 @@ export function Projects() {
         <Button asChild size="lg" className="shadow-lg hover:shadow-primary/50 transition-shadow duration-300 ease-in-out transform hover:scale-105">
           <Link href={githubProfileUrl} target="_blank" rel="noopener noreferrer">
             <span>
-              <Github className="mr-2 h-5 w-5 inline" />
+              <Github className="mr-2 h-5 w-5 inline" /> {/* Default icon size from button.tsx */}
               View More on GitHub
             </span>
           </Link>

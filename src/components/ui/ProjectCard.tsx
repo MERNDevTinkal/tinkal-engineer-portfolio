@@ -75,22 +75,25 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
         </CardContent>
         <CardFooter className="mt-auto pt-4 pb-5 px-5 grid grid-cols-2 gap-3">
           {hasValidLiveDemo ? (
-            <Button asChild variant="outline" className="w-full">
+            <Button asChild variant="outline" className="w-full transform hover:scale-105">
               <Link href={project.liveDemoUrl!} target="_blank" rel="noopener noreferrer">
                 <span>
-                  <ExternalLink className="mr-2 h-4 w-4" /> Live Demo
+                  <ExternalLink className="mr-2 h-4 w-4" /> {/* Default icon size from button.tsx */}
+                  Live Demo
                 </span>
               </Link>
             </Button>
           ) : (
-            <Button variant="outline" className="w-full" onClick={handleLiveDemoClick}>
-              <ExternalLink className="mr-2 h-4 w-4 opacity-50" /> Live Demo
+            <Button variant="outline" className="w-full transform hover:scale-105" onClick={handleLiveDemoClick}>
+              <ExternalLink className="mr-2 h-4 w-4 opacity-50" /> {/* Default icon size from button.tsx */}
+              Live Demo
             </Button>
           )}
-          <Button asChild variant="default" className="w-full">
+          <Button asChild variant="default" className="w-full transform hover:scale-105">
             <Link href={project.githubRepoUrl} target="_blank" rel="noopener noreferrer">
               <span>
-                <Github className="mr-2 h-4 w-4" /> GitHub
+                <Github className="mr-2 h-4 w-4" /> {/* Default icon size from button.tsx */}
+                GitHub
               </span>
             </Link>
           </Button>

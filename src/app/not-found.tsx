@@ -1,6 +1,6 @@
 
 import Link from 'next/link';
-import { motion } from 'framer-motion'; 
+import { motion } from 'framer-motion';
 import { FileQuestion, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { SectionWrapper } from '@/components/ui/SectionWrapper';
@@ -12,14 +12,14 @@ import { SectionWrapper } from '@/components/ui/SectionWrapper';
 export default function NotFoundPage() {
   return (
     <SectionWrapper id="not-found-page" className="min-h-screen flex items-center justify-center bg-background">
-      {/* 
+      {/*
       If using framer-motion client-side, uncomment this and "use client"
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="text-center p-8 max-w-md w-full bg-card rounded-xl shadow-2xl"
-      > 
+      >
       */}
       <div className="text-center p-8 max-w-md w-full bg-card rounded-xl shadow-2xl">
         <FileQuestion className="mx-auto h-16 w-16 text-primary mb-6" />
@@ -31,10 +31,8 @@ export default function NotFoundPage() {
         </p>
         <Button asChild size="lg" className="shadow-md">
           <Link href="/">
-            <span>
-              <Home className="mr-2 h-5 w-5" />
-              Go to Homepage
-            </span>
+            <Home className="mr-2 h-5 w-5" />
+            Go to Homepage
           </Link>
         </Button>
       </div>

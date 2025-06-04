@@ -54,10 +54,8 @@ export default function ErrorPage({
           </Button>
           <Button asChild size="lg" className="shadow-md">
             <Link href="/">
-              <span>
-                <Home className="mr-2 h-5 w-5" />
-                Go to Homepage
-              </span>
+              <Home className="mr-2 h-5 w-5" />
+              Go to Homepage
             </Link>
           </Button>
         </div>

@@ -33,7 +33,7 @@ export function About() {
       <SectionHeader title="About Me" Icon={UserCircle2} />
       <div className="grid md:grid-cols-5 gap-12 items-start mb-16">
         <motion.div
-          className="md:col-span-2" 
+          className="md:col-span-2 space-y-6" // Added space-y-6 for spacing between images
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
@@ -48,6 +48,7 @@ export function About() {
             data-ai-hint={ABOUT_ME.image.dataAiHint}
             priority
           />
+          {/* Removed second image tech-stackmern.png from here */}
         </motion.div>
         <motion.div
           className="md:col-span-3 space-y-6"
@@ -66,11 +67,11 @@ export function About() {
           </div>
           <div className="space-y-2">
             <div className="flex items-center text-muted-foreground">
-              <ABOUT_ME.IconLocation className="h-5 w-5 mr-2 text-accent" />
+              <ABOUT_ME.IconLocation className="h-6 w-6 mr-2 text-accent" /> {/* Increased icon size */}
               <span>{ABOUT_ME.location}</span>
             </div>
             <div className="flex items-center text-muted-foreground">
-              <ABOUT_ME.IconRelocation className="h-5 w-5 mr-2 text-accent" />
+              <ABOUT_ME.IconRelocation className="h-6 w-6 mr-2 text-accent" /> {/* Increased icon size */}
               <span>{ABOUT_ME.relocation}</span>
             </div>
           </div>
@@ -180,10 +181,10 @@ export function About() {
                   </CardHeader>
                   {cert.credentialUrl && cert.credentialUrl !== "#" && (
                     <CardFooter className="mt-auto pt-4">
-                      <Button asChild variant="outline" className="w-full">
+                      <Button asChild variant="outline" className="w-full transform hover:scale-105">
                         <Link href={cert.credentialUrl} target="_blank" rel="noopener noreferrer">
                           <span>
-                            <ExternalLink className="mr-2 h-4 w-4" />
+                            <ExternalLink className="mr-2 h-4 w-4" /> {/* Default icon size from button.tsx */}
                             View Credential
                           </span>
                         </Link>
