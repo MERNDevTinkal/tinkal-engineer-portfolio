@@ -37,7 +37,57 @@ export const HERO_TITLES = [
   "Node.js Architect",
   "TypeScript Advocate",
   "AI Integration Specialist",
-  "Innovative Problem Solver"
+  "Innovative Problem Solver",
+  "End-to-End Application Developer",
+  "Versatile Software Engineer",
+  "Cross-Functional Developer",
+  "Dynamic Web App Creator",
+  "Interactive UI Developer",
+  "Responsive Design Expert",
+  "Frontend Performance Optimizer",
+  "Modern JavaScript Artisan",
+  "Scalable Backend Developer",
+  "API Design Specialist",
+  "Server-Side Logic Expert",
+  "Database Integration Pro",
+  "Cloud-Native Developer",
+  "Agile Software Developer",
+  "DevOps-Minded Engineer",
+  "E-commerce Solutions Developer",
+  "SaaS Application Engineer",
+  "Real-time Application Developer",
+  "Secure Software Developer",
+  "AI-Powered Solutions Developer",
+  "Intelligent Systems Engineer",
+  "Machine Learning Implementer",
+  "Smart Application Architect",
+  "Next-Gen Web Innovator",
+  "Complex Problem Tackler",
+  "User-Centric Solutions Builder",
+  "Technology Modernization Expert",
+  "Digital Experience Enhancer",
+  "Code Craftsman",
+  "Digital Product Developer",
+  "Performance-Driven Developer",
+  "Proficient Full Stack Specialist",
+  "Next.js Application Architect",
+  "Creative React Developer",
+  "Robust Node.js Developer",
+  "GraphQL API Developer",
+  "Headless CMS Integrator",
+  "Progressive Web App (PWA) Developer",
+  "Solution-Oriented Programmer",
+  "Web Performance Guru",
+  "Cloud Solutions Developer",
+  "Full Stack JavaScript Expert",
+  "Serverless Application Developer",
+  "API-First Developer",
+  "User Experience Advocate",
+  "Agile Methodology Practitioner",
+  "Scalable Systems Designer",
+  "Code Quality Champion",
+  "Emerging Tech Explorer",
+  "Digital Transformation Agent"
 ];
 
 export const PROFILE_IMAGES = [
@@ -199,7 +249,7 @@ export const TECH_STACK: TechStackItem[] = [
   { name: "Bcrypt", Icon: ShieldCheck },
   { name: "Multer", Icon: UploadCloud },
   { name: "Nodemailer", Icon: Mail },
-  { name: "EmailJS", Icon: Send }, // Added
+  { name: "EmailJS", Icon: Send }, 
   // Databases
   { name: "MongoDB", Icon: Database },
   { name: "Mongoose", Icon: Database },
@@ -211,16 +261,16 @@ export const TECH_STACK: TechStackItem[] = [
   { name: "Postman", Icon: Settings2 }, 
   { name: "Redux DevTools", Icon: Wrench }, 
   { name: "DevOps", Icon: TerminalSquare },
-  { name: "Basic CI/CD", Icon: Layers }, // Added
-  { name: "Kubernetes", Icon: ServerCog }, // Added
+  { name: "Basic CI/CD", Icon: Layers }, 
+  { name: "Kubernetes", Icon: ServerCog }, 
   // AI & Cloud
   { name: "Firebase", Icon: Wand2 }, 
   { name: "Genkit AI", Icon: Wand2 },
-  { name: "Machine Learning Integration", Icon: Brain }, // Added AI
-  { name: "Natural Language Processing (NLP)", Icon: MessageSquareText }, // Added AI
-  { name: "AI Model Deployment", Icon: Rocket }, // Added AI
-  { name: "Large Language Models (LLMs)", Icon: NotebookText }, // Added AI
-  { name: "Responsible AI & Ethics", Icon: Scale }, // Added AI
+  { name: "Machine Learning Integration", Icon: Brain }, 
+  { name: "Natural Language Processing (NLP)", Icon: MessageSquareText }, 
+  { name: "AI Model Deployment", Icon: Rocket }, 
+  { name: "Large Language Models (LLMs)", Icon: NotebookText }, 
+  { name: "Responsible AI & Ethics", Icon: Scale }, 
   // Methodologies & Other
   { name: "Responsive Design", Icon: Smartphone },
   { name: "Clean Architecture", Icon: Layers }, 
@@ -307,3 +357,6 @@ export const EMAILJS_CONFIG = {
 
     
 
+
+
+    
