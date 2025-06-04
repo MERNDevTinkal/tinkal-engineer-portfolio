@@ -4,7 +4,7 @@
 import type { LucideIcon } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
-import { Bot, UserCircle2 } from 'lucide-react';
+import { Bot, UserCircle2, Smile } from 'lucide-react'; // Added Smile
 import { AUTHOR_NAME } from '@/lib/data';
 
 interface ChatMessageProps {
@@ -22,7 +22,7 @@ export function ChatMessage({ sender, text, isLoading = false }: ChatMessageProp
       {!isUser && (
         <Avatar className="h-8 w-8 border border-primary/50">
           <AvatarFallback className="bg-primary text-primary-foreground">
-            <Bot className="h-5 w-5" />
+            <Smile className="h-5 w-5" /> {/* Changed Bot to Smile icon */}
           </AvatarFallback>
         </Avatar>
       )}
@@ -59,3 +59,5 @@ export function ChatMessage({ sender, text, isLoading = false }: ChatMessageProp
     </div>
   );
 }
+
+    

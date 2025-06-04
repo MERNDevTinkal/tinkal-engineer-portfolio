@@ -1,7 +1,8 @@
+
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Bot, Send, Loader2, X, MessageSquarePlus, ChevronDown, ChevronUp, Trash2 } from "lucide-react";
+import { Bot, Send, Loader2, X, MessageSquarePlus, ChevronDown, ChevronUp, Trash2, Smile } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -30,12 +31,12 @@ const INITIAL_SUGGESTIONS = [
   `Is ${AUTHOR_NAME} open to relocation?`,
 ];
 
-const LOCAL_STORAGE_KEY = 'portfolioChatHistory';
+const LOCAL_STORAGE_KEY = 'portfolioChatHistory_Sora'; // Changed key to avoid conflicts if old one existed
 
 const initialBotMessage: Message = {
-  id: "initial-bot-message",
+  id: "initial-bot-message-sora",
   sender: "bot",
-  text: `Hello! I'm ${AUTHOR_NAME}'s AI assistant. Ask me about skills, projects, experience, or how to get in touch! You can also use the suggestions.`,
+  text: `Hello! I'm Sora, Tinkal's personal AI assistant. Ask me about his skills, projects, experience, or how to get in touch! You can also use the suggestions.`,
 };
 
 export function ChatbotDialog() {
@@ -46,10 +47,9 @@ export function ChatbotDialog() {
   const [currentSuggestions, setCurrentSuggestions] = useState<string[]>([]);
   const [suggestionsExpanded, setSuggestionsExpanded] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null); // Ref for the div at the end of messages
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
-  // Handle body scroll lock
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -61,7 +61,6 @@ export function ChatbotDialog() {
     };
   }, [isOpen]);
 
-  // Load messages from localStorage or set initial message when dialog opens
   useEffect(() => {
     if (isOpen) {
       if (typeof window !== 'undefined') {
@@ -71,43 +70,55 @@ export function ChatbotDialog() {
             const parsedMessages = JSON.parse(savedMessages);
             if (Array.isArray(parsedMessages) && parsedMessages.length > 0) {
               setMessages(parsedMessages);
+              // Set suggestions based on the last bot message if available
+              const lastBotMessage = parsedMessages.filter(m => m.sender === 'bot' && !m.isLoading).pop();
+              if (lastBotMessage && (lastBotMessage as any).suggestions) {
+                 setCurrentSuggestions((lastBotMessage as any).suggestions.slice(0,4));
+              } else if (parsedMessages.length === 1 && parsedMessages[0].id === initialBotMessage.id) {
+                 setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0, 4));
+              }
             } else {
               setMessages([initialBotMessage]);
+              setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0, 4));
             }
           } else {
             setMessages([initialBotMessage]);
+            setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0, 4));
           }
         } catch (error) {
           console.error("Failed to load chat history from localStorage:", error);
           setMessages([initialBotMessage]);
+          setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0, 4));
         }
-      }
-      if (messages.length <= 1 || !messages.find(msg => msg.sender === 'user')) {
-         setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0, 4));
       }
       setSuggestionsExpanded(false);
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [isOpen]);
 
-  // Save messages to localStorage whenever they change
   useEffect(() => {
     if (isOpen && typeof window !== 'undefined' && messages.length > 0) {
       try {
-        if (messages.length === 1 && messages[0].id === "initial-bot-message" && !messages[0].isLoading && !messages.find(msg => msg.sender === 'user')) {
-           // localStorage.removeItem(LOCAL_STORAGE_KEY); 
-        } else {
-          localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(messages));
-        }
+        // Attach suggestions to the last bot message before saving
+        const messagesToSave = messages.map(msg => {
+          if (msg.id === messages.filter(m => m.sender ==='bot' && !m.isLoading).pop()?.id) {
+            return {...msg, suggestions: currentSuggestions };
+          }
+          return msg;
+        });
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(messagesToSave));
       } catch (error) {
         console.error("Failed to save chat history to localStorage:", error);
       }
     }
-  }, [messages, isOpen]);
+  }, [messages, currentSuggestions, isOpen]);
 
-  // Auto-scroll to the latest message
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+     if (messagesEndRef.current) {
+        requestAnimationFrame(() => {
+            messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        });
+    }
   }, [messages]);
 
 
@@ -232,7 +243,7 @@ export function ChatbotDialog() {
           className="rounded-full h-14 w-14 shadow-lg hover:scale-110 transition-transform bg-primary hover:bg-primary/90"
           aria-label="Toggle Chatbot"
         >
-          {isOpen ? <X className="h-7 w-7" /> : <Bot className="h-7 w-7" />}
+          {isOpen ? <X className="h-7 w-7" /> : <Smile className="h-7 w-7" />} {/* Changed icon for closed state */}
         </Button>
       </motion.div>
 
@@ -245,10 +256,10 @@ export function ChatbotDialog() {
             exit="closed"
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className="fixed bottom-24 right-6 z-40 w-full max-w-md rounded-xl bg-background shadow-2xl border border-border overflow-hidden flex flex-col"
-            style={{ height: 'min(75vh, 700px)' }} // Increased max height slightly
+            style={{ height: 'min(75vh, 720px)' }} 
           >
             <header className="bg-card p-3 border-b border-border flex items-center justify-between">
-              <h3 className="font-semibold text-lg text-primary font-headline pl-2">Chat with {AUTHOR_NAME}'s Assistant</h3>
+              <h3 className="font-semibold text-lg text-primary font-headline pl-2">Sora - Tinkal's Assistant</h3>
               <div className="flex items-center gap-1">
                 <Button variant="ghost" size="icon" onClick={handleClearChat} className="h-8 w-8 text-muted-foreground hover:text-destructive" aria-label="Clear Chat">
                   <Trash2 className="h-5 w-5" />
@@ -306,7 +317,7 @@ export function ChatbotDialog() {
               {messages.map((msg) => (
                 <ChatMessage key={msg.id} sender={msg.sender} text={msg.text} isLoading={msg.isLoading} />
               ))}
-              <div ref={messagesEndRef} /> {/* Anchor for scrolling */}
+              <div ref={messagesEndRef} />
             </ScrollArea>
 
             <footer className="p-3 border-t border-border bg-card">
@@ -320,7 +331,7 @@ export function ChatbotDialog() {
                 <Input
                   ref={inputRef}
                   type="text"
-                  placeholder={`Ask about ${AUTHOR_NAME}...`}
+                  placeholder="Ask Sora about Tinkal..."
                   value={currentInput}
                   onChange={(e) => setCurrentInput(e.target.value)}
                   disabled={isLoading}
@@ -338,3 +349,5 @@ export function ChatbotDialog() {
     </>
   );
 }
+
+    
