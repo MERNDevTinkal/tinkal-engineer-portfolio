@@ -54,13 +54,13 @@ export function Navbar() {
       className="fixed top-0 left-0 right-0 z-50 w-full"
     >
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
-        <Link href="#home" className="flex items-center space-x-2 text-2xl font-bold font-headline text-primary">
+        <Link href="#home" className="flex items-center space-x-3 text-2xl font-bold font-headline text-primary">
           <Image
             src={LOGO_PATH}
             alt={`${APP_NAME} Logo`}
             width={48} 
             height={48} 
-            className="h-12 w-12 rounded-md" 
+            className="h-12 w-12 rounded-lg" 
             data-ai-hint="website logo"
             priority
           />

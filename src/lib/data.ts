@@ -93,17 +93,16 @@ export const HERO_TITLES = [
   "Digital Transformation Agent"
 ];
 
-// Ensure these images are directly in the /public folder.
-// IMPORTANT: .HEIC files have limited browser support. Converted profile-3 and profile-4 to .jpg for better compatibility.
-// You will need to provide profile-3.jpg and profile-4.jpg in your public folder.
+// IMPORTANT: If using .HEIC files, ensure you convert them to .jpg or .png for better browser compatibility.
+// The paths below assume .jpg files are in the public folder.
 export const PROFILE_IMAGES = [
   { src: "/profile-1.jpg", alt: "Tinkal Kumar - Professional Headshot", dataAiHint: "professional man" },
   { src: "/profile-2.jpg", alt: "Tinkal Kumar - Working at a desk", dataAiHint: "developer coding" },
-  { src: "/profile-3.jpg", alt: "Tinkal Kumar - Outdoor casual portrait", dataAiHint: "casual man" }, // Was .HEIC, changed to .jpg
-  { src: "/profile-4.jpg", alt: "Tinkal Kumar - Tech event or conference", dataAiHint: "tech conference" }, // Was .HEIC, changed to .jpg
+  { src: "/profile-3.jpg", alt: "Tinkal Kumar - Outdoor casual portrait", dataAiHint: "casual man" }, // Ensure this is profile-3.jpg, not .HEIC
+  { src: "/profile-4.jpg", alt: "Tinkal Kumar - Tech event or conference", dataAiHint: "tech conference" }, // Ensure this is profile-4.jpg, not .HEIC
 ];
 
-export const RESUME_PATH = "/Tinkal_Resume.pdf"; // Assumes Tinkal_Resume.pdf is directly in /public
+export const RESUME_PATH = "/Tinkal_Resume.pdf"; 
 
 export const ABOUT_ME = {
   summary: `An Indian software engineer hailing from Jamui district, Bihar, I am a results-driven MERN Stack Developer with expertise in building scalable full-stack web applications using MongoDB, Express.js, React.js, and Node.js. Passionate about clean code, component reusability, performance optimization, and collaborating on real-world client projects. I thrive on solving complex challenges with innovation and continuously learning new technologies.`,
@@ -114,7 +113,7 @@ export const ABOUT_ME = {
   IconRelocation: Briefcase,
   IconAbout: UserCircle2,
   image: {
-    src: "/Tech-focused-image.png", // Assumes Tech-focused-image.png is directly in /public
+    src: "/Tech-focused-image.png", 
     alt: "Tinkal Kumar - Tech focused image",
     dataAiHint: "technology developer",
   },
