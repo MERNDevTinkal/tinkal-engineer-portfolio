@@ -89,7 +89,6 @@ export function Contact() {
       }
       
       if (!CONTACT_FORM_RECEIVER_EMAIL || CONTACT_FORM_RECEIVER_EMAIL.includes("YOUR_") || CONTACT_FORM_RECEIVER_EMAIL === AUTHOR_EMAIL && (process.env.NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL === undefined || process.env.NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL.includes("YOUR_"))) {
-         // console.warn("Warning: NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL is not set or is using a placeholder/fallback. Ensure it's correctly configured in your .env file for production.");
          if (CONTACT_FORM_RECEIVER_EMAIL.includes("YOUR_")) {
             throw new Error("The contact form receiver email (NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL) is not configured. Please set it in your .env file.");
          }
@@ -110,8 +109,8 @@ export function Contact() {
         EMAILJS_CONFIG.publicKey
       );
       toast({
-        title: "Message Sent!",
-        description: "Thanks for reaching out. I'll get back to you soon.",
+        title: "Message Sent Successfully! ✨",
+        description: `Thank you for reaching out, ${data.name}! Your message has been delivered to Tinkal. He'll be in touch soon.`,
         variant: "default",
       });
       reset({ name: '', email: '', phone: '', message: '' }); 
@@ -122,12 +121,11 @@ export function Contact() {
         localStorage.removeItem(LOCALSTORAGE_KEYS.MESSAGE);
       }
     } catch (error) {
-      // console.error("EmailJS Error:", error);
       const errorMessage = (error instanceof Error && (error.message.includes("credentials") || error.message.includes("receiver email")))
         ? error.message
         : "Failed to send message. Please try again later or contact me directly.";
       toast({
-        title: "Error",
+        title: "Error Sending Message",
         description: errorMessage,
         variant: "destructive",
       });
@@ -225,3 +223,4 @@ export function Contact() {
     </SectionWrapper>
   );
 }
+
