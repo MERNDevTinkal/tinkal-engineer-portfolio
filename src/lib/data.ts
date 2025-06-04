@@ -1,8 +1,8 @@
 
 import type { LucideIcon } from 'lucide-react';
-import { 
-  Github, Linkedin, Briefcase, MapPin, Mail, Phone, CodeXml, Database, 
-  ServerCog, Wand2, Palette, Settings2, ShoppingCart, FileText, BookOpen, 
+import {
+  Github, Linkedin, Briefcase, MapPin, Mail, Phone, CodeXml, Database,
+  ServerCog, Wand2, Palette, Settings2, ShoppingCart, FileText, BookOpen,
   GraduationCap, Building, Award, ExternalLink, UserCircle2, KeyRound, ShieldCheck,
   UploadCloud, Smartphone, Layers, Puzzle, Lightbulb, TerminalSquare, GitCommit, Wrench,
   Send, Brain, MessageSquareText, Rocket, NotebookText, Scale, Instagram
@@ -15,7 +15,7 @@ export const AUTHOR_EMAIL = "tinkalkumar67693@gmail.com"; // General author emai
 // Email address that will RECEIVE contact form submissions. Configured via .env
 export const CONTACT_FORM_RECEIVER_EMAIL = process.env.NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL || AUTHOR_EMAIL;
 
-export const LOGO_PATH = "/logo.png"; // Site logo, directly in public
+export const LOGO_PATH = "/tech-stackmern.png"; // Updated logo path
 
 export const NAV_LINKS = [
   { name: "Home", href: "#home" },
@@ -96,11 +96,11 @@ export const HERO_TITLES = [
 export const PROFILE_IMAGES = [
   { src: "/profile-1.jpg", alt: "Tinkal Kumar - Professional Headshot", dataAiHint: "professional man" },
   { src: "/profile-2.jpg", alt: "Tinkal Kumar - Working at a desk", dataAiHint: "developer coding" },
-  { src: "/profile-3.jpg", alt: "Tinkal Kumar - Outdoor casual portrait", dataAiHint: "casual man" },
-  { src: "/profile-4.jpg", alt: "Tinkal Kumar - Tech event or conference", dataAiHint: "tech conference" },
+  { src: "/profile-3.HEIC", alt: "Tinkal Kumar - Outdoor casual portrait", dataAiHint: "casual man heic" },
+  { src: "/profile-4.HEIC", alt: "Tinkal Kumar - Tech event or conference", dataAiHint: "tech conference heic" },
 ];
 
-export const RESUME_PATH = "/Tinkal_Resume.pdf"; // Directly in public
+export const RESUME_PATH = "/Tinkal_Resume.pdf"; // Correct path if file is directly in public
 
 export const ABOUT_ME = {
   summary: `An Indian software engineer hailing from Jamui district, Bihar, I am a results-driven MERN Stack Developer with expertise in building scalable full-stack web applications using MongoDB, Express.js, React.js, and Node.js. Passionate about clean code, component reusability, performance optimization, and collaborating on real-world client projects. I thrive on solving complex challenges with innovation and continuously learning new technologies.`,
@@ -111,9 +111,9 @@ export const ABOUT_ME = {
   IconRelocation: Briefcase,
   IconAbout: UserCircle2,
   image: {
-    src: "/about-me-image.jpg", // Assuming this is also directly in public
-    alt: "Tinkal Kumar at work or a professional setting",
-    dataAiHint: "developer workspace",
+    src: "/Tech-focused-image.png", // Updated About Me image
+    alt: "Tinkal Kumar - Tech focused image",
+    dataAiHint: "technology developer",
   },
 };
 
@@ -155,7 +155,7 @@ export const WORK_EXPERIENCE_DATA: ExperienceEntry[] = [
   {
     title: "MERN Stack Developer",
     company: "OweBest Technologies Pvt Ltd",
-    duration: "Feb 2025 – Present", 
+    duration: "Feb 2025 – Present",
     location: "Jaipur, Rajasthan",
     responsibilities: [
       "Developing and maintaining scalable full-stack web applications using the MERN stack (MongoDB, Express.js, React.js, Node.js) and TypeScript.",
@@ -172,7 +172,7 @@ export const WORK_EXPERIENCE_DATA: ExperienceEntry[] = [
     company: "Apex Hospitals, Jaipur",
     duration: "Aug 2024 – Feb 2025",
     location: "Jaipur, Rajasthan",
-    responsibilities: [ 
+    responsibilities: [
       "Managed and updated content for the hospital's official website and internal applications, ensuring accuracy and timeliness.",
       "Provided technical support and troubleshooting for the Hospital Management System (HMS), resolving issues to ensure smooth operations.",
       "Facilitated communication between medical staff and software vendors to address system requirements and enhancements.",
@@ -222,7 +222,7 @@ export const CERTIFICATIONS_DATA: CertificationEntry[] = [
   },
   {
     name: "Skills India Program Completion",
-    issuingOrganization: "Skills India", 
+    issuingOrganization: "Skills India",
     credentialUrl: "#", // Replace # with your actual credential URL or remove if N/A
     Icon: Award,
   },
@@ -231,7 +231,7 @@ export const CERTIFICATIONS_DATA: CertificationEntry[] = [
 
 export interface TechStackItem {
   name: string;
-  Icon: LucideIcon | string; 
+  Icon: LucideIcon | string;
 }
 
 export const TECH_STACK: TechStackItem[] = [
@@ -243,7 +243,7 @@ export const TECH_STACK: TechStackItem[] = [
   { name: "HTML5", Icon: CodeXml },
   { name: "CSS3", Icon: Palette },
   { name: "Tailwind CSS", Icon: Palette },
-  { name: "Redux", Icon: CodeXml }, 
+  { name: "Redux", Icon: CodeXml },
   { name: "Zustand", Icon: CodeXml },
   // Backend
   { name: "Node.js", Icon: ServerCog },
@@ -253,7 +253,7 @@ export const TECH_STACK: TechStackItem[] = [
   { name: "Bcrypt", Icon: ShieldCheck },
   { name: "Multer", Icon: UploadCloud },
   { name: "Nodemailer", Icon: Mail },
-  { name: "EmailJS", Icon: Send }, 
+  { name: "EmailJS", Icon: Send },
   // Databases
   { name: "MongoDB", Icon: Database },
   { name: "Mongoose", Icon: Database },
@@ -262,22 +262,22 @@ export const TECH_STACK: TechStackItem[] = [
   // Tools & DevOps
   { name: "Git", Icon: GitCommit },
   { name: "GitHub", Icon: Github },
-  { name: "Postman", Icon: Settings2 }, 
-  { name: "Redux DevTools", Icon: Wrench }, 
+  { name: "Postman", Icon: Settings2 },
+  { name: "Redux DevTools", Icon: Wrench },
   { name: "DevOps", Icon: TerminalSquare },
-  { name: "Basic CI/CD", Icon: Layers }, 
-  { name: "Kubernetes", Icon: ServerCog }, 
+  { name: "Basic CI/CD", Icon: Layers },
+  { name: "Kubernetes", Icon: ServerCog },
   // AI & Cloud
-  { name: "Firebase", Icon: Wand2 }, 
+  { name: "Firebase", Icon: Wand2 },
   { name: "Genkit AI", Icon: Wand2 },
-  { name: "Machine Learning Integration", Icon: Brain }, 
-  { name: "Natural Language Processing (NLP)", Icon: MessageSquareText }, 
-  { name: "AI Model Deployment", Icon: Rocket }, 
-  { name: "Large Language Models (LLMs)", Icon: NotebookText }, 
-  { name: "Responsible AI & Ethics", Icon: Scale }, 
+  { name: "Machine Learning Integration", Icon: Brain },
+  { name: "Natural Language Processing (NLP)", Icon: MessageSquareText },
+  { name: "AI Model Deployment", Icon: Rocket },
+  { name: "Large Language Models (LLMs)", Icon: NotebookText },
+  { name: "Responsible AI & Ethics", Icon: Scale },
   // Methodologies & Other
   { name: "Responsive Design", Icon: Smartphone },
-  { name: "Clean Architecture", Icon: Layers }, 
+  { name: "Clean Architecture", Icon: Layers },
   { name: "Component Reusability", Icon: Puzzle },
   { name: "Problem Solving", Icon: Lightbulb },
 ];
@@ -286,9 +286,9 @@ export interface Project {
   id: string;
   title: string;
   description: string;
-  liveDemoUrl?: string; 
+  liveDemoUrl?: string;
   githubRepoUrl: string;
-  techStack: TechStackItem[]; 
+  techStack: TechStackItem[];
   Icon: LucideIcon;
 }
 
@@ -330,11 +330,11 @@ export const PROJECTS_DATA: Project[] = [
     id: "e-commerce",
     title: "E-commerce Frontend (Redux)",
     description: "A dynamic online shopping experience with product listings, cart functionality, and efficient global state management using Redux Toolkit, styled with Tailwind CSS for a modern, responsive UI.",
-    liveDemoUrl: "https://ecommerce-using-redux-alpha.vercel.app/", 
+    liveDemoUrl: "https://ecommerce-using-redux-alpha.vercel.app/",
     githubRepoUrl: "https://github.com/MERNDevTinkal/Ecommerce-Using-Redux",
     techStack: [
       { name: "React", Icon: CodeXml },
-      { name: "Redux Toolkit", Icon: CodeXml }, 
+      { name: "Redux Toolkit", Icon: CodeXml },
       { name: "Tailwind CSS", Icon: Palette },
       { name: "JavaScript", Icon: CodeXml },
     ],
