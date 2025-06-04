@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { generateBlogTitles, type GenerateBlogTitlesOutput } from "@/ai/flows/generate-blog-titles";
+import { generateBlogContent, type GenerateBlogContentInput, type GenerateBlogContentOutput } from "@/ai/flows/generate-blog-content-flow";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ChevronUp, Loader2, AlertTriangle } from "lucide-react";
@@ -18,7 +19,7 @@ interface CachedBlogTitles {
   data: GenerateBlogTitlesOutput;
 }
 
-// Hardcoded blog posts (content for expansion)
+// Hardcoded blog posts (content for expansion - for the first few items)
 const hardcodedBlogPosts = [
   {
     id: "0",
@@ -109,14 +110,18 @@ const FALLBACK_TITLES: GenerateBlogTitlesOutput = {
 
 export function BlogList() {
   const [blogData, setBlogData] = useState<GenerateBlogTitlesOutput>({ titles: [] });
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [isTitleLoading, setIsTitleLoading] = useState(true);
+  const [titleError, setTitleError] = useState<string | null>(null);
+  
   const [expandedPostIndex, setExpandedPostIndex] = useState<number | null>(null);
+  const [aiGeneratedContent, setAiGeneratedContent] = useState<Map<number, string>>(new Map());
+  const [aiContentLoading, setAiContentLoading] = useState<Set<number>>(new Set());
+  const [aiContentError, setAiContentError] = useState<Map<number, string>>(new Map());
 
   useEffect(() => {
     async function loadBlogTitles() {
-      setIsLoading(true);
-      setError(null);
+      setIsTitleLoading(true);
+      setTitleError(null);
 
       try {
         const cachedItem = localStorage.getItem(BLOG_TITLES_CACHE_KEY);
@@ -126,7 +131,7 @@ export function BlogList() {
             const validCachedTitles = cached.data.titles.filter(title => typeof title === 'string' && title.trim() !== "").slice(0, 12);
             if (validCachedTitles.length > 0) {
               setBlogData({ titles: validCachedTitles });
-              setIsLoading(false);
+              setIsTitleLoading(false);
               return;
             }
           }
@@ -148,15 +153,15 @@ export function BlogList() {
           }
         } else {
           // console.warn("AI generated no valid titles. Using fallback.");
-          setError("AI could not generate blog titles. Displaying defaults.");
+          setTitleError("AI could not generate blog titles. Displaying defaults.");
           setBlogData(FALLBACK_TITLES);
         }
       } catch (err) {
         // console.error("Error fetching blog titles:", err);
-        setError("Failed to load blog titles. Displaying default topics.");
+        setTitleError("Failed to load blog titles. Displaying default topics.");
         setBlogData(FALLBACK_TITLES);
       } finally {
-        setIsLoading(false);
+        setIsTitleLoading(false);
       }
     }
 
@@ -165,35 +170,99 @@ export function BlogList() {
 
   const placeholderTags = ["Tech", "Development", "DevOps", "AI", "Cloud", "Security", "Web", "Software", "Engineering", "Trends", "Guide", "Insights"];
 
-  const handleToggleExpand = (index: number) => {
+  const handleToggleExpand = async (index: number) => {
     if (expandedPostIndex === index) {
-      setExpandedPostIndex(null);
+      setExpandedPostIndex(null); // Collapse if already expanded
     } else {
-      setExpandedPostIndex(index);
+      setExpandedPostIndex(index); // Expand the clicked post
+      
+      // If it's a post that needs AI content and it's not already loaded/loading/errored
+      if (index >= hardcodedBlogPosts.length && 
+          !aiGeneratedContent.has(index) && 
+          !aiContentLoading.has(index) &&
+          !aiContentError.has(index)) {
+        
+        setAiContentLoading(prev => new Set(prev).add(index));
+        setAiContentError(prev => {
+          const newMap = new Map(prev);
+          newMap.delete(index);
+          return newMap;
+        });
+
+        try {
+          const title = blogData.titles[index];
+          if (!title) {
+            throw new Error("Blog title not found for AI generation.");
+          }
+          const generated: GenerateBlogContentOutput = await generateBlogContent({ title });
+          setAiGeneratedContent(prev => new Map(prev).set(index, generated.content));
+        } catch (error) {
+          // console.error(`Failed to generate content for post index ${index}:`, error);
+          setAiContentError(prev => new Map(prev).set(index, "Failed to load content. Please try again."));
+        } finally {
+          setAiContentLoading(prev => {
+            const newSet = new Set(prev);
+            newSet.delete(index);
+            return newSet;
+          });
+        }
+      }
     }
   };
 
-  if (isLoading) {
+  const renderExpandedContent = (index: number) => {
+    if (index < hardcodedBlogPosts.length) {
+      const post = hardcodedBlogPosts[index];
+      return post.paragraphs.map((paragraph, pIndex) => (
+        <p key={`hardcoded-p-${index}-${pIndex}`} className="mb-2">{paragraph}</p>
+      ));
+    }
+    if (aiContentLoading.has(index)) {
+      return (
+        <>
+          <Skeleton className="h-4 w-full mb-2" />
+          <Skeleton className="h-4 w-5/6 mb-2" />
+          <Skeleton className="h-4 w-3/4 mb-2" />
+        </>
+      );
+    }
+    if (aiContentError.has(index)) {
+      return (
+        <div className="text-destructive flex items-center">
+          <AlertTriangle className="h-4 w-4 mr-2" />
+          {aiContentError.get(index)}
+        </div>
+      );
+    }
+    if (aiGeneratedContent.has(index)) {
+      return aiGeneratedContent.get(index)?.split('\n').map((paragraph, pIndex) => (
+        paragraph.trim() && <p key={`ai-p-${index}-${pIndex}`} className="mb-2">{paragraph}</p>
+      ));
+    }
+    return <p>Click "Read More" to load content.</p>; // Should be covered by generation logic on expand
+  };
+
+  if (isTitleLoading) {
     return (
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:items-start">
-        {Array.from({ length: 6 }).map((_, index) => (
-          <BlogCardSkeleton key={`skeleton-${index}`} />
+        {Array.from({ length: 6 }).map((_, i) => (
+          <BlogCardSkeleton key={`skeleton-card-${i}`} />
         ))}
       </div>
     );
   }
 
-  if (error && (!blogData.titles || blogData.titles.length === 0 || blogData.titles === FALLBACK_TITLES.titles)) {
+  if (titleError && (!blogData.titles || blogData.titles.length === 0 || blogData.titles === FALLBACK_TITLES.titles)) {
     return (
       <div className="text-center py-8 bg-card p-6 rounded-lg shadow-md">
         <AlertTriangle className="mx-auto h-12 w-12 text-destructive mb-4" />
-        <p className="text-destructive mb-4 text-lg font-semibold">{error}</p>
+        <p className="text-destructive mb-4 text-lg font-semibold">{titleError}</p>
         <h3 className="text-xl font-semibold mb-6 text-muted-foreground">Meanwhile, here are some default topics:</h3>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:items-start">
           {FALLBACK_TITLES.titles.map((title, index) => {
-            const isExpanded = expandedPostIndex === index;
-            const postContent = hardcodedBlogPosts[index];
-            const cardKey = `fallback-card-${index}-${title.replace(/\s+/g, '-')}`;
+             const cardKey = `fallback-card-${index}-${title.replace(/\s+/g, '-')}`;
+             const isExpanded = expandedPostIndex === index; // Fallback items use hardcoded content
+             const postContent = hardcodedBlogPosts[index % hardcodedBlogPosts.length]; // Cycle through hardcoded for fallback
             return (
               <Card key={cardKey} className="flex flex-col shadow-lg hover:shadow-primary/20 transition-shadow duration-300 bg-card">
                 <CardHeader>
@@ -225,7 +294,11 @@ export function BlogList() {
                   </AnimatePresence>
                 </CardContent>
                 <CardFooter>
-                  <Button variant="link" className="text-accent p-0 hover:text-accent/80" onClick={() => handleToggleExpand(index)}>
+                   <Button 
+                    variant="link" 
+                    className="text-accent p-0 hover:text-accent/80" 
+                    onClick={() => handleToggleExpand(index)}
+                  >
                     <span>
                       {isExpanded ? "Read Less" : "Read More"}
                       {isExpanded ? <ChevronUp className="ml-2 h-4 w-4 inline" /> : <ArrowRight className="ml-2 h-4 w-4 inline" />}
@@ -244,8 +317,8 @@ export function BlogList() {
     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:items-start">
       {(blogData.titles || []).map((title, index) => {
         const isExpanded = expandedPostIndex === index;
-        const postContent = hardcodedBlogPosts[index]; // Content might be undefined if index > 5
         const cardKey = `card-${index}-${title.replace(/\s+/g, '-')}`;
+        const isLoadingThisCard = aiContentLoading.has(index);
 
         return (
           <Card key={cardKey} className="flex flex-col shadow-lg hover:shadow-primary/20 transition-shadow duration-300 bg-card">
@@ -270,9 +343,7 @@ export function BlogList() {
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                     className="mt-4 prose dark:prose-invert max-w-none text-sm overflow-hidden"
                   >
-                    {postContent ? postContent.paragraphs.map((paragraph, pIndex) => (
-                      <p key={`content-paragraph-${index}-${pIndex}`} className="mb-2">{paragraph}</p>
-                    )) : <p>Full content for this topic is being prepared and will be available soon!</p>}
+                    {renderExpandedContent(index)}
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -282,10 +353,11 @@ export function BlogList() {
                 variant="link" 
                 className="text-accent p-0 hover:text-accent/80" 
                 onClick={() => handleToggleExpand(index)}
+                disabled={isLoadingThisCard}
               >
                 <span>
-                  {isExpanded ? "Read Less" : "Read More"}
-                  {isExpanded ? <ChevronUp className="ml-2 h-4 w-4 inline" /> : <ArrowRight className="ml-2 h-4 w-4 inline" />}
+                  {isLoadingThisCard ? "Loading..." : (isExpanded ? "Read Less" : "Read More")}
+                  {isLoadingThisCard ? <Loader2 className="ml-2 h-4 w-4 inline animate-spin" /> : (isExpanded ? <ChevronUp className="ml-2 h-4 w-4 inline" /> : <ArrowRight className="ml-2 h-4 w-4 inline" />)}
                 </span>
               </Button>
             </CardFooter>
@@ -296,3 +368,4 @@ export function BlogList() {
   );
 }
 
+    
