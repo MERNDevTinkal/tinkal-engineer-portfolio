@@ -4,12 +4,14 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Github, ExternalLink } from "lucide-react";
+import { useState, useEffect } from 'react'; // Import useState and useEffect
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Project } from "@/lib/data";
 import { Badge } from "./badge";
 import { useToast } from "@/hooks/use-toast";
+import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton
 
 interface ProjectCardProps {
   project: Project;
@@ -18,6 +20,11 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project, index }: ProjectCardProps) {
   const { toast } = useToast();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const cardVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -38,6 +45,11 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
         description: "This project is currently in maintenance or undergoing improvements. Please check back later!",
         variant: "default",
       });
+    }
+    // If there's a valid URL, the Link component (if rendered) will handle navigation.
+    // This onClick is primarily for the button rendered when hasValidLiveDemo is false.
+    else if (project.liveDemoUrl && project.liveDemoUrl !== "#" && project.liveDemoUrl.trim() !== "") {
+        window.open(project.liveDemoUrl, '_blank', 'noopener,noreferrer');
     }
   };
 
@@ -73,29 +85,41 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           </div>
         </CardContent>
         <CardFooter className="mt-auto pt-4 pb-5 px-5 grid grid-cols-2 gap-3">
-          {hasValidLiveDemo ? (
-            <Button asChild variant="outline" className="w-full transform hover:scale-105">
-              <Link href={project.liveDemoUrl!} target="_blank" rel="noopener noreferrer">
-                <span>
-                  <ExternalLink className="mr-2 h-4 w-4" />
-                  Live Demo
-                </span>
-              </Link>
-            </Button>
+          {!isMounted ? (
+            <>
+              <Skeleton className="h-9 w-full rounded-md" />
+              <Skeleton className="h-9 w-full rounded-md" />
+            </>
           ) : (
-            <Button variant="outline" className="w-full transform hover:scale-105" onClick={handleLiveDemoClick}>
-              <ExternalLink className="mr-2 h-4 w-4 opacity-50" />
-              Live Demo
-            </Button>
+            <>
+              {hasValidLiveDemo ? (
+                <Button asChild variant="outline" className="w-full transform hover:scale-105">
+                  <Link href={project.liveDemoUrl!} target="_blank" rel="noopener noreferrer">
+                    <span>
+                      <ExternalLink className="mr-2 h-4 w-4" />
+                      Live Demo
+                    </span>
+                  </Link>
+                </Button>
+              ) : (
+                <Button variant="outline" className="w-full transform hover:scale-105" onClick={handleLiveDemoClick}>
+                  {/* Ensure this button also has a single child structure if needed, though less critical as no asChild */}
+                  <span>
+                    <ExternalLink className="mr-2 h-4 w-4 opacity-50" />
+                    Live Demo
+                  </span>
+                </Button>
+              )}
+              <Button asChild variant="default" className="w-full transform hover:scale-105">
+                <Link href={project.githubRepoUrl} target="_blank" rel="noopener noreferrer">
+                  <span>
+                    <Github className="mr-2 h-4 w-4" />
+                    GitHub
+                  </span>
+                </Link>
+              </Button>
+            </>
           )}
-          <Button asChild variant="default" className="w-full transform hover:scale-105">
-            <Link href={project.githubRepoUrl} target="_blank" rel="noopener noreferrer">
-              <span>
-                <Github className="mr-2 h-4 w-4" />
-                GitHub
-              </span>
-            </Link>
-          </Button>
         </CardFooter>
       </Card>
     </motion.div>
