@@ -45,7 +45,7 @@ export function Contact() {
     setValue,
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
-    defaultValues: { 
+    defaultValues: {
       name: '',
       email: '',
       phone: '',
@@ -78,16 +78,16 @@ export function Contact() {
     });
     return () => subscription.unsubscribe();
   }, [watch]);
-  
+
 
   const onSubmit: SubmitHandler<ContactFormValues> = async (data) => {
     setIsSubmitting(true);
     try {
-      if (!EMAILJS_CONFIG.serviceId || !EMAILJS_CONFIG.templateId || !EMAILJS_CONFIG.publicKey || 
+      if (!EMAILJS_CONFIG.serviceId || !EMAILJS_CONFIG.templateId || !EMAILJS_CONFIG.publicKey ||
           EMAILJS_CONFIG.serviceId.includes("YOUR_") || EMAILJS_CONFIG.templateId.includes("YOUR_") || EMAILJS_CONFIG.publicKey.includes("YOUR_")) {
         throw new Error("EmailJS credentials (Service ID, Template ID, or Public Key) are missing or still contain placeholders. Please ensure they are correctly set in your .env file (e.g., NEXT_PUBLIC_EMAILJS_TEMPLATE_ID) and that you have restarted your development server.");
       }
-      
+
       if (!CONTACT_FORM_RECEIVER_EMAIL || CONTACT_FORM_RECEIVER_EMAIL.includes("YOUR_") || CONTACT_FORM_RECEIVER_EMAIL === AUTHOR_EMAIL && (process.env.NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL === undefined || process.env.NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL.includes("YOUR_"))) {
          if (CONTACT_FORM_RECEIVER_EMAIL.includes("YOUR_")) {
             throw new Error("The contact form receiver email (NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL) is not configured. Please set it in your .env file.");
@@ -102,7 +102,7 @@ export function Contact() {
           from_name: data.name,
           to_name: AUTHOR_NAME,
           from_email: data.email,
-          to_email: CONTACT_FORM_RECEIVER_EMAIL, 
+          to_email: CONTACT_FORM_RECEIVER_EMAIL,
           phone_number: data.phone || "Not provided",
           message: data.message,
         },
@@ -113,7 +113,7 @@ export function Contact() {
         description: `Thank you for reaching out, ${data.name}! Your message has been delivered to Tinkal. He'll be in touch soon.`,
         variant: "default",
       });
-      reset({ name: '', email: '', phone: '', message: '' }); 
+      reset({ name: '', email: '', phone: '', message: '' });
       if (typeof window !== 'undefined') {
         localStorage.removeItem(LOCALSTORAGE_KEYS.NAME);
         localStorage.removeItem(LOCALSTORAGE_KEYS.EMAIL);
@@ -136,13 +136,13 @@ export function Contact() {
 
   return (
     <SectionWrapper id="contact" className="bg-secondary/30 dark:bg-card/50">
-      <SectionHeader 
+      <SectionHeader
         title={CONTACT_DETAILS.title}
         subtitle={CONTACT_DETAILS.description}
-        Icon={CONTACT_DETAILS.Icon} 
+        Icon={CONTACT_DETAILS.Icon}
       />
       <div className="grid md:grid-cols-2 gap-12 items-start">
-        <motion.div 
+        <motion.div
           className="space-y-6"
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -223,4 +223,3 @@ export function Contact() {
     </SectionWrapper>
   );
 }
-
