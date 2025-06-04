@@ -6,8 +6,8 @@ import { motion } from "framer-motion";
 import { SectionWrapper, SectionHeader } from "@/components/ui/SectionWrapper";
 import { ABOUT_ME, TECH_STACK, AUTHOR_NAME, EDUCATION_DATA, WORK_EXPERIENCE_DATA, CERTIFICATIONS_DATA } from "@/lib/data";
 import { TechBadge } from "@/components/ui/TechBadge";
-import { UserCircle2, Briefcase, GraduationCap, Award, ExternalLink } from "lucide-react"; 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"; 
+import { UserCircle2, Briefcase, GraduationCap, Award, ExternalLink } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -33,7 +33,7 @@ export function About() {
       <SectionHeader title="About Me" Icon={UserCircle2} />
       <div className="grid md:grid-cols-5 gap-12 items-start mb-16">
         <motion.div
-          className="md:col-span-2 space-y-6" // Added space-y-6 for spacing between images
+          className="md:col-span-2" // Removed space-y-6 as there's only one image now
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
@@ -42,20 +42,13 @@ export function About() {
           <Image
             src={ABOUT_ME.image.src} // This will be Tech-focused-image.png
             alt={ABOUT_ME.image.alt}
-            width={500} 
-            height={300} // Adjusted height assumption for a tech banner
-            className="rounded-lg shadow-xl w-full h-auto" 
+            width={500}
+            height={300}
+            className="rounded-lg shadow-xl w-full h-auto"
             data-ai-hint={ABOUT_ME.image.dataAiHint}
             priority
           />
-          <Image
-            src="/tech-stackmern.png" // Directly using the second image path
-            alt="Tech Stack MERN - Tinkal Kumar"
-            width={500} 
-            height={300} // Adjusted height assumption
-            className="rounded-lg shadow-xl w-full h-auto"
-            data-ai-hint="MERN tech stack" 
-          />
+          {/* Second image (tech-stackmern.png) removed from here */}
         </motion.div>
         <motion.div
           className="md:col-span-3 space-y-6"
@@ -71,7 +64,7 @@ export function About() {
           <div>
             <h3 className="text-2xl font-semibold mb-3 text-primary font-headline">Passion for Technology</h3>
             <p className="text-muted-foreground leading-relaxed">{ABOUT_ME.passion}</p>
-          </div> 
+          </div>
           <div className="space-y-2">
             <div className="flex items-center text-muted-foreground">
               <ABOUT_ME.IconLocation className="h-5 w-5 mr-2 text-accent" />
@@ -86,7 +79,7 @@ export function About() {
       </div>
 
       {/* Education Section */}
-      <motion.div 
+      <motion.div
         className="mb-16"
         initial="hidden"
         whileInView="visible"
@@ -125,7 +118,7 @@ export function About() {
       </motion.div>
 
       {/* Work Experience Section */}
-      <motion.div 
+      <motion.div
         className="mb-16"
         initial="hidden"
         whileInView="visible"
@@ -204,7 +197,7 @@ export function About() {
           </div>
         </motion.div>
       )}
-      
+
       <motion.div
         className="mt-16"
         initial="hidden"

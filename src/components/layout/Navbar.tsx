@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image"; // Added Image import
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -54,14 +54,14 @@ export function Navbar() {
     >
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         <Link href="#home" className="flex items-center space-x-2 text-2xl font-bold font-headline text-primary">
-          <Image 
-            src={LOGO_PATH} 
-            alt={`${APP_NAME} Logo`} 
-            width={32} 
-            height={32} 
-            className="h-8 w-8 rounded-md" // Added rounded-md
+          <Image
+            src={LOGO_PATH}
+            alt={`${APP_NAME} Logo`}
+            width={40} // Increased size
+            height={40} // Increased size
+            className="h-10 w-10 rounded-md" // Adjusted class for new size
             data-ai-hint="website logo"
-            priority // Logo is important for LCP
+            priority
           />
           <span>{APP_NAME}</span>
         </Link>
@@ -123,5 +123,3 @@ export function Navbar() {
     </motion.nav>
   );
 }
-
-    

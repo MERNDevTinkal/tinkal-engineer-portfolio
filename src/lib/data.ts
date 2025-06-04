@@ -15,7 +15,7 @@ export const AUTHOR_EMAIL = "tinkalkumar67693@gmail.com"; // General author emai
 // Email address that will RECEIVE contact form submissions. Configured via .env
 export const CONTACT_FORM_RECEIVER_EMAIL = process.env.NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL || AUTHOR_EMAIL;
 
-export const LOGO_PATH = "/websitelogo.png"; // Updated logo path
+export const LOGO_PATH = "/websitelogo.png"; // Use websitelogo.png for the site logo
 
 export const NAV_LINKS = [
   { name: "Home", href: "#home" },
@@ -93,13 +93,14 @@ export const HERO_TITLES = [
   "Digital Transformation Agent"
 ];
 
-// Note: .HEIC files might have limited browser support. Consider converting to JPG/PNG for better compatibility.
 // Ensure these images are directly in the /public folder.
+// IMPORTANT: .HEIC files have limited browser support. Converted profile-3 and profile-4 to .jpg for better compatibility.
+// You will need to provide profile-3.jpg and profile-4.jpg in your public folder.
 export const PROFILE_IMAGES = [
   { src: "/profile-1.jpg", alt: "Tinkal Kumar - Professional Headshot", dataAiHint: "professional man" },
   { src: "/profile-2.jpg", alt: "Tinkal Kumar - Working at a desk", dataAiHint: "developer coding" },
-  { src: "/profile-3.HEIC", alt: "Tinkal Kumar - Outdoor casual portrait", dataAiHint: "casual man heic" }, // Potential browser compatibility issue with HEIC
-  { src: "/profile-4.HEIC", alt: "Tinkal Kumar - Tech event or conference", dataAiHint: "tech conference heic" }, // Potential browser compatibility issue with HEIC
+  { src: "/profile-3.jpg", alt: "Tinkal Kumar - Outdoor casual portrait", dataAiHint: "casual man" }, // Was .HEIC, changed to .jpg
+  { src: "/profile-4.jpg", alt: "Tinkal Kumar - Tech event or conference", dataAiHint: "tech conference" }, // Was .HEIC, changed to .jpg
 ];
 
 export const RESUME_PATH = "/Tinkal_Resume.pdf"; // Assumes Tinkal_Resume.pdf is directly in /public
@@ -195,37 +196,37 @@ export const CERTIFICATIONS_DATA: CertificationEntry[] = [
   {
     name: "Full Stack Web Development",
     issuingOrganization: "Internshala Trainings",
-    credentialUrl: "#", 
+    credentialUrl: "#",
     Icon: Award,
   },
   {
     name: "MERN Stack Web Development",
     issuingOrganization: "Coding Ninjas",
-    credentialUrl: "#", 
+    credentialUrl: "#",
     Icon: Award,
   },
   {
     name: "Frontend Web Development",
     issuingOrganization: "PW Skills",
-    credentialUrl: "#", 
+    credentialUrl: "#",
     Icon: Award,
   },
   {
     name: "Backend Web Development",
     issuingOrganization: "PW Skills",
-    credentialUrl: "#", 
+    credentialUrl: "#",
     Icon: Award,
   },
   {
     name: "DevOps Fundamentals",
     issuingOrganization: "PW Skills",
-    credentialUrl: "#", 
+    credentialUrl: "#",
     Icon: Award,
   },
   {
     name: "Skills India Program Completion",
     issuingOrganization: "Skills India",
-    credentialUrl: "#", 
+    credentialUrl: "#",
     Icon: Award,
   },
 ];
@@ -299,7 +300,7 @@ export const PROJECTS_DATA: Project[] = [
     id: "job-portal",
     title: "Job Portal App (Next.js & MERN)",
     description: "A comprehensive platform for job seekers and employers, featuring a Next.js frontend and a robust MERN stack backend (MongoDB, Express.js, Node.js). Implements JWT authentication, Nodemailer for notifications, Multer for file uploads, Bcrypt for password hashing, protected routes, and role-based authorization. Currently undergoing enhancements by Tinkal.",
-    liveDemoUrl: "#", 
+    liveDemoUrl: "#",
     githubRepoUrl: "https://github.com/MERNDevTinkal/Job-Portal-App",
     techStack: [
       { name: "Next.js", Icon: CodeXml },
@@ -363,5 +364,3 @@ export const EMAILJS_CONFIG = {
   templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "YOUR_EMAILJS_TEMPLATE_ID",
   publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "YOUR_EMAILJS_PUBLIC_KEY",
 };
-
-    

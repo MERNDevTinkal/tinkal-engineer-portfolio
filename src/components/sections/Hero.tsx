@@ -7,11 +7,12 @@ import { Typewriter } from "react-simple-typewriter";
 import dynamic from 'next/dynamic';
 import { motion } from "framer-motion";
 import { Download, ArrowRight } from "lucide-react";
+import { useState, useEffect } from 'react'; // Added useState and useEffect
 
 import { Button } from "@/components/ui/button";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { HERO_TITLES, SOCIAL_LINKS, PROFILE_IMAGES, RESUME_PATH, AUTHOR_NAME } from "@/lib/data";
-import { Skeleton } from "@/components/ui/skeleton"; // For Swiper loading state
+import { Skeleton } from "@/components/ui/skeleton";
 
 // Dynamically import Swiper and its CSS
 const Swiper = dynamic(() => import('swiper/react').then(mod => mod.Swiper), {
@@ -20,7 +21,8 @@ const Swiper = dynamic(() => import('swiper/react').then(mod => mod.Swiper), {
 });
 const SwiperSlide = dynamic(() => import('swiper/react').then(mod => mod.SwiperSlide), { ssr: false });
 
-// Dynamically import Swiper modules and CSS.
+// CSS imports are fine here as this is a client component.
+// Ensure they are imported only once if Hero is used multiple times.
 if (typeof window !== 'undefined') {
   import('swiper/css');
   import('swiper/css/pagination');
@@ -28,15 +30,18 @@ if (typeof window !== 'undefined') {
   import('swiper/css/autoplay');
 }
 
-let SwiperModules: any[] = [];
-if (typeof window !== 'undefined') {
-  import('swiper/modules').then(mod => {
-    SwiperModules = [mod.Autoplay, mod.Pagination, mod.EffectFade];
-  }).catch(err => console.error("Failed to load Swiper modules", err));
-}
-
-
 export function Hero() {
+  const [swiperModules, setSwiperModules] = useState<any[] | undefined>(undefined);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      import('swiper/modules').then(mod => {
+        setSwiperModules([mod.Autoplay, mod.Pagination, mod.EffectFade]);
+      }).catch(err => console.error("Failed to load Swiper modules", err));
+    }
+  }, []);
+
+
   const textContainerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -61,8 +66,8 @@ export function Hero() {
   };
 
   return (
-    // Removed pt-24 md:pt-32, relying on main tag's pt-20 and internal content flow
-    <SectionWrapper id="home" className="!min-h-screen bg-gradient-to-br from-background via-card to-secondary/10 dark:to-secondary/20">
+    // Adjusted padding: pt-8 md:pt-12. Removed min-h-screen and justify-center to allow natural flow.
+    <SectionWrapper id="home" className="pt-8 md:pt-12 bg-gradient-to-br from-background via-card to-secondary/10 dark:to-secondary/20">
       <div className="grid md:grid-cols-2 gap-12 items-center">
         <motion.div
           variants={textContainerVariants}
@@ -70,7 +75,6 @@ export function Hero() {
           animate="visible"
           className="text-center md:text-left"
         >
-          {/* Text block: H1, Typewriter, Paragraph */}
           <div className="space-y-4 mb-8">
             <motion.h1
               variants={textItemVariants}
@@ -102,7 +106,6 @@ export function Hero() {
             </motion.p>
           </div>
 
-          {/* Buttons block */}
           <motion.div
             variants={textItemVariants}
             className="flex flex-col sm:flex-row items-center justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4 mb-8"
@@ -125,7 +128,6 @@ export function Hero() {
             </Button>
           </motion.div>
 
-          {/* Social Links block */}
           <motion.div
             variants={textItemVariants}
             className="flex items-center justify-center md:justify-start space-x-4"
@@ -155,39 +157,41 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.8, type: "spring", stiffness: 100 }}
           className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto"
         >
-          <Swiper
-            modules={SwiperModules.length > 0 ? SwiperModules : undefined}
-            spaceBetween={30}
-            slidesPerView={1}
-            loop={true}
-            autoplay={SwiperModules.length > 0 ? {
-              delay: 3500,
-              disableOnInteraction: false,
-              pauseOnMouseEnter: true,
-            } : false}
-            pagination={SwiperModules.length > 0 ? { clickable: true, dynamicBullets: true } : false}
-            effect={SwiperModules.length > 0 ? "fade" : undefined}
-            fadeEffect={SwiperModules.length > 0 ? { crossFade: true } : undefined}
-            className="rounded-xl shadow-2xl overflow-hidden aspect-[3/4] border-4 border-card hover:border-primary/30 transition-colors duration-300"
-          >
-            {PROFILE_IMAGES.map((image, index) => (
-              <SwiperSlide key={image.src}> {/* Used image.src for key for better stability if array order changes but src is unique */}
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  width={600}
-                  height={800}
-                  priority={index === 0}
-                  className="object-cover w-full h-full"
-                  data-ai-hint={image.dataAiHint}
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
+          {swiperModules ? ( // Conditionally render Swiper once modules are loaded
+            <Swiper
+              modules={swiperModules}
+              spaceBetween={30}
+              slidesPerView={1}
+              loop={true}
+              autoplay={{
+                delay: 3500,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+              }}
+              pagination={{ clickable: true, dynamicBullets: true }}
+              effect={"fade"}
+              fadeEffect={{ crossFade: true }}
+              className="rounded-xl shadow-2xl overflow-hidden aspect-[3/4] border-4 border-card hover:border-primary/30 transition-colors duration-300"
+            >
+              {PROFILE_IMAGES.map((image, index) => (
+                <SwiperSlide key={image.src}>
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    width={600}
+                    height={800}
+                    priority={index === 0}
+                    className="object-cover w-full h-full"
+                    data-ai-hint={image.dataAiHint}
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          ) : (
+            <Skeleton className="rounded-xl shadow-2xl aspect-[3/4] w-full h-full border-4 border-card" />
+          )}
         </motion.div>
       </div>
     </SectionWrapper>
   );
 }
-
-    
