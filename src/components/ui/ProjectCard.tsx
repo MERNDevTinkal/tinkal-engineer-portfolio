@@ -53,7 +53,6 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
       className="h-full"
     >
       <Card className="h-full flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 bg-card border border-border/70 hover:border-primary/50">
-        {/* Image section removed */}
         <CardHeader className="pb-3 pt-5">
           <CardTitle className="text-xl sm:text-2xl font-headline text-primary">{project.title}</CardTitle>
         </CardHeader>
@@ -78,21 +77,21 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
             <Button asChild variant="outline" className="w-full transform hover:scale-105">
               <Link href={project.liveDemoUrl!} target="_blank" rel="noopener noreferrer">
                 <span>
-                  <ExternalLink className="mr-2 h-4 w-4" /> {/* Default icon size from button.tsx */}
+                  <ExternalLink className="mr-2 h-4 w-4" />
                   Live Demo
                 </span>
               </Link>
             </Button>
           ) : (
             <Button variant="outline" className="w-full transform hover:scale-105" onClick={handleLiveDemoClick}>
-              <ExternalLink className="mr-2 h-4 w-4 opacity-50" /> {/* Default icon size from button.tsx */}
+              <ExternalLink className="mr-2 h-4 w-4 opacity-50" />
               Live Demo
             </Button>
           )}
           <Button asChild variant="default" className="w-full transform hover:scale-105">
             <Link href={project.githubRepoUrl} target="_blank" rel="noopener noreferrer">
               <span>
-                <Github className="mr-2 h-4 w-4" /> {/* Default icon size from button.tsx */}
+                <Github className="mr-2 h-4 w-4" />
                 GitHub
               </span>
             </Link>

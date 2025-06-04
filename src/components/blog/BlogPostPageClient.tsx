@@ -155,8 +155,10 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
       <div className="max-w-4xl mx-auto">
         <Button variant="link" asChild className="inline-flex items-center text-sm text-primary hover:underline mb-8 group p-0">
           <Link href="/#blogs">
-            <ArrowLeft className="h-4 w-4 mr-2 transition-transform group-hover:-translate-x-1" />
-            Back to Blogs
+            <span>
+              <ArrowLeft className="h-4 w-4 mr-2 transition-transform group-hover:-translate-x-1" />
+              Back to Blogs
+            </span>
           </Link>
         </Button>
 
