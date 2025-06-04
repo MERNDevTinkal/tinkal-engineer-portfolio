@@ -172,10 +172,14 @@ export function Contact() {
                 whileHover={{ scale: 1.2, rotate: 5 }}
                 whileTap={{ scale: 0.9 }}
               >
-              <Button variant="outline" size="icon" asChild className="h-11 w-11"> {/* Custom size for social icons */}
-                <Link href={href} target="_blank" rel="noopener noreferrer" aria-label={name}>
-                  <Icon className="h-6 w-6 text-muted-foreground hover:text-primary transition-colors duration-300 ease-in-out" /> {/* Increased icon size */}
-                </Link>
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="h-11 w-11"
+                onClick={() => window.open(href, '_blank', 'noopener,noreferrer')}
+                aria-label={name}
+              >
+                <Icon className="h-6 w-6 text-muted-foreground hover:text-primary transition-colors duration-300 ease-in-out" />
               </Button>
               </motion.div>
             ))}
@@ -223,3 +227,4 @@ export function Contact() {
     </SectionWrapper>
   );
 }
+
