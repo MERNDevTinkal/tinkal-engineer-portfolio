@@ -11,11 +11,22 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion, AnimatePresence } from "framer-motion";
 
-const BLOG_TITLES_CACHE_KEY = 'aiBlogTitlesCache_v1';
-const CACHE_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
+const BLOG_TITLES_CACHE_KEY = 'aiBlogTitlesCache_v2'; // Cache key version bump
+
+// Min and Max cache duration in hours
+const MIN_CACHE_HOURS = 48;
+const MAX_CACHE_HOURS = 98;
+
+// Helper to get random cache duration in milliseconds
+const getRandomCacheDurationMs = (): number => {
+  const minMs = MIN_CACHE_HOURS * 60 * 60 * 1000;
+  const maxMs = MAX_CACHE_HOURS * 60 * 60 * 1000;
+  return Math.floor(Math.random() * (maxMs - minMs + 1)) + minMs;
+};
 
 interface CachedBlogTitles {
   timestamp: number;
+  cacheDurationUsed: number; // The specific duration (in ms) this cache entry is valid for
   data: GenerateBlogTitlesOutput;
 }
 
@@ -127,9 +138,11 @@ export function BlogList() {
         const cachedItem = localStorage.getItem(BLOG_TITLES_CACHE_KEY);
         if (cachedItem) {
           const cached: CachedBlogTitles = JSON.parse(cachedItem);
-          if (cached && cached.timestamp && cached.data && cached.data.titles && (Date.now() - cached.timestamp < CACHE_DURATION_MS)) {
+          if (cached && cached.timestamp && cached.cacheDurationUsed && cached.data && cached.data.titles) {
+            const isCacheValid = (Date.now() - cached.timestamp < cached.cacheDurationUsed);
             const validCachedTitles = cached.data.titles.filter(title => typeof title === 'string' && title.trim() !== "").slice(0, 12);
-            if (validCachedTitles.length > 0) {
+            
+            if (isCacheValid && validCachedTitles.length > 0) {
               setBlogData({ titles: validCachedTitles });
               setIsTitleLoading(false);
               return;
@@ -146,18 +159,21 @@ export function BlogList() {
         
         if (validTitles.length > 0) {
           setBlogData({ titles: validTitles });
+          const currentCacheDuration = getRandomCacheDurationMs();
           try {
-            localStorage.setItem(BLOG_TITLES_CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data: { titles: validTitles } }));
+            localStorage.setItem(BLOG_TITLES_CACHE_KEY, JSON.stringify({ 
+              timestamp: Date.now(), 
+              cacheDurationUsed: currentCacheDuration,
+              data: { titles: validTitles } 
+            }));
           } catch (e) {
             // console.error("Failed to write blog titles to localStorage:", e);
           }
         } else {
-          // console.warn("AI generated no valid titles. Using fallback.");
           setTitleError("AI could not generate blog titles. Displaying defaults.");
           setBlogData(FALLBACK_TITLES);
         }
       } catch (err) {
-        // console.error("Error fetching blog titles:", err);
         setTitleError("Failed to load blog titles. Displaying default topics.");
         setBlogData(FALLBACK_TITLES);
       } finally {
@@ -172,11 +188,10 @@ export function BlogList() {
 
   const handleToggleExpand = async (index: number) => {
     if (expandedPostIndex === index) {
-      setExpandedPostIndex(null); // Collapse if already expanded
+      setExpandedPostIndex(null);
     } else {
-      setExpandedPostIndex(index); // Expand the clicked post
+      setExpandedPostIndex(index); 
       
-      // If it's a post that needs AI content and it's not already loaded/loading/errored
       if (index >= hardcodedBlogPosts.length && 
           !aiGeneratedContent.has(index) && 
           !aiContentLoading.has(index) &&
@@ -191,14 +206,17 @@ export function BlogList() {
 
         try {
           const title = blogData.titles[index];
-          if (!title) {
-            throw new Error("Blog title not found for AI generation.");
+          if (!title || title.trim() === "") { // Added check for empty/whitespace title
+            throw new Error("Blog title is empty or invalid for AI generation.");
           }
           const generated: GenerateBlogContentOutput = await generateBlogContent({ title });
+          if (!generated.content || generated.content.trim() === "") { // Check for empty generated content
+             throw new Error("AI generated empty content for the blog post.");
+          }
           setAiGeneratedContent(prev => new Map(prev).set(index, generated.content));
         } catch (error) {
-          // console.error(`Failed to generate content for post index ${index}:`, error);
-          setAiContentError(prev => new Map(prev).set(index, "Failed to load content. Please try again."));
+          const errorMessage = error instanceof Error ? error.message : "Failed to load content. Please try again.";
+          setAiContentError(prev => new Map(prev).set(index, errorMessage));
         } finally {
           setAiContentLoading(prev => {
             const newSet = new Set(prev);
@@ -239,7 +257,8 @@ export function BlogList() {
         paragraph.trim() && <p key={`ai-p-${index}-${pIndex}`} className="mb-2">{paragraph}</p>
       ));
     }
-    return <p>Click "Read More" to load content.</p>; // Should be covered by generation logic on expand
+    // This state should ideally not be reached if loading is handled, but as a fallback:
+    return <p>Preparing content...</p>; 
   };
 
   if (isTitleLoading) {
@@ -261,8 +280,8 @@ export function BlogList() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:items-start">
           {FALLBACK_TITLES.titles.map((title, index) => {
              const cardKey = `fallback-card-${index}-${title.replace(/\s+/g, '-')}`;
-             const isExpanded = expandedPostIndex === index; // Fallback items use hardcoded content
-             const postContent = hardcodedBlogPosts[index % hardcodedBlogPosts.length]; // Cycle through hardcoded for fallback
+             const isExpanded = expandedPostIndex === index; 
+             const postContent = hardcodedBlogPosts[index % hardcodedBlogPosts.length]; 
             return (
               <Card key={cardKey} className="flex flex-col shadow-lg hover:shadow-primary/20 transition-shadow duration-300 bg-card">
                 <CardHeader>
@@ -279,7 +298,7 @@ export function BlogList() {
                   <AnimatePresence>
                     {isExpanded && (
                        <motion.div
-                        key={`fallback-content-motion-${index}`}
+                        key={`fallback-content-motion-${index}-${title.replace(/\s+/g, '-')}`}
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
@@ -336,7 +355,7 @@ export function BlogList() {
               <AnimatePresence>
                 {isExpanded && ( 
                   <motion.div
-                    key={`content-motion-${index}`}
+                    key={`content-motion-${index}-${title.replace(/\s+/g, '-')}`}
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
@@ -368,4 +387,3 @@ export function BlogList() {
   );
 }
 
-    
