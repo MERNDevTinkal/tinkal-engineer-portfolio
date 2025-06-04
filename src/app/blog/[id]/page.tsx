@@ -1,24 +1,52 @@
 
-import type { Metadata } from 'next';
+import type { Metadata, ResolvingMetadata } from 'next'; // Import ResolvingMetadata
 import { AUTHOR_NAME } from '@/lib/data';
-import BlogPostPageClient from '@/components/blog/BlogPostPageClient'; // Import the new client component
+import BlogPostPageClient from '@/components/blog/BlogPostPageClient';
 
-// Props type definition, can be used by both generateMetadata and the Page component
+// Props type definition, can still be used by the Page component
 export type BlogPageProps = {
   params: { id: string };
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-// generateMetadata remains a server-side function in this file
-export async function generateMetadata({ searchParams }: BlogPageProps): Promise<Metadata> {
-  const title = searchParams.title ? decodeURIComponent(searchParams.title as string) : 'Blog Post';
+// generateMetadata with inline types for its parameters
+export async function generateMetadata(
+  { params, searchParams }: { params: { id: string }, searchParams: { [key: string]: string | string[] | undefined } },
+  parent?: ResolvingMetadata // parent is optional and can be omitted if not used
+): Promise<Metadata> {
+  let pageTitle = 'Blog Post'; // Default title
+
+  if (searchParams) { // Check if searchParams object exists
+    let titleValue = searchParams.title;
+
+    // Handle if titleValue is an array (take the first element)
+    if (Array.isArray(titleValue)) {
+      titleValue = titleValue[0];
+    }
+
+    // Ensure titleValue is a string and not empty before decoding
+    if (typeof titleValue === 'string' && titleValue.trim() !== '') {
+      try {
+        pageTitle = decodeURIComponent(titleValue);
+      } catch (e) {
+        // console.error("Error decoding title for metadata:", e);
+        // pageTitle remains 'Blog Post' or some other default if decoding fails
+      }
+    }
+  }
+
   return {
-    title: `${title} | ${AUTHOR_NAME}'s Blog`,
-    description: `Read more about ${title} on ${AUTHOR_NAME}'s tech blog.`,
+    title: `${pageTitle} | ${AUTHOR_NAME}'s Blog`,
+    description: `Read more about ${pageTitle} on ${AUTHOR_NAME}'s tech blog.`,
+    // Example of using parent metadata if needed:
+    // const previousImages = (await parent)?.openGraph?.images || []
+    // openGraph: {
+    //   images: ['/some-specific-page-image.jpg', ...previousImages],
+    // },
   };
 }
 
-// This is now a Server Component
+// This is now a Server Component, using BlogPageProps for its own props
 export default function BlogPostPage({ params, searchParams }: BlogPageProps) {
   // It renders the client component, passing props through
   return <BlogPostPageClient params={params} searchParams={searchParams} />;
