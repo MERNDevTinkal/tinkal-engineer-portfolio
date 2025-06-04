@@ -15,7 +15,7 @@ export const AUTHOR_EMAIL = "tinkalkumar67693@gmail.com"; // General author emai
 // Email address that will RECEIVE contact form submissions. Configured via .env
 export const CONTACT_FORM_RECEIVER_EMAIL = process.env.NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL || AUTHOR_EMAIL;
 
-export const LOGO_PATH = "/images/logo.png"; // Added for site logo
+export const LOGO_PATH = "/logo.png"; // Site logo, directly in public
 
 export const NAV_LINKS = [
   { name: "Home", href: "#home" },
@@ -94,13 +94,13 @@ export const HERO_TITLES = [
 ];
 
 export const PROFILE_IMAGES = [
-  { src: "/images/profile-1.jpg", alt: "Tinkal Kumar - Professional Headshot", dataAiHint: "professional man" },
-  { src: "/images/profile-2.jpg", alt: "Tinkal Kumar - Working at a desk", dataAiHint: "developer coding" },
-  { src: "/images/profile-3.jpg", alt: "Tinkal Kumar - Outdoor casual portrait", dataAiHint: "casual man" },
-  { src: "/images/profile-4.jpg", alt: "Tinkal Kumar - Tech event or conference", dataAiHint: "tech conference" },
+  { src: "/profile-1.jpg", alt: "Tinkal Kumar - Professional Headshot", dataAiHint: "professional man" },
+  { src: "/profile-2.jpg", alt: "Tinkal Kumar - Working at a desk", dataAiHint: "developer coding" },
+  { src: "/profile-3.jpg", alt: "Tinkal Kumar - Outdoor casual portrait", dataAiHint: "casual man" },
+  { src: "/profile-4.jpg", alt: "Tinkal Kumar - Tech event or conference", dataAiHint: "tech conference" },
 ];
 
-export const RESUME_PATH = "/Tinkal_Resume.pdf";
+export const RESUME_PATH = "/Tinkal_Resume.pdf"; // Directly in public
 
 export const ABOUT_ME = {
   summary: `An Indian software engineer hailing from Jamui district, Bihar, I am a results-driven MERN Stack Developer with expertise in building scalable full-stack web applications using MongoDB, Express.js, React.js, and Node.js. Passionate about clean code, component reusability, performance optimization, and collaborating on real-world client projects. I thrive on solving complex challenges with innovation and continuously learning new technologies.`,
@@ -111,7 +111,7 @@ export const ABOUT_ME = {
   IconRelocation: Briefcase,
   IconAbout: UserCircle2,
   image: {
-    src: "/images/about-me-image.jpg",
+    src: "/about-me-image.jpg", // Assuming this is also directly in public
     alt: "Tinkal Kumar at work or a professional setting",
     dataAiHint: "developer workspace",
   },
@@ -361,3 +361,4 @@ export const EMAILJS_CONFIG = {
   templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "YOUR_EMAILJS_TEMPLATE_ID",
   publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "YOUR_EMAILJS_PUBLIC_KEY",
 };
+
