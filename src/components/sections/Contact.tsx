@@ -16,6 +16,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { CONTACT_DETAILS, EMAILJS_CONFIG, SOCIAL_LINKS, AUTHOR_EMAIL, AUTHOR_NAME, CONTACT_FORM_RECEIVER_EMAIL } from "@/lib/data";
 import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -35,6 +36,7 @@ const LOCALSTORAGE_KEYS = {
 
 export function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const { toast } = useToast();
   const {
     register,
@@ -54,7 +56,12 @@ export function Contact() {
   });
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    setIsMounted(true); // Component has mounted
+  }, []);
+
+
+  useEffect(() => {
+    if (isMounted && typeof window !== 'undefined') {
       const savedName = localStorage.getItem(LOCALSTORAGE_KEYS.NAME);
       const savedEmail = localStorage.getItem(LOCALSTORAGE_KEYS.EMAIL);
       const savedPhone = localStorage.getItem(LOCALSTORAGE_KEYS.PHONE);
@@ -65,9 +72,11 @@ export function Contact() {
       if (savedPhone) setValue('phone', savedPhone);
       if (savedMessage) setValue('message', savedMessage);
     }
-  }, [setValue]);
+  }, [setValue, isMounted]);
 
   useEffect(() => {
+    if (!isMounted) return; // Don't run watch effect if not mounted
+
     const subscription = watch((value, { name }) => {
       if (typeof window !== 'undefined' && name) {
         const fieldName = name as keyof ContactFormValues;
@@ -77,7 +86,7 @@ export function Contact() {
       }
     });
     return () => subscription.unsubscribe();
-  }, [watch]);
+  }, [watch, isMounted]);
 
 
   const onSubmit: SubmitHandler<ContactFormValues> = async (data) => {
@@ -134,6 +143,99 @@ export function Contact() {
     }
   };
 
+  const renderSocialButtons = () => (
+    <div className="flex space-x-4 pt-2">
+      {SOCIAL_LINKS.filter(link => link.name !== "Email").map(({ name, Icon, href }) => (
+        <motion.div
+          key={name}
+          whileHover={{ scale: 1.2, rotate: 5 }}
+          whileTap={{ scale: 0.9 }}
+        >
+        <Button 
+          variant="outline" 
+          size="icon" 
+          className="h-11 w-11"
+          onClick={() => window.open(href, '_blank', 'noopener,noreferrer')}
+          aria-label={name}
+        >
+          <Icon className="h-6 w-6 text-muted-foreground hover:text-primary transition-colors duration-300 ease-in-out" />
+        </Button>
+        </motion.div>
+      ))}
+    </div>
+  );
+
+  const renderContactForm = () => (
+     <motion.form
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-6 p-6 sm:p-8 bg-card rounded-lg shadow-xl"
+        initial={{ opacity: 0, x: 50 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+      >
+        <div>
+          <Label htmlFor="name" className="text-sm font-medium">Full Name</Label>
+          <Input id="name" {...register("name")} placeholder={AUTHOR_NAME} className="mt-1" />
+          {errors.name && <p className="mt-1 text-xs text-destructive">{errors.name.message}</p>}
+        </div>
+        <div>
+          <Label htmlFor="email" className="text-sm font-medium">Email Address</Label>
+          <Input id="email" type="email" {...register("email")} placeholder={`your.email@example.com`} className="mt-1" />
+          {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email.message}</p>}
+        </div>
+        <div>
+          <Label htmlFor="phone" className="text-sm font-medium">Phone Number (Optional)</Label>
+          <Input id="phone" type="tel" {...register("phone")} placeholder="+91 123 456 7890" className="mt-1" />
+          {errors.phone && <p className="mt-1 text-xs text-destructive">{errors.phone.message}</p>}
+        </div>
+        <div>
+          <Label htmlFor="message" className="text-sm font-medium">Message</Label>
+          <Textarea id="message" {...register("message")} placeholder="Your message here..." rows={5} className="mt-1" />
+          {errors.message && <p className="mt-1 text-xs text-destructive">{errors.message.message}</p>}
+        </div>
+        <Button type="submit" disabled={isSubmitting} className="w-full shadow-md transform hover:scale-105">
+          {isSubmitting ? "Sending..." : "Send Message"}
+        </Button>
+         {(EMAILJS_CONFIG.serviceId.includes("YOUR_") || EMAILJS_CONFIG.templateId.includes("YOUR_") || EMAILJS_CONFIG.publicKey.includes("YOUR_") || (process.env.NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL && process.env.NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL.includes("YOUR_")) ) && (
+          <p className="mt-2 text-xs text-amber-600 dark:text-amber-400 text-center">
+            Note: EmailJS or the Contact Form Receiver Email is not fully configured. Please check your <code>.env</code> file for placeholders and restart your server.
+          </p>
+        )}
+      </motion.form>
+  );
+
+  const renderFormSkeleton = () => (
+    <div className="space-y-6 p-6 sm:p-8 bg-card rounded-lg shadow-xl">
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-1/4" />
+        <Skeleton className="h-10 w-full" />
+      </div>
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-1/4" />
+        <Skeleton className="h-10 w-full" />
+      </div>
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-1/4" />
+        <Skeleton className="h-10 w-full" />
+      </div>
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-1/4" />
+        <Skeleton className="h-20 w-full" />
+      </div>
+      <Skeleton className="h-10 w-full" />
+    </div>
+  );
+
+  const renderSocialButtonsSkeleton = () => (
+    <div className="flex space-x-4 pt-2">
+      <Skeleton className="h-11 w-11 rounded-md" />
+      <Skeleton className="h-11 w-11 rounded-md" />
+      <Skeleton className="h-11 w-11 rounded-md" />
+    </div>
+  );
+
+
   return (
     <SectionWrapper id="contact" className="bg-secondary/30 dark:bg-card/50">
       <SectionHeader
@@ -155,76 +257,21 @@ export function Contact() {
           </p>
           <div className="space-y-3">
             <Link href={`mailto:${AUTHOR_EMAIL}`} className="flex items-center group">
-              <CONTACT_DETAILS.Icon className="h-6 w-6 mr-3 text-accent group-hover:text-primary transition-colors duration-300 ease-in-out" /> {/* Increased icon size */}
+              <CONTACT_DETAILS.Icon className="h-6 w-6 mr-3 text-accent group-hover:text-primary transition-colors duration-300 ease-in-out" />
               <span className="text-foreground group-hover:text-primary transition-colors duration-300 ease-in-out">{AUTHOR_EMAIL}</span>
             </Link>
             {CONTACT_DETAILS.phone && (
                <div className="flex items-center">
-                <CONTACT_DETAILS.PhoneIcon className="h-6 w-6 mr-3 text-accent" /> {/* Increased icon size */}
+                <CONTACT_DETAILS.PhoneIcon className="h-6 w-6 mr-3 text-accent" />
                 <span className="text-foreground">{CONTACT_DETAILS.phone}</span>
               </div>
             )}
           </div>
-          <div className="flex space-x-4 pt-2">
-            {SOCIAL_LINKS.filter(link => link.name !== "Email").map(({ name, Icon, href }) => (
-              <motion.div
-                key={name}
-                whileHover={{ scale: 1.2, rotate: 5 }}
-                whileTap={{ scale: 0.9 }}
-              >
-              <Button 
-                variant="outline" 
-                size="icon" 
-                className="h-11 w-11"
-                onClick={() => window.open(href, '_blank', 'noopener,noreferrer')}
-                aria-label={name}
-              >
-                <Icon className="h-6 w-6 text-muted-foreground hover:text-primary transition-colors duration-300 ease-in-out" />
-              </Button>
-              </motion.div>
-            ))}
-          </div>
+          {isMounted ? renderSocialButtons() : renderSocialButtonsSkeleton()}
         </motion.div>
 
-        <motion.form
-          onSubmit={handleSubmit(onSubmit)}
-          className="space-y-6 p-6 sm:p-8 bg-card rounded-lg shadow-xl"
-          initial={{ opacity: 0, x: 50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
-          <div>
-            <Label htmlFor="name" className="text-sm font-medium">Full Name</Label>
-            <Input id="name" {...register("name")} placeholder={AUTHOR_NAME} className="mt-1" />
-            {errors.name && <p className="mt-1 text-xs text-destructive">{errors.name.message}</p>}
-          </div>
-          <div>
-            <Label htmlFor="email" className="text-sm font-medium">Email Address</Label>
-            <Input id="email" type="email" {...register("email")} placeholder={`your.email@example.com`} className="mt-1" />
-            {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email.message}</p>}
-          </div>
-          <div>
-            <Label htmlFor="phone" className="text-sm font-medium">Phone Number (Optional)</Label>
-            <Input id="phone" type="tel" {...register("phone")} placeholder="+91 123 456 7890" className="mt-1" />
-            {errors.phone && <p className="mt-1 text-xs text-destructive">{errors.phone.message}</p>}
-          </div>
-          <div>
-            <Label htmlFor="message" className="text-sm font-medium">Message</Label>
-            <Textarea id="message" {...register("message")} placeholder="Your message here..." rows={5} className="mt-1" />
-            {errors.message && <p className="mt-1 text-xs text-destructive">{errors.message.message}</p>}
-          </div>
-          <Button type="submit" disabled={isSubmitting} className="w-full shadow-md transform hover:scale-105">
-            {isSubmitting ? "Sending..." : "Send Message"}
-          </Button>
-           {(EMAILJS_CONFIG.serviceId.includes("YOUR_") || EMAILJS_CONFIG.templateId.includes("YOUR_") || EMAILJS_CONFIG.publicKey.includes("YOUR_") || (process.env.NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL && process.env.NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL.includes("YOUR_")) ) && (
-            <p className="mt-2 text-xs text-amber-600 dark:text-amber-400 text-center">
-              Note: EmailJS or the Contact Form Receiver Email is not fully configured. Please check your <code>.env</code> file for placeholders and restart your server.
-            </p>
-          )}
-        </motion.form>
+        {isMounted ? renderContactForm() : renderFormSkeleton()}
       </div>
     </SectionWrapper>
   );
 }
-
