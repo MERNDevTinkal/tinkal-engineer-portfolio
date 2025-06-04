@@ -26,6 +26,7 @@ if (typeof window !== 'undefined') {
   import('swiper/css');
   import('swiper/css/pagination');
   import('swiper/css/effect-fade');
+  import('swiper/css/autoplay'); // Ensure autoplay CSS is imported if needed by modules
 }
 // Autoplay, Pagination, EffectFade will be imported and passed as modules prop if Swiper is loaded
 // For tree-shaking, it's better to import them conditionally if Swiper is used.
@@ -156,9 +157,9 @@ export function Hero() {
             slidesPerView={1}
             loop={true}
             autoplay={SwiperModules.length > 0 ? {
-              delay: 4000,
-              disableOnInteraction: false,
-              pauseOnMouseEnter: true,
+              delay: 3500, // Slightly adjusted delay
+              disableOnInteraction: false, // Autoplay will resume after user interaction
+              pauseOnMouseEnter: true,    // Pauses autoplay on mouse hover
             } : false}
             pagination={SwiperModules.length > 0 ? { clickable: true, dynamicBullets: true } : false}
             effect={SwiperModules.length > 0 ? "fade" : undefined}
@@ -166,7 +167,7 @@ export function Hero() {
             className="rounded-xl shadow-2xl overflow-hidden aspect-[3/4] border-4 border-card hover:border-primary/30 transition-colors duration-300"
           >
             {PROFILE_IMAGES.map((image, index) => (
-              <SwiperSlide key={index}>
+              <SwiperSlide key={image.src}> {/* Use image.src for a more stable key if paths are unique */}
                 <Image
                   src={image.src}
                   alt={image.alt}

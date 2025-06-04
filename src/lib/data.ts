@@ -5,7 +5,7 @@ import {
   ServerCog, Wand2, Palette, Settings2, ShoppingCart, FileText, BookOpen, 
   GraduationCap, Building, Award, ExternalLink, UserCircle2, KeyRound, ShieldCheck,
   UploadCloud, Smartphone, Layers, Puzzle, Lightbulb, TerminalSquare, GitCommit, Wrench,
-  Send, Brain, MessageSquareText, Rocket, NotebookText, Scale, Instagram // Added Instagram icon
+  Send, Brain, MessageSquareText, Rocket, NotebookText, Scale, Instagram
 } from 'lucide-react';
 
 export const APP_NAME = "Tinkal";
@@ -26,7 +26,7 @@ export const NAV_LINKS = [
 export const SOCIAL_LINKS = [
   { name: "GitHub", Icon: Github, href: "https://github.com/MERNDevTinkal" },
   { name: "LinkedIn", Icon: Linkedin, href: "https://linkedin.com/in/tinkal-kumar-9b8013186" },
-  { name: "Instagram", Icon: Instagram, href: "https://www.instagram.com/tinkal_kumar__/" }, // Added Instagram
+  { name: "Instagram", Icon: Instagram, href: "https://www.instagram.com/tinkal_kumar__/" },
   { name: "Email", Icon: Mail, href: `mailto:${AUTHOR_EMAIL}` },
 ];
 
@@ -92,9 +92,10 @@ export const HERO_TITLES = [
 ];
 
 export const PROFILE_IMAGES = [
-  { src: "/images/profile-1.jpg", alt: "Tinkal Kumar - Professional Profile", dataAiHint: "professional portrait" },
-  { src: "/images/profile-2.jpg", alt: "Tinkal Kumar - Coding Environment", dataAiHint: "developer coding" },
-  { src: "/images/profile-3.jpg", alt: "Tinkal Kumar - Casual Tech Look", dataAiHint: "casual tech" },
+  { src: "/images/profile-1.jpg", alt: "Tinkal Kumar - Professional Headshot", dataAiHint: "professional man" },
+  { src: "/images/profile-2.jpg", alt: "Tinkal Kumar - Working at a desk", dataAiHint: "developer coding" },
+  { src: "/images/profile-3.jpg", alt: "Tinkal Kumar - Outdoor casual portrait", dataAiHint: "casual man" },
+  { src: "/images/profile-4.jpg", alt: "Tinkal Kumar - Tech event or conference", dataAiHint: "tech conference" },
 ];
 
 export const RESUME_PATH = "/Tinkal_Resume.pdf";
@@ -358,14 +359,3 @@ export const EMAILJS_CONFIG = {
   templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "YOUR_EMAILJS_TEMPLATE_ID",
   publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "YOUR_EMAILJS_PUBLIC_KEY",
 };
-    
-
-    
-
-
-
-    
-
-    
-
-    
