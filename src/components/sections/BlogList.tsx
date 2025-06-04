@@ -47,14 +47,9 @@ export function BlogList() {
         setBlogData(data);
         setError(null);
       } catch (err) {
-        // console.error("Failed to generate blog titles:", err);
-        let errorMessage = "Failed to load blog titles. Please try again later.";
-        if (err instanceof Error) {
-            if (err.message.includes("503") || err.message.toLowerCase().includes("service unavailable") || err.message.toLowerCase().includes("model is overloaded")) {
-                errorMessage = "The AI service for generating blog titles is currently overloaded. Please try refreshing in a few moments.";
-            }
-        }
-        setError(errorMessage);
+        // Set a generic error message for any failure.
+        const genericErrorMessage = "Failed to load blog titles. Please try again later.";
+        setError(genericErrorMessage);
         // Fallback titles in case of error
         setBlogData({ titles: ["Exploring the Latest in Tech.", "DevOps Best Practices.", "Software Engineering Insights.", "The Future of Development.", "AI in Modern Applications.", "Cloud Computing Trends.", "Cybersecurity Essentials.", "Data Science Breakthroughs.", "Web Performance Optimization.", "Mobile App Development Innovations.", "Blockchain Technology Explained.", "Mastering New Programming Languages."].slice(0,12) });
       } finally {
