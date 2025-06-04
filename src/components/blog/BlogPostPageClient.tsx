@@ -31,7 +31,7 @@ const hardcodedBlogPosts = [
     paragraphs: [
       "Understanding asynchronous JavaScript is fundamental for any modern web developer. Callbacks, Promises, and Async/Await are tools that help manage operations that don't complete immediately, like API calls or timeouts. Mastering these concepts is key to writing non-blocking, efficient code.",
       "Callbacks were the traditional way to handle asynchronous operations, but they can lead to 'callback hell' with deeply nested structures. Promises offer a cleaner way to chain asynchronous actions, with .then() for success and .catch() for errors. They represent a value that may be available now, or in the future, or never.",
-      "Async/Await, built on top of Promises, provides a more synchronous-looking syntax for asynchronous code. Using the 'async' keyword before a function declaration allows you_to_use 'await' inside it. 'await' pauses the function execution until a Promise settles, making complex asynchronous logic much easier to read and maintain."
+      "Async/Await, built on top of Promises, provides a more synchronous-looking syntax for asynchronous code. Using the 'async' keyword before a function declaration allows you to use 'await' inside it. 'await' pauses the function execution until a Promise settles, making complex asynchronous logic much easier to read and maintain."
     ]
   },
   {
@@ -72,8 +72,8 @@ const hardcodedBlogPosts = [
   }
 ];
 
-// Helper function to get a clean, processed title
-function getProcessedTitle(titleParam: string | string[] | undefined): string {
+// Helper function to get a clean, processed title from searchParams
+function getProcessedTitleParam(titleParam: string | string[] | undefined): string {
   let singleTitle: string | undefined;
 
   if (Array.isArray(titleParam)) {
@@ -82,35 +82,35 @@ function getProcessedTitle(titleParam: string | string[] | undefined): string {
     singleTitle = titleParam;
   }
 
-  if (typeof singleTitle !== 'string' || !singleTitle) { // Check if not a string or if it's an empty string before trim
-    return '';
+  if (typeof singleTitle !== 'string' || singleTitle.trim() === '') {
+    return ''; // Return empty if not a string or is an empty/whitespace string before decoding
   }
 
   try {
     const decoded = decodeURIComponent(singleTitle);
     const trimmedDecoded = decoded.trim(); // Trim after decoding
-    if (!trimmedDecoded) { // Check if trimmed decoded string is empty
-        return '';
-    }
-    return trimmedDecoded;
+    return trimmedDecoded; // Return trimmed decoded string, could be empty if original was just encoded whitespace
   } catch (e) {
-    // console.error("Error decoding title in getProcessedTitle:", e, "Original title:", singleTitle);
-    return ''; // URIError if malformed, treat as missing/invalid
+    // console.error("Error decoding title in getProcessedTitleParam:", e, "Original title:", singleTitle);
+    return ''; // URIError if malformed, treat as invalid/empty
   }
 }
 
 export default function BlogPostPageClient({ params, searchParams }: BlogPageProps) {
   const { id } = params;
-  // pageTitle is derived once based on initial searchParams
-  const pageTitle = getProcessedTitle(searchParams.title); 
-  
+  // pageTitle is derived once from initial searchParams and should be stable for this component instance.
+  const pageTitle = getProcessedTitleParam(searchParams.title);
+
   const [publicationDate, setPublicationDate] = useState<string | null>(null);
-  const [displayedParagraphs, setDisplayedParagraphs] = useState<string[]>([]);
-  const [isTitleMissingError, setIsTitleMissingError] = useState(false);
-  const [contentNotFound, setContentNotFound] = useState(false);
+  const [actualBlogParagraphs, setActualBlogParagraphs] = useState<string[]>([]);
+  
+  // Initialize isTitleMissing based on the initially processed pageTitle
+  const [isTitleMissing, setIsTitleMissing] = useState<boolean>(!pageTitle);
+  // isContentUnavailable means title is valid, but no content for this ID
+  const [isContentUnavailable, setIsContentUnavailable] = useState<boolean>(false);
 
   useEffect(() => {
-    // Set publication date (client-side only)
+    // Set publication date (client-side only behavior)
     setPublicationDate(
       new Date().toLocaleDateString('en-US', {
         year: 'numeric',
@@ -119,39 +119,36 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
       })
     );
 
-    // Check if the pageTitle (derived from searchParams.title) is valid
+    // Determine content based on pageTitle and id
     if (!pageTitle) {
-      setIsTitleMissingError(true);
-      setDisplayedParagraphs(["To view a blog post, please return to the main blog page and click on one of the available titles. This page requires a title to load the correct content."]);
-      setContentNotFound(false); // Explicitly set contentNotFound to false, as the issue is a missing title
-      return; // Exit early if title is missing
+      setIsTitleMissing(true);
+      setActualBlogParagraphs([]);
+      setIsContentUnavailable(false); // Not content unavailable, it's a title issue
+      return; // Exit if title is missing
     }
 
-    // If pageTitle is valid, ensure isTitleMissingError is false.
-    setIsTitleMissingError(false);
-    setContentNotFound(false); // Reset contentNotFound as well, as we are about to load content.
+    // If we reach here, title is considered valid.
+    setIsTitleMissing(false); // Ensure title missing flag is false
 
     const postIndex = parseInt(id, 10);
-    // Check if postIndex is a valid number and within the bounds of hardcodedBlogPosts
     if (!isNaN(postIndex) && postIndex >= 0 && postIndex < hardcodedBlogPosts.length) {
-        const selectedPost = hardcodedBlogPosts[postIndex];
-        // Ensure selectedPost and its paragraphs exist
-        if (selectedPost && selectedPost.paragraphs) {
-            setDisplayedParagraphs(selectedPost.paragraphs);
-            // setContentNotFound(false); // Already false from above
-        } else {
-            // This case means the hardcoded data for a valid index might be malformed.
-            setDisplayedParagraphs(["Content for this post could not be loaded correctly at this time."]);
-            setContentNotFound(true);
-        }
+      const selectedPost = hardcodedBlogPosts[postIndex];
+      if (selectedPost && selectedPost.paragraphs) {
+        setActualBlogParagraphs(selectedPost.paragraphs);
+        setIsContentUnavailable(false); // Content found
+      } else {
+        // This case means hardcoded data for a valid index is malformed.
+        setActualBlogParagraphs([]);
+        setIsContentUnavailable(true); // Mark as content unavailable
+      }
     } else {
-      // No hardcoded content for this specific ID (index)
-      setDisplayedParagraphs(["Content for this topic is currently being crafted. Please check back soon!"]);
-      setContentNotFound(true);
+      // No hardcoded content for this specific ID (index), even if title is valid.
+      setActualBlogParagraphs([]);
+      setIsContentUnavailable(true); // Mark as content unavailable (e.g., "coming soon")
     }
+  }, [id, pageTitle]); // Dependencies: id (from params) and pageTitle (derived from searchParams)
 
-  }, [id, pageTitle]); // pageTitle is stable per render, derived from searchParams
-
+  const displayHeading = isTitleMissing ? "Blog Post Unavailable" : pageTitle || "Blog Post";
 
   return (
     <SectionWrapper id={`blog-post-${id}`} className="min-h-screen bg-card dark:bg-background py-12 md:py-16 lg:py-20">
@@ -164,7 +161,7 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
         <article className="bg-background dark:bg-card p-6 sm:p-8 md:p-10 rounded-xl shadow-xl">
           <header className="mb-8">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-headline text-primary mb-4 leading-tight">
-              {isTitleMissingError ? "Blog Post Unavailable" : pageTitle || "Blog Post"} {/* Fallback for pageTitle still needed if it's empty but somehow isTitleMissingError is false */}
+              {displayHeading}
             </h1>
             <div className="text-sm text-muted-foreground flex items-center space-x-4">
               <span>By {AUTHOR_NAME}</span>
@@ -172,12 +169,12 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
               {publicationDate ? (
                 <span>Published on {publicationDate}</span>
               ) : (
-                <Skeleton className="h-4 w-24 inline-block" />
+                <Skeleton className="h-4 w-32 inline-block" />
               )}
             </div>
           </header>
 
-          {!isTitleMissingError && pageTitle && ( // Only show image if title is valid and present
+          {!isTitleMissing && pageTitle && ( // Only show image if title is valid and present
             <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-8 shadow-lg">
               <Image
                 src={`https://placehold.co/1200x675.png?text=${encodeURIComponent((pageTitle || "Blog").substring(0,30))}`}
@@ -190,7 +187,7 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
             </div>
           )}
           
-          {isTitleMissingError && (
+          {isTitleMissing && (
              <div className="bg-destructive/10 border-l-4 border-destructive text-destructive p-4 rounded-md my-6" role="alert">
                 <div className="flex">
                   <div className="flex-shrink-0">
@@ -207,14 +204,13 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
           )}
 
           <div className="prose sm:prose-lg dark:prose-invert max-w-none text-foreground leading-relaxed space-y-6">
-            {!isTitleMissingError && displayedParagraphs.length > 0 && (
-              displayedParagraphs.map((paragraph, index) => (
+            {!isTitleMissing && !isContentUnavailable && actualBlogParagraphs.length > 0 && (
+              actualBlogParagraphs.map((paragraph, index) => (
                 <p key={index}>{paragraph}</p>
               ))
             )}
-            {/* Fallback for loading state or if paragraphs are empty for a non-error, non-contentNotFound case (unlikely with current logic) */}
-            {!isTitleMissingError && displayedParagraphs.length === 0 && !contentNotFound && (
-                <p>Loading content...</p> 
+            {!isTitleMissing && isContentUnavailable && (
+              <p>Content for this topic is currently being crafted. Please check back soon!</p>
             )}
           </div>
 
@@ -223,7 +219,7 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
           <footer className="text-center">
             <p className="text-lg text-muted-foreground mb-4">Enjoyed this article? Let's connect!</p>
             <Button asChild size="lg">
-              <Link href={`mailto:${AUTHOR_EMAIL}?subject=Regarding your blog post: ${encodeURIComponent(isTitleMissingError ? "Blog Post Inquiry" : pageTitle || "Blog Post")}`}>
+              <Link href={`mailto:${AUTHOR_EMAIL}?subject=Regarding your blog post: ${encodeURIComponent(displayHeading)}`}>
                 <span>
                   <Mail className="mr-2 h-5 w-5 inline" /> Contact Me
                 </span>
