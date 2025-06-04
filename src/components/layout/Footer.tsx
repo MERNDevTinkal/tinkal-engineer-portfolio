@@ -36,6 +36,8 @@ export function Footer() {
   };
 
   const footerLinkedIn = SOCIAL_LINKS.find(link => link.name === "LinkedIn");
+  const footerInstagram = SOCIAL_LINKS.find(link => link.name === "Instagram");
+
 
   return (
     <>
@@ -70,6 +72,13 @@ export function Footer() {
                     </Link>
                   </li>
                 )}
+                {footerInstagram && (
+                  <li>
+                    <Link href={footerInstagram.href} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors text-sm flex items-center justify-center md:justify-start">
+                      <footerInstagram.Icon className="h-4 w-4 mr-2" /> {footerInstagram.name}
+                    </Link>
+                  </li>
+                )}
               </ul>
             </div>
             <div>
@@ -78,7 +87,7 @@ export function Footer() {
                 Crafting digital experiences with passion and precision.
               </p>
                <div className="mt-4 flex justify-center md:justify-start space-x-3">
-                {SOCIAL_LINKS.filter(link => link.name === "GitHub" || link.name === "LinkedIn").map(({ name, Icon, href }) => (
+                {SOCIAL_LINKS.filter(link => link.name === "GitHub" || link.name === "LinkedIn" || link.name === "Instagram").map(({ name, Icon, href }) => (
                   <Button variant="ghost" size="icon" asChild key={name} className="text-muted-foreground hover:text-primary">
                     <Link href={href} target="_blank" rel="noopener noreferrer" aria-label={name}>
                       <span> 
@@ -117,3 +126,5 @@ export function Footer() {
     </>
   );
 }
+
+    

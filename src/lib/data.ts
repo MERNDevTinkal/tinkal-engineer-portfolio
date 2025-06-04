@@ -5,7 +5,7 @@ import {
   ServerCog, Wand2, Palette, Settings2, ShoppingCart, FileText, BookOpen, 
   GraduationCap, Building, Award, ExternalLink, UserCircle2, KeyRound, ShieldCheck,
   UploadCloud, Smartphone, Layers, Puzzle, Lightbulb, TerminalSquare, GitCommit, Wrench,
-  Send, Brain, MessageSquareText, Rocket, NotebookText, Scale // Added new icons
+  Send, Brain, MessageSquareText, Rocket, NotebookText, Scale, Instagram // Added Instagram icon
 } from 'lucide-react';
 
 export const APP_NAME = "Tinkal";
@@ -26,6 +26,7 @@ export const NAV_LINKS = [
 export const SOCIAL_LINKS = [
   { name: "GitHub", Icon: Github, href: "https://github.com/MERNDevTinkal" },
   { name: "LinkedIn", Icon: Linkedin, href: "https://linkedin.com/in/tinkal-kumar-9b8013186" },
+  { name: "Instagram", Icon: Instagram, href: "https://www.instagram.com/tinkal_kumar__/" }, // Added Instagram
   { name: "Email", Icon: Mail, href: `mailto:${AUTHOR_EMAIL}` },
 ];
 
@@ -362,6 +363,8 @@ export const EMAILJS_CONFIG = {
     
 
 
+
+    
 
     
 
