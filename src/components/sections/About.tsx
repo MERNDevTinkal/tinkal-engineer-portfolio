@@ -33,20 +33,28 @@ export function About() {
       <SectionHeader title="About Me" Icon={UserCircle2} />
       <div className="grid md:grid-cols-5 gap-12 items-start mb-16">
         <motion.div
-          className="md:col-span-2"
+          className="md:col-span-2 space-y-6" // Added space-y-6 for spacing between images
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <Image
-            src={ABOUT_ME.image.src}
+            src={ABOUT_ME.image.src} // This will be Tech-focused-image.png
             alt={ABOUT_ME.image.alt}
-            width={500} // Original width for aspect ratio calculation by Next/Image
-            height={600} // Original height for aspect ratio calculation by Next/Image
-            className="rounded-lg shadow-xl w-full h-auto" // w-full and h-auto to maintain aspect ratio
+            width={500} 
+            height={300} // Adjusted height assumption for a tech banner
+            className="rounded-lg shadow-xl w-full h-auto" 
             data-ai-hint={ABOUT_ME.image.dataAiHint}
             priority
+          />
+          <Image
+            src="/tech-stackmern.png" // Directly using the second image path
+            alt="Tech Stack MERN - Tinkal Kumar"
+            width={500} 
+            height={300} // Adjusted height assumption
+            className="rounded-lg shadow-xl w-full h-auto"
+            data-ai-hint="MERN tech stack" 
           />
         </motion.div>
         <motion.div
@@ -214,4 +222,3 @@ export function About() {
     </SectionWrapper>
   );
 }
-    

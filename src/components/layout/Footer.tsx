@@ -40,18 +40,8 @@ export function Footer() {
 
   return (
     <>
-      <footer className="relative border-t border-border/50 py-12 overflow-hidden">
-        {/* Background Image Layer */}
-        <div
-          className="absolute inset-0 z-0 bg-no-repeat bg-cover bg-center"
-          style={{ backgroundImage: `url('${LOGO_PATH}')` }} // Using LOGO_PATH
-          aria-hidden="true"
-        />
-        {/* Overlay for Readability - Adjusted opacity */}
-        <div className="absolute inset-0 z-10 bg-card/80 dark:bg-background/80 backdrop-blur-sm" />
-        
-        {/* Footer Content Layer */}
-        <div className="relative z-20 container mx-auto px-4 md:px-6 text-card-foreground">
+      <footer className="relative border-t border-border/50 py-12 bg-card dark:bg-background"> {/* Simplified background */}
+        <div className="container mx-auto px-4 md:px-6 text-card-foreground">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 text-center md:text-left">
             <div>
               <h3 className="text-lg font-semibold text-primary font-headline mb-4">Quick Links</h3>
