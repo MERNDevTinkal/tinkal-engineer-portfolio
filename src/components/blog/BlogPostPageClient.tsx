@@ -29,18 +29,33 @@ function BlogContentSkeleton() {
   );
 }
 
+// Helper function to get a clean, processed title
+function getProcessedTitle(titleParam: string | string[] | undefined): string {
+  if (!titleParam || typeof titleParam !== 'string') {
+    return ''; // No title or invalid type
+  }
+  try {
+    const decoded = decodeURIComponent(titleParam);
+    return decoded.trim(); // Decode and then trim whitespace
+  } catch (e) {
+    // URIError if malformed, treat as missing/invalid
+    return '';
+  }
+}
+
+
 export default function BlogPostPageClient({ params, searchParams }: BlogPageProps) {
   const { id } = params;
-  const titleFromParams = searchParams.title ? decodeURIComponent(searchParams.title as string) : 'Untitled Blog Post';
+  // Process the title from searchParams robustly once
+  const pageTitle = getProcessedTitle(searchParams.title);
   
   const [publicationDate, setPublicationDate] = useState<string | null>(null);
   const [blogContent, setBlogContent] = useState<string | null>(null);
   const [isContentLoading, setIsContentLoading] = useState(true);
   const [contentError, setContentError] = useState<string | null>(null);
-  const [isTitleMissingError, setIsTitleMissingError] = useState(false); // New state for specific error type
+  const [isTitleMissingError, setIsTitleMissingError] = useState(false);
 
   useEffect(() => {
-    // Calculate date on the client-side after hydration
     setPublicationDate(
       new Date().toLocaleDateString('en-US', {
         year: 'numeric',
@@ -52,19 +67,19 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
     async function fetchBlogContent() {
       setIsContentLoading(true);
       setContentError(null);
-      setIsTitleMissingError(false); // Reset error type
+      setIsTitleMissingError(false);
 
-      if (!titleFromParams || titleFromParams === 'Untitled Blog Post') {
+      // Use the robustly processed pageTitle for checks and API calls
+      if (!pageTitle) { // If pageTitle is an empty string after processing
         setContentError("This blog post cannot be displayed as its title is missing. Please select an article from the main blog page.");
-        setIsTitleMissingError(true); // Mark as missing title error
-        // Fallback content for missing title specifically
+        setIsTitleMissingError(true);
         setBlogContent("To view a blog post, please return to the main blog page and click on one of the available titles. This page requires a title to load the correct content.");
-        setIsContentLoading(false);
+        setIsLoading(false);
         return;
       }
 
       try {
-        const result = await generateBlogContent({ title: titleFromParams });
+        const result = await generateBlogContent({ title: pageTitle }); // Use processed pageTitle
         if (result && result.content) {
           setBlogContent(result.content);
         } else {
@@ -80,15 +95,14 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
                       : `An error occurred: ${err.message}`;
         }
         setContentError(message);
-        // Fallback content in case of error
-        setBlogContent(`This is a placeholder because we couldn't load the AI-generated content for "${titleFromParams}". We were hoping to tell you all about the nuances and exciting developments related to this topic. Please try refreshing the page or checking back later.`);
+        setBlogContent(`This is a placeholder because we couldn't load the AI-generated content for "${pageTitle}". We were hoping to tell you all about the nuances and exciting developments related to this topic. Please try refreshing the page or checking back later.`);
       } finally {
         setIsContentLoading(false);
       }
     }
 
     fetchBlogContent();
-  }, [titleFromParams]);
+  }, [pageTitle]); // Depend on the processed pageTitle
 
 
   return (
@@ -102,7 +116,7 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
         <article className="bg-background dark:bg-card p-6 sm:p-8 md:p-10 rounded-xl shadow-xl">
           <header className="mb-8">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-headline text-primary mb-4 leading-tight">
-              {isTitleMissingError ? "Blog Post Unavailable" : titleFromParams}
+              {isTitleMissingError ? "Blog Post Unavailable" : pageTitle}
             </h1>
             <div className="text-sm text-muted-foreground flex items-center space-x-4">
               <span>By {AUTHOR_NAME}</span>
@@ -115,11 +129,11 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
             </div>
           </header>
 
-          {!isTitleMissingError && (
+          {!isTitleMissingError && pageTitle && ( // Also check pageTitle here for safety
             <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-8 shadow-lg">
               <Image
-                src={`https://placehold.co/1200x675.png?text=${encodeURIComponent(titleFromParams.substring(0,30))}`}
-                alt={`Hero image for ${titleFromParams}`}
+                src={`https://placehold.co/1200x675.png?text=${encodeURIComponent(pageTitle.substring(0,30))}`}
+                alt={`Hero image for ${pageTitle}`}
                 fill
                 className="object-cover"
                 priority
@@ -152,8 +166,7 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
                 <p key={index}>{paragraph}</p>
               ))
             )}
-             {/* This case handles when title is missing and we set specific blogContent for it */}
-            {!isContentLoading && isTitleMissingError && blogContent && (
+            {!isContentLoading && isTitleMissingError && blogContent && ( // Content set specifically for missing title error
                 blogContent.split('\n\n').map((paragraph, index) => (
                   <p key={index}>{paragraph}</p>
                 ))
@@ -168,7 +181,7 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
           <footer className="text-center">
             <p className="text-lg text-muted-foreground mb-4">Enjoyed this article? Let's connect!</p>
             <Button asChild size="lg">
-              <Link href={`mailto:${AUTHOR_EMAIL}?subject=Regarding your blog post: ${encodeURIComponent(titleFromParams)}`}>
+              <Link href={`mailto:${AUTHOR_EMAIL}?subject=Regarding your blog post: ${encodeURIComponent(isTitleMissingError ? "Blog Post Inquiry" : pageTitle)}`}>
                 <span>
                   <Mail className="mr-2 h-5 w-5 inline" /> Contact Me
                 </span>
