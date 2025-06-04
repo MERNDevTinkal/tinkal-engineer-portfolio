@@ -1,12 +1,14 @@
+
 "use client";
 
 import Link from "next/link";
+import Image from "next/image"; // Added Image import
 import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Button } from "@/components/ui/button";
-import { APP_NAME, NAV_LINKS, AUTHOR_NAME } from "@/lib/data";
+import { APP_NAME, NAV_LINKS, LOGO_PATH } from "@/lib/data"; // Added LOGO_PATH
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,8 +53,17 @@ export function Navbar() {
       className="fixed top-0 left-0 right-0 z-50 w-full"
     >
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
-        <Link href="#home" className="text-2xl font-bold font-headline text-primary">
-          {APP_NAME}
+        <Link href="#home" className="flex items-center space-x-2 text-2xl font-bold font-headline text-primary">
+          <Image 
+            src={LOGO_PATH} 
+            alt={`${APP_NAME} Logo`} 
+            width={32} 
+            height={32} 
+            className="h-8 w-8"
+            data-ai-hint="company logo"
+            priority // Logo is important for LCP
+          />
+          <span>{APP_NAME}</span>
         </Link>
 
         <div className="hidden items-center space-x-2 md:flex">

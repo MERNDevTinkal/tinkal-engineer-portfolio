@@ -15,6 +15,8 @@ export const AUTHOR_EMAIL = "tinkalkumar67693@gmail.com"; // General author emai
 // Email address that will RECEIVE contact form submissions. Configured via .env
 export const CONTACT_FORM_RECEIVER_EMAIL = process.env.NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL || AUTHOR_EMAIL;
 
+export const LOGO_PATH = "/images/logo.png"; // Added for site logo
+
 export const NAV_LINKS = [
   { name: "Home", href: "#home" },
   { name: "About", href: "#about" },
