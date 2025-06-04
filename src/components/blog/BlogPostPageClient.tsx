@@ -31,11 +31,20 @@ function BlogContentSkeleton() {
 
 // Helper function to get a clean, processed title
 function getProcessedTitle(titleParam: string | string[] | undefined): string {
-  if (!titleParam || typeof titleParam !== 'string') {
-    return ''; // No title or invalid type
+  let singleTitle: string | undefined;
+
+  if (Array.isArray(titleParam)) {
+    singleTitle = titleParam[0]; // Take the first element if it's an array
+  } else {
+    singleTitle = titleParam;
   }
+
+  if (typeof singleTitle !== 'string' || !singleTitle) { // Check if it's not a string or is falsy (e.g. empty string after array processing)
+    return '';
+  }
+
   try {
-    const decoded = decodeURIComponent(titleParam);
+    const decoded = decodeURIComponent(singleTitle);
     return decoded.trim(); // Decode and then trim whitespace
   } catch (e) {
     // URIError if malformed, treat as missing/invalid
@@ -74,7 +83,7 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
         setContentError("This blog post cannot be displayed as its title is missing. Please select an article from the main blog page.");
         setIsTitleMissingError(true);
         setBlogContent("To view a blog post, please return to the main blog page and click on one of the available titles. This page requires a title to load the correct content.");
-        setIsContentLoading(false); // Corrected from setIsLoading
+        setIsContentLoading(false);
         return;
       }
 
