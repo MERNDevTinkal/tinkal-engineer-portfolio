@@ -4,7 +4,8 @@ import {
   Github, Linkedin, Briefcase, MapPin, Mail, Phone, CodeXml, Database, 
   ServerCog, Wand2, Palette, Settings2, ShoppingCart, FileText, BookOpen, 
   GraduationCap, Building, Award, ExternalLink, UserCircle2, KeyRound, ShieldCheck,
-  UploadCloud, Smartphone, Layers, Puzzle, Lightbulb, TerminalSquare, GitCommit, Wrench
+  UploadCloud, Smartphone, Layers, Puzzle, Lightbulb, TerminalSquare, GitCommit, Wrench,
+  Send, Brain, MessageSquareText, Rocket, NotebookText, Scale // Added new icons
 } from 'lucide-react';
 
 export const APP_NAME = "Tinkal";
@@ -198,21 +199,29 @@ export const TECH_STACK: TechStackItem[] = [
   { name: "Bcrypt", Icon: ShieldCheck },
   { name: "Multer", Icon: UploadCloud },
   { name: "Nodemailer", Icon: Mail },
+  { name: "EmailJS", Icon: Send }, // Added
   // Databases
   { name: "MongoDB", Icon: Database },
   { name: "Mongoose", Icon: Database },
   { name: "SQL", Icon: Database },
   { name: "MySQL", Icon: Database },
-  // Tools
+  // Tools & DevOps
   { name: "Git", Icon: GitCommit },
   { name: "GitHub", Icon: Github },
   { name: "Postman", Icon: Settings2 }, 
   { name: "Redux DevTools", Icon: Wrench }, 
+  { name: "DevOps", Icon: TerminalSquare },
+  { name: "Basic CI/CD", Icon: Layers }, // Added
+  { name: "Kubernetes", Icon: ServerCog }, // Added
   // AI & Cloud
   { name: "Firebase", Icon: Wand2 }, 
   { name: "Genkit AI", Icon: Wand2 },
+  { name: "Machine Learning Integration", Icon: Brain }, // Added AI
+  { name: "Natural Language Processing (NLP)", Icon: MessageSquareText }, // Added AI
+  { name: "AI Model Deployment", Icon: Rocket }, // Added AI
+  { name: "Large Language Models (LLMs)", Icon: NotebookText }, // Added AI
+  { name: "Responsible AI & Ethics", Icon: Scale }, // Added AI
   // Methodologies & Other
-  { name: "DevOps", Icon: TerminalSquare },
   { name: "Responsive Design", Icon: Smartphone },
   { name: "Clean Architecture", Icon: Layers }, 
   { name: "Component Reusability", Icon: Puzzle },
@@ -297,3 +306,4 @@ export const EMAILJS_CONFIG = {
     
 
     
+
