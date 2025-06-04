@@ -281,7 +281,9 @@ export function ChatbotDialog() {
             className={cn(
               "fixed bottom-24 z-40 rounded-xl bg-background shadow-2xl border border-border overflow-hidden flex flex-col",
               "left-4 right-4 w-auto", // Mobile: small margins, auto width
-              "md:left-auto md:right-6 md:w-full md:max-w-md" // Desktop: anchored right, specific max-width
+              "md:left-auto md:right-6 md:w-full md:max-w-md", // Medium screens
+              "lg:max-w-lg", // Large screens
+              "xl:max-w-xl"  // Extra large screens
             )}
             style={{ maxHeight: 'min(calc(100vh - 12rem), 700px)' }} 
           >
@@ -377,3 +379,4 @@ export function ChatbotDialog() {
   );
 }
 
+    
