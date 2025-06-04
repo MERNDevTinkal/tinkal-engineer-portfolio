@@ -15,7 +15,7 @@ export const AUTHOR_EMAIL = "tinkalkumar67693@gmail.com"; // General author emai
 // Email address that will RECEIVE contact form submissions. Configured via .env
 export const CONTACT_FORM_RECEIVER_EMAIL = process.env.NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL || AUTHOR_EMAIL;
 
-export const LOGO_PATH = "/tech-stackmern.png"; // Updated logo path
+export const LOGO_PATH = "/tech-stackmern.png"; // Assumes tech-stackmern.png is directly in /public
 
 export const NAV_LINKS = [
   { name: "Home", href: "#home" },
@@ -93,6 +93,7 @@ export const HERO_TITLES = [
   "Digital Transformation Agent"
 ];
 
+// Note: .HEIC files might have limited browser support. Consider converting to JPG/PNG for better compatibility.
 export const PROFILE_IMAGES = [
   { src: "/profile-1.jpg", alt: "Tinkal Kumar - Professional Headshot", dataAiHint: "professional man" },
   { src: "/profile-2.jpg", alt: "Tinkal Kumar - Working at a desk", dataAiHint: "developer coding" },
@@ -100,7 +101,7 @@ export const PROFILE_IMAGES = [
   { src: "/profile-4.HEIC", alt: "Tinkal Kumar - Tech event or conference", dataAiHint: "tech conference heic" },
 ];
 
-export const RESUME_PATH = "/Tinkal_Resume.pdf"; // Correct path if file is directly in public
+export const RESUME_PATH = "/Tinkal_Resume.pdf"; // Assumes Tinkal_Resume.pdf is directly in /public
 
 export const ABOUT_ME = {
   summary: `An Indian software engineer hailing from Jamui district, Bihar, I am a results-driven MERN Stack Developer with expertise in building scalable full-stack web applications using MongoDB, Express.js, React.js, and Node.js. Passionate about clean code, component reusability, performance optimization, and collaborating on real-world client projects. I thrive on solving complex challenges with innovation and continuously learning new technologies.`,
@@ -111,7 +112,7 @@ export const ABOUT_ME = {
   IconRelocation: Briefcase,
   IconAbout: UserCircle2,
   image: {
-    src: "/Tech-focused-image.png", // Updated About Me image
+    src: "/Tech-focused-image.png", // Assumes Tech-focused-image.png is directly in /public
     alt: "Tinkal Kumar - Tech focused image",
     dataAiHint: "technology developer",
   },
@@ -193,37 +194,37 @@ export const CERTIFICATIONS_DATA: CertificationEntry[] = [
   {
     name: "Full Stack Web Development",
     issuingOrganization: "Internshala Trainings",
-    credentialUrl: "#", // Replace # with your actual credential URL or remove if N/A
+    credentialUrl: "#", 
     Icon: Award,
   },
   {
     name: "MERN Stack Web Development",
     issuingOrganization: "Coding Ninjas",
-    credentialUrl: "#", // Replace # with your actual credential URL or remove if N/A
+    credentialUrl: "#", 
     Icon: Award,
   },
   {
     name: "Frontend Web Development",
     issuingOrganization: "PW Skills",
-    credentialUrl: "#", // Replace # with your actual credential URL or remove if N/A
+    credentialUrl: "#", 
     Icon: Award,
   },
   {
     name: "Backend Web Development",
     issuingOrganization: "PW Skills",
-    credentialUrl: "#", // Replace # with your actual credential URL or remove if N/A
+    credentialUrl: "#", 
     Icon: Award,
   },
   {
     name: "DevOps Fundamentals",
     issuingOrganization: "PW Skills",
-    credentialUrl: "#", // Replace # with your actual credential URL or remove if N/A
+    credentialUrl: "#", 
     Icon: Award,
   },
   {
     name: "Skills India Program Completion",
     issuingOrganization: "Skills India",
-    credentialUrl: "#", // Replace # with your actual credential URL or remove if N/A
+    credentialUrl: "#", 
     Icon: Award,
   },
 ];
@@ -297,7 +298,7 @@ export const PROJECTS_DATA: Project[] = [
     id: "job-portal",
     title: "Job Portal App (Next.js & MERN)",
     description: "A comprehensive platform for job seekers and employers, featuring a Next.js frontend and a robust MERN stack backend (MongoDB, Express.js, Node.js). Implements JWT authentication, Nodemailer for notifications, Multer for file uploads, Bcrypt for password hashing, protected routes, and role-based authorization. Currently undergoing enhancements by Tinkal.",
-    liveDemoUrl: "#", // This will trigger the maintenance toast in ProjectCard
+    liveDemoUrl: "#", 
     githubRepoUrl: "https://github.com/MERNDevTinkal/Job-Portal-App",
     techStack: [
       { name: "Next.js", Icon: CodeXml },
@@ -361,4 +362,3 @@ export const EMAILJS_CONFIG = {
   templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "YOUR_EMAILJS_TEMPLATE_ID",
   publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "YOUR_EMAILJS_PUBLIC_KEY",
 };
-

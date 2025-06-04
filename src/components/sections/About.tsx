@@ -42,9 +42,9 @@ export function About() {
           <Image
             src={ABOUT_ME.image.src}
             alt={ABOUT_ME.image.alt}
-            width={500}
-            height={600}
-            className="rounded-lg shadow-xl object-cover w-full aspect-[4/5]"
+            width={500} // Original width for aspect ratio calculation by Next/Image
+            height={600} // Original height for aspect ratio calculation by Next/Image
+            className="rounded-lg shadow-xl w-full h-auto" // w-full and h-auto to maintain aspect ratio
             data-ai-hint={ABOUT_ME.image.dataAiHint}
             priority
           />
@@ -214,5 +214,4 @@ export function About() {
     </SectionWrapper>
   );
 }
-
     

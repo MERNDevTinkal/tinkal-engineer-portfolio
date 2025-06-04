@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import Link from "next/link";
 import { ArrowUp, Mail } from "lucide-react";
-import { SOCIAL_LINKS, AUTHOR_NAME, NAV_LINKS, APP_NAME, AUTHOR_EMAIL } from "@/lib/data";
+import { SOCIAL_LINKS, AUTHOR_NAME, NAV_LINKS, APP_NAME, AUTHOR_EMAIL, LOGO_PATH } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { cn } from '@/lib/utils';
 
@@ -38,11 +38,20 @@ export function Footer() {
   const footerLinkedIn = SOCIAL_LINKS.find(link => link.name === "LinkedIn");
   const footerInstagram = SOCIAL_LINKS.find(link => link.name === "Instagram");
 
-
   return (
     <>
-      <footer className="border-t border-border/50 bg-card text-card-foreground py-12">
-        <div className="container mx-auto px-4 md:px-6">
+      <footer className="relative border-t border-border/50 py-12 overflow-hidden">
+        {/* Background Image Layer */}
+        <div
+          className="absolute inset-0 z-0 bg-no-repeat bg-cover bg-center"
+          style={{ backgroundImage: `url('${LOGO_PATH}')` }} // Using LOGO_PATH which should be /tech-stackmern.png
+          aria-hidden="true"
+        />
+        {/* Overlay for Readability */}
+        <div className="absolute inset-0 z-10 bg-card/90 dark:bg-background/90 backdrop-blur-sm" />
+        
+        {/* Footer Content Layer */}
+        <div className="relative z-20 container mx-auto px-4 md:px-6 text-card-foreground">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 text-center md:text-left">
             <div>
               <h3 className="text-lg font-semibold text-primary font-headline mb-4">Quick Links</h3>
@@ -116,7 +125,7 @@ export function Footer() {
         variant="default"
         size="icon"
         className={cn(
-          "fixed bottom-6 left-6 h-12 w-12 rounded-full shadow-lg z-50 transition-all duration-300 ease-in-out hover:scale-110", // Changed right-6 to left-6
+          "fixed bottom-6 left-6 h-12 w-12 rounded-full shadow-lg z-50 transition-all duration-300 ease-in-out hover:scale-110",
           isVisible ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         )}
         aria-label="Scroll to top"
@@ -126,5 +135,3 @@ export function Footer() {
     </>
   );
 }
-
-    
