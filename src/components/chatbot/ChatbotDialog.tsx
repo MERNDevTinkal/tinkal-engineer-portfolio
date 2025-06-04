@@ -12,7 +12,7 @@ import { AUTHOR_NAME } from "@/lib/data";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"; // Added Avatar imports
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface Message {
   id: string;
@@ -52,7 +52,7 @@ export function ChatbotDialog() {
   
   const inputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const scrollAreaRef = useRef<HTMLDivElement>(null); // Ref for the ScrollArea's viewport
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const { toast } = useToast();
 
@@ -98,7 +98,7 @@ export function ChatbotDialog() {
           setCurrentSuggestions(initialBotMessage.suggestions || INITIAL_SUGGESTIONS.slice(0, 4));
         }
       }
-      setSuggestionsExpanded(false); // Keep suggestions collapsed initially
+      setSuggestionsExpanded(false); 
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [isOpen]);
@@ -155,7 +155,7 @@ export function ChatbotDialog() {
         sender: 'bot',
         text: result.response,
         isLoading: false,
-        suggestions: validSuggestions.length > 0 ? validSuggestions : INITIAL_SUGGESTIONS.slice(0,4) // Ensure suggestions are attached
+        suggestions: validSuggestions.length > 0 ? validSuggestions : INITIAL_SUGGESTIONS.slice(0,4) 
       };
 
       setMessages((prevMessages) =>
@@ -251,14 +251,14 @@ export function ChatbotDialog() {
         <Button
           onClick={() => setIsOpen(!isOpen)}
           size="icon"
-          className="rounded-full h-14 w-14 shadow-lg hover:scale-110 transition-transform bg-primary hover:bg-primary/90 p-0 overflow-hidden" // Added p-0 and overflow-hidden
+          className="rounded-full h-14 w-14 shadow-lg hover:scale-110 transition-transform bg-primary hover:bg-primary/90 p-0 overflow-hidden"
           aria-label="Toggle Chatbot"
         >
           {isOpen ? (
             <X className="h-7 w-7" />
           ) : (
             <Avatar className="h-full w-full">
-              <AvatarImage src="https://placehold.co/100x100.png" alt="Sora AI Assistant" data-ai-hint="female assistant portrait" />
+              <AvatarImage src="https://static.vecteezy.com/system/resources/previews/038/281/907/large_2x/portrait-of-a-beautiful-woman-wearing-headset-photo.jpg" alt="Sora AI Assistant" data-ai-hint="headset portrait" />
               <AvatarFallback className="bg-primary text-primary-foreground text-xl">SA</AvatarFallback>
             </Avatar>
           )}
