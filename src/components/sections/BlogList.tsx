@@ -73,9 +73,9 @@ const hardcodedBlogPosts = [
 ];
 
 
-function BlogCardSkeleton() {
+function BlogCardSkeleton({ cardKey }: { cardKey: string }) {
   return (
-    <Card className="flex flex-col shadow-lg bg-card">
+    <Card key={cardKey} className="flex flex-col shadow-lg bg-card">
       <CardHeader>
         <Skeleton className="h-6 w-3/4 mb-2" />
         <Skeleton className="h-4 w-1/2" />
@@ -123,7 +123,7 @@ export function BlogList() {
         if (cachedItem) {
           const cached: CachedBlogTitles = JSON.parse(cachedItem);
           if (cached && cached.timestamp && cached.data && cached.data.titles && (Date.now() - cached.timestamp < CACHE_DURATION_MS)) {
-            const validCachedTitles = cached.data.titles.filter(title => title && title.trim() !== "").slice(0, 12);
+            const validCachedTitles = cached.data.titles.filter(title => typeof title === 'string' && title.trim() !== "").slice(0, 12);
             if (validCachedTitles.length > 0) {
               setBlogData({ titles: validCachedTitles });
               setIsLoading(false);
@@ -137,7 +137,7 @@ export function BlogList() {
 
       try {
         const data = await generateBlogTitles({ topic: "technology, software development, and DevOps", numTitles: 12 });
-        const validTitles = (data.titles || []).filter(title => title && title.trim() !== "").slice(0,12);
+        const validTitles = (data.titles || []).filter(title => typeof title === 'string' && title.trim() !== "").slice(0,12);
         
         if (validTitles.length > 0) {
           setBlogData({ titles: validTitles });
@@ -147,10 +147,12 @@ export function BlogList() {
             // console.error("Failed to write blog titles to localStorage:", e);
           }
         } else {
-          setError("Could not fetch fresh blog titles. Displaying defaults.");
+          // console.warn("AI generated no valid titles. Using fallback.");
+          setError("AI could not generate blog titles. Displaying defaults.");
           setBlogData(FALLBACK_TITLES);
         }
       } catch (err) {
+        // console.error("Error fetching blog titles:", err);
         setError("Failed to load blog titles. Displaying default topics.");
         setBlogData(FALLBACK_TITLES);
       } finally {
@@ -173,7 +175,7 @@ export function BlogList() {
 
   if (isLoading) {
     return (
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:items-start">
         {Array.from({ length: 6 }).map((_, index) => (
           <BlogCardSkeleton key={`skeleton-${index}`} />
         ))}
@@ -187,12 +189,13 @@ export function BlogList() {
         <AlertTriangle className="mx-auto h-12 w-12 text-destructive mb-4" />
         <p className="text-destructive mb-4 text-lg font-semibold">{error}</p>
         <h3 className="text-xl font-semibold mb-6 text-muted-foreground">Meanwhile, here are some default topics:</h3>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:items-start">
           {FALLBACK_TITLES.titles.map((title, index) => {
             const isExpanded = expandedPostIndex === index;
             const postContent = hardcodedBlogPosts[index];
+            const cardKey = `fallback-card-${index}-${title.replace(/\s+/g, '-')}`;
             return (
-              <Card key={`fallback-card-${index}`} className="flex flex-col shadow-lg hover:shadow-primary/20 transition-shadow duration-300 bg-card">
+              <Card key={cardKey} className="flex flex-col shadow-lg hover:shadow-primary/20 transition-shadow duration-300 bg-card">
                 <CardHeader>
                   <CardTitle className="text-xl font-headline text-primary cursor-default">{title}</CardTitle>
                 </CardHeader>
@@ -205,30 +208,18 @@ export function BlogList() {
                     An insightful article exploring {title.toLowerCase().split(" ").slice(0,3).join(" ")}... Discover key concepts and practical advice.
                   </p>
                   <AnimatePresence>
-                    {isExpanded && postContent && (
-                      <motion.div
-                        key={`fallback-content-details-${index}`}
+                    {isExpanded && (
+                       <motion.div
+                        key={`fallback-content-motion-${index}`}
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.3, ease: "easeInOut" }}
                         className="mt-4 prose dark:prose-invert max-w-none text-sm overflow-hidden"
                       >
-                        {postContent.paragraphs.map((paragraph, pIndex) => (
+                        {postContent ? postContent.paragraphs.map((paragraph, pIndex) => (
                           <p key={`fallback-content-paragraph-${index}-${pIndex}`} className="mb-2">{paragraph}</p>
-                        ))}
-                      </motion.div>
-                    )}
-                    {isExpanded && !postContent && (
-                       <motion.div
-                        key={`fallback-content-nocontent-${index}`}
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3, ease: "easeInOut" }}
-                        className="mt-4 text-muted-foreground text-sm overflow-hidden"
-                      >
-                        <p>Full content for this topic is coming soon!</p>
+                        )) : <p>Full content for this topic is coming soon!</p>}
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -250,13 +241,14 @@ export function BlogList() {
   }
 
   return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:items-start">
       {(blogData.titles || []).map((title, index) => {
         const isExpanded = expandedPostIndex === index;
-        const postContent = hardcodedBlogPosts[index];
+        const postContent = hardcodedBlogPosts[index]; // Content might be undefined if index > 5
+        const cardKey = `card-${index}-${title.replace(/\s+/g, '-')}`;
 
         return (
-          <Card key={`card-${index}`} className="flex flex-col shadow-lg hover:shadow-primary/20 transition-shadow duration-300 bg-card">
+          <Card key={cardKey} className="flex flex-col shadow-lg hover:shadow-primary/20 transition-shadow duration-300 bg-card">
             <CardHeader>
               <CardTitle className="text-xl font-headline text-primary cursor-default">{title}</CardTitle>
             </CardHeader>
@@ -269,30 +261,18 @@ export function BlogList() {
                 An insightful article exploring {title.toLowerCase().split(" ").slice(0,3).join(" ")}... Discover key concepts and practical advice.
               </p>
               <AnimatePresence>
-                {isExpanded && postContent && (
+                {isExpanded && ( 
                   <motion.div
-                    key={`content-details-${index}`}
+                    key={`content-motion-${index}`}
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                     className="mt-4 prose dark:prose-invert max-w-none text-sm overflow-hidden"
                   >
-                    {postContent.paragraphs.map((paragraph, pIndex) => (
+                    {postContent ? postContent.paragraphs.map((paragraph, pIndex) => (
                       <p key={`content-paragraph-${index}-${pIndex}`} className="mb-2">{paragraph}</p>
-                    ))}
-                  </motion.div>
-                )}
-                {isExpanded && !postContent && ( 
-                  <motion.div
-                    key={`content-nocontent-${index}`}
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="mt-4 text-muted-foreground text-sm overflow-hidden"
-                  >
-                    <p>Full content for this topic is being prepared and will be available soon!</p>
+                    )) : <p>Full content for this topic is being prepared and will be available soon!</p>}
                   </motion.div>
                 )}
               </AnimatePresence>
