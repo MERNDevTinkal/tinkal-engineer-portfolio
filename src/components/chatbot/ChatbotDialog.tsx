@@ -115,9 +115,17 @@ export function ChatbotDialog() {
 
   useEffect(() => {
     if (messagesEndRef.current) {
-        requestAnimationFrame(() => { 
-            messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-        });
+      // Using requestAnimationFrame to ensure scroll happens after layout update
+      requestAnimationFrame(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        // if (scrollAreaRef.current?.firstChild) {
+        //   const scrollViewport = scrollAreaRef.current.firstChild as HTMLElement;
+        //   if (scrollViewport) {
+        //     console.log("Scrolling to:", scrollViewport.scrollHeight);
+        //     scrollViewport.scrollTop = scrollViewport.scrollHeight;
+        //   }
+        // }
+      });
     }
   }, [messages]);
 
@@ -285,7 +293,7 @@ export function ChatbotDialog() {
               "lg:max-w-lg", // Large screens
               "xl:max-w-xl"  // Extra large screens
             )}
-            style={{ maxHeight: 'min(calc(100vh - 12rem), 700px)' }} 
+            style={{ maxHeight: 'min(calc(100vh - 12rem), 85vh)' }} 
           >
             <header className="bg-card p-3 border-b border-border flex items-center justify-between">
               <h3 className="font-semibold text-lg text-primary font-headline pl-2">Sora - Tinkal's Assistant</h3>
@@ -378,5 +386,3 @@ export function ChatbotDialog() {
     </>
   );
 }
-
-    
