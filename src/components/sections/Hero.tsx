@@ -127,7 +127,7 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.8, x: 50 }}
           animate={{ opacity: 1, scale: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.8, type: "spring", stiffness: 100 }} // Updated delay
-          className="w-full max-w-md md:max-w-lg lg:max-w-xl mx-auto" // Updated max-width for desktop
+          className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto"
         >
           <Swiper
             modules={[Autoplay, Pagination, EffectFade]}
