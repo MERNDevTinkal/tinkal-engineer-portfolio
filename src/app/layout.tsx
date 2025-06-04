@@ -1,4 +1,6 @@
 
+// Removed "use client"; directive
+
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
@@ -7,7 +9,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import { APP_NAME, AUTHOR_NAME } from "@/lib/data";
-import { ChatbotDialog } from "@/components/chatbot/ChatbotDialog";
+import { DynamicChatbotLoader } from "@/components/layout/DynamicChatbotLoader"; // New import
 
 const inter = Inter({
   subsets: ["latin"],
@@ -20,6 +22,7 @@ const spaceGrotesk = Space_Grotesk({
   weight: ["300", "400", "500", "600", "700"],
 });
 
+// Metadata object can now be correctly exported as this is a Server Component
 export const metadata: Metadata = {
   title: `${APP_NAME} | ${AUTHOR_NAME} - Full Stack Developer`,
   description: `Portfolio of ${AUTHOR_NAME}, a passionate Full Stack Developer specializing in MERN stack, Next.js, and modern web technologies.`,
@@ -51,7 +54,7 @@ export default function RootLayout({
           </main>
           <Footer />
           <Toaster />
-          <ChatbotDialog />
+          <DynamicChatbotLoader /> {/* Use the new loader component */}
         </ThemeProvider>
       </body>
     </html>

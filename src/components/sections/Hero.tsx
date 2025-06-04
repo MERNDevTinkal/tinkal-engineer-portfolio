@@ -4,17 +4,38 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Typewriter } from "react-simple-typewriter";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination, EffectFade } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/effect-fade";
+import dynamic from 'next/dynamic';
 import { motion } from "framer-motion";
 import { Download, ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { HERO_TITLES, SOCIAL_LINKS, PROFILE_IMAGES, RESUME_PATH, AUTHOR_NAME } from "@/lib/data";
+import { Skeleton } from "@/components/ui/skeleton"; // For Swiper loading state
+
+// Dynamically import Swiper and its CSS
+const Swiper = dynamic(() => import('swiper/react').then(mod => mod.Swiper), { 
+  ssr: false,
+  loading: () => <Skeleton className="rounded-xl shadow-2xl aspect-[3/4] w-full h-full border-4 border-card" />
+});
+const SwiperSlide = dynamic(() => import('swiper/react').then(mod => mod.SwiperSlide), { ssr: false });
+
+// Dynamically import Swiper modules and CSS. We need to ensure CSS is loaded.
+// A bit of a workaround to ensure CSS is requested by the browser by importing them in the client component.
+if (typeof window !== 'undefined') {
+  import('swiper/css');
+  import('swiper/css/pagination');
+  import('swiper/css/effect-fade');
+}
+// Autoplay, Pagination, EffectFade will be imported and passed as modules prop if Swiper is loaded
+// For tree-shaking, it's better to import them conditionally if Swiper is used.
+let SwiperModules: any[] = [];
+if (typeof window !== 'undefined') {
+  import('swiper/modules').then(mod => {
+    SwiperModules = [mod.Autoplay, mod.Pagination, mod.EffectFade];
+  }).catch(err => console.error("Failed to load Swiper modules", err));
+}
+
 
 export function Hero() {
   const textContainerVariants = {
@@ -130,18 +151,18 @@ export function Hero() {
           className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto"
         >
           <Swiper
-            modules={[Autoplay, Pagination, EffectFade]}
+            modules={SwiperModules.length > 0 ? SwiperModules : undefined} // Pass modules only if loaded
             spaceBetween={30}
             slidesPerView={1}
             loop={true}
-            autoplay={{
+            autoplay={SwiperModules.length > 0 ? {
               delay: 4000,
               disableOnInteraction: false,
               pauseOnMouseEnter: true,
-            }}
-            pagination={{ clickable: true, dynamicBullets: true }}
-            effect="fade"
-            fadeEffect={{ crossFade: true }}
+            } : false}
+            pagination={SwiperModules.length > 0 ? { clickable: true, dynamicBullets: true } : false}
+            effect={SwiperModules.length > 0 ? "fade" : undefined}
+            fadeEffect={SwiperModules.length > 0 ? { crossFade: true } : undefined}
             className="rounded-xl shadow-2xl overflow-hidden aspect-[3/4] border-4 border-card hover:border-primary/30 transition-colors duration-300"
           >
             {PROFILE_IMAGES.map((image, index) => (
@@ -151,7 +172,7 @@ export function Hero() {
                   alt={image.alt}
                   width={600}
                   height={800}
-                  priority={index === 0}
+                  priority={index === 0} // First image is LCP
                   className="object-cover w-full h-full"
                   data-ai-hint={image.dataAiHint}
                 />

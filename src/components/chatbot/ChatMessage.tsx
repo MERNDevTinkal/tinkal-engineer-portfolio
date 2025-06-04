@@ -1,6 +1,7 @@
 
 "use client";
 
+import React from 'react'; // Import React
 import type { LucideIcon } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
@@ -13,7 +14,8 @@ interface ChatMessageProps {
   isLoading?: boolean;
 }
 
-export function ChatMessage({ sender, text, isLoading = false }: ChatMessageProps) {
+// Wrap ChatMessage with React.memo
+export const ChatMessage = React.memo(function ChatMessage({ sender, text, isLoading = false }: ChatMessageProps) {
   const isUser = sender === "user";
   const authorInitials = AUTHOR_NAME.split(" ").map(n => n[0]).join("").substring(0,2).toUpperCase();
   const soraInitials = "SA"; // Sora Assistant
@@ -65,5 +67,5 @@ export function ChatMessage({ sender, text, isLoading = false }: ChatMessageProp
       )}
     </div>
   );
-}
-
+});
+ChatMessage.displayName = 'ChatMessage'; // Optional: for better debugging
