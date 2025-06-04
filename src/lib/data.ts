@@ -291,16 +291,20 @@ export interface Project {
 export const PROJECTS_DATA: Project[] = [
   {
     id: "job-portal",
-    title: "Job Portal App (MERN, TypeScript)",
-    description: "A comprehensive MERN stack platform for job seekers and employers, featuring advanced search, application tracking, user management, and built with TypeScript for robust development. Includes JWT authentication and protected routes.",
-    liveDemoUrl: "https://job-portal-tinkal.vercel.app/", 
+    title: "Job Portal App (Next.js & MERN)",
+    description: "A comprehensive platform for job seekers and employers, featuring a Next.js frontend and a robust MERN stack backend (MongoDB, Express.js, Node.js). Implements JWT authentication, Nodemailer for notifications, Multer for file uploads, Bcrypt for password hashing, protected routes, and role-based authorization. Currently undergoing enhancements by Tinkal.",
+    liveDemoUrl: "#", // This will trigger the maintenance toast in ProjectCard
     githubRepoUrl: "https://github.com/MERNDevTinkal/Job-Portal-App",
     techStack: [
-      { name: "React", Icon: CodeXml },
+      { name: "Next.js", Icon: CodeXml },
       { name: "Node.js", Icon: ServerCog },
       { name: "MongoDB", Icon: Database },
-      { name: "TypeScript", Icon: CodeXml },
       { name: "Express.js", Icon: ServerCog},
+      { name: "TypeScript", Icon: CodeXml },
+      { name: "JWT Auth", Icon: KeyRound },
+      { name: "Nodemailer", Icon: Mail },
+      { name: "Multer", Icon: UploadCloud },
+      { name: "Bcrypt", Icon: ShieldCheck },
     ],
     Icon: Briefcase,
   },
@@ -308,7 +312,7 @@ export const PROJECTS_DATA: Project[] = [
     id: "notes-app",
     title: "Notes App (MERN)",
     description: "A secure and intuitive MERN stack application for creating, organizing, and managing personal notes. Features JWT-based authentication, protected routes, and complete CRUD operations for effective note management.",
-    liveDemoUrl: "#",
+    liveDemoUrl: "https://notes-application-2-vv1k.onrender.com/",
     githubRepoUrl: "https://github.com/MERNDevTinkal/Notes-Application",
     techStack: [
       { name: "React", Icon: CodeXml },
@@ -322,7 +326,7 @@ export const PROJECTS_DATA: Project[] = [
     id: "e-commerce",
     title: "E-commerce Frontend (Redux)",
     description: "A dynamic online shopping experience with product listings, cart functionality, and efficient global state management using Redux Toolkit, styled with Tailwind CSS for a modern, responsive UI.",
-    liveDemoUrl: "", 
+    liveDemoUrl: "https://ecommerce-using-redux-alpha.vercel.app/", 
     githubRepoUrl: "https://github.com/MERNDevTinkal/Ecommerce-Using-Redux",
     techStack: [
       { name: "React", Icon: CodeXml },
@@ -358,5 +362,7 @@ export const EMAILJS_CONFIG = {
     
 
 
+
+    
 
     
