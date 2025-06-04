@@ -74,7 +74,7 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
         setContentError("This blog post cannot be displayed as its title is missing. Please select an article from the main blog page.");
         setIsTitleMissingError(true);
         setBlogContent("To view a blog post, please return to the main blog page and click on one of the available titles. This page requires a title to load the correct content.");
-        setIsLoading(false);
+        setIsContentLoading(false); // Corrected from setIsLoading
         return;
       }
 
