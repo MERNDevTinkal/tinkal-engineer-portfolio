@@ -59,7 +59,7 @@ export function Footer() {
                 {NAV_LINKS.map((link) => (
                   <li key={link.name}>
                     <Link href={link.href} className="text-foreground/80 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors duration-300 ease-in-out text-sm">
-                      {link.name}
+                      <span>{link.name}</span>
                     </Link>
                   </li>
                 ))}
@@ -70,21 +70,27 @@ export function Footer() {
               <ul className="space-y-2">
                 <li>
                   <Link href={`mailto:${AUTHOR_EMAIL}`} className="text-foreground/80 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors duration-300 ease-in-out text-sm flex items-center justify-center md:justify-start">
-                    <Mail className="h-5 w-5 mr-2" />
-                    {AUTHOR_EMAIL}
+                    <span className="flex items-center">
+                      <Mail className="h-5 w-5 mr-2" />
+                      {AUTHOR_EMAIL}
+                    </span>
                   </Link>
                 </li>
                 {footerLinkedIn && (
                   <li>
                     <Link href={footerLinkedIn.href} target="_blank" rel="noopener noreferrer" className="text-foreground/80 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors duration-300 ease-in-out text-sm flex items-center justify-center md:justify-start">
-                      <footerLinkedIn.Icon className="h-5 w-5 mr-2" /> {footerLinkedIn.name}
+                      <span className="flex items-center">
+                        <footerLinkedIn.Icon className="h-5 w-5 mr-2" /> {footerLinkedIn.name}
+                      </span>
                     </Link>
                   </li>
                 )}
                 {footerInstagram && (
                   <li>
                     <Link href={footerInstagram.href} target="_blank" rel="noopener noreferrer" className="text-foreground/80 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors duration-300 ease-in-out text-sm flex items-center justify-center md:justify-start">
-                      <footerInstagram.Icon className="h-5 w-5 mr-2" /> {footerInstagram.name}
+                      <span className="flex items-center">
+                        <footerInstagram.Icon className="h-5 w-5 mr-2" /> {footerInstagram.name}
+                      </span>
                     </Link>
                   </li>
                 )}
@@ -97,13 +103,13 @@ export function Footer() {
               </p>
                <div className="mt-4 flex justify-center md:justify-start space-x-3">
                 {SOCIAL_LINKS.filter(link => link.name === "GitHub" || link.name === "LinkedIn" || link.name === "Instagram").map(({ name, Icon, href }) => (
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     key={name}
                     onClick={() => window.open(href, '_blank', 'noopener,noreferrer')}
                     aria-label={name}
-                    className="text-foreground/70 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors duration-300 ease-in-out"
+                    className="text-foreground/70 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors duration-300 ease-in-out h-11 w-11"
                   >
                     <Icon className="h-6 w-6" />
                   </Button>
@@ -112,7 +118,7 @@ export function Footer() {
             </div>
           </div>
           <div className="border-t border-border/30 pt-8 text-center">
-            <p className="text-sm font-medium text-muted-foreground/90 dark:text-gray-400">
+            <p className="text-sm font-medium text-foreground/70 dark:text-gray-300">
               {currentYear !== null ? (
                 `© ${currentYear} ${AUTHOR_NAME}. All rights reserved.`
               ) : (
