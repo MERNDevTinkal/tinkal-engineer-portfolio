@@ -47,7 +47,7 @@ export const RESUME_PATH = "/Tinkal_Resume.pdf";
 export const ABOUT_ME = {
   summary: `An Indian software engineer hailing from Jamui district, Bihar, I am a results-driven MERN Stack Developer with expertise in building scalable full-stack web applications using MongoDB, Express.js, React.js, and Node.js. Passionate about clean code, component reusability, performance optimization, and collaborating on real-world client projects. I thrive on solving complex challenges with innovation and continuously learning new technologies.`,
   passion: "My journey in tech is fueled by a relentless curiosity and a love for building impactful digital solutions. I'm particularly excited by AI integration in web apps, advanced JavaScript frameworks, and contributing to the open-source community to drive innovation.",
-  location: "Chandigarh, India (Originally from Jamui, Bihar)",
+  location: "Jaipur, India (Originally from Jamui, Bihar)",
   relocation: "Open to relocating for compelling opportunities",
   IconLocation: MapPin,
   IconRelocation: Briefcase,
