@@ -4,7 +4,7 @@
 import type { BlogPageProps } from '@/app/blog/[id]/page'; // Import the props type
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, Mail, AlertTriangle } from 'lucide-react'; // Removed Loader2
+import { ArrowLeft, Mail, AlertTriangle } from 'lucide-react';
 import { SectionWrapper } from '@/components/ui/SectionWrapper';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -27,6 +27,7 @@ const hardcodedBlogPosts = [
   },
   {
     id: "1",
+    // title: "Async JavaScript: Callbacks, Promises, and Async/Await"
     paragraphs: [
       "Understanding asynchronous JavaScript is fundamental for any modern web developer. Callbacks, Promises, and Async/Await are tools that help manage operations that don't complete immediately, like API calls or timeouts. Mastering these concepts is key to writing non-blocking, efficient code.",
       "Callbacks were the traditional way to handle asynchronous operations, but they can lead to 'callback hell' with deeply nested structures. Promises offer a cleaner way to chain asynchronous actions, with .then() for success and .catch() for errors. They represent a value that may be available now, or in the future, or never.",
@@ -35,6 +36,7 @@ const hardcodedBlogPosts = [
   },
   {
     id: "2",
+    // title: "Introduction to DevOps Principles and Practices"
     paragraphs: [
       "DevOps is a set of practices that combines software development (Dev) and IT operations (Ops). It aims to shorten the systems development life cycle and provide continuous delivery with high software quality. DevOps is complementary with Agile software development; several DevOps aspects came from Agile methodology.",
       "Key principles of DevOps include automation, continuous integration/continuous delivery (CI/CD), infrastructure as code (IaC), monitoring, and collaboration. Tools like Jenkins, GitLab CI, Docker, Kubernetes, Ansible, and Prometheus are commonly used in DevOps workflows.",
@@ -43,6 +45,7 @@ const hardcodedBlogPosts = [
   },
   {
     id: "3",
+    // title: "The Power of TypeScript in Modern Web Development"
     paragraphs: [
       "TypeScript, a superset of JavaScript, adds static typing to the language. This allows developers to catch errors early during development, rather than at runtime, leading to more robust and maintainable codebases. It's particularly beneficial for large-scale applications and team collaboration.",
       "Key features of TypeScript include interfaces for defining contracts, enums for creating sets of named constants, generics for writing reusable code components, and strong tooling support with autocompletion and refactoring in modern IDEs.",
@@ -51,6 +54,7 @@ const hardcodedBlogPosts = [
   },
   {
     id: "4",
+    // title: "Understanding Microservices Architecture"
     paragraphs: [
       "Microservices architecture is an approach to developing a single application as a suite of small, independently deployable services. Each service runs in its own process and communicates with lightweight mechanisms, often an HTTP resource API. This contrasts with a monolithic architecture where all components are part of a single, large application.",
       "Benefits of microservices include improved scalability (services can be scaled independently), technology diversity (each service can use different tech stacks), resilience (failure in one service doesn't necessarily bring down the whole app), and easier maintenance and updates for individual components.",
@@ -59,14 +63,13 @@ const hardcodedBlogPosts = [
   },
   {
     id: "5",
+    // title: "State Management in React: A Comparative Overview"
     paragraphs: [
       "State management in React applications can become complex as they grow. While React's built-in `useState` and `useReducer` hooks are great for local component state, global state shared across many components often requires dedicated libraries like Redux, Zustand, or Recoil, or leveraging the Context API more extensively.",
       "Redux is a predictable state container with a unidirectional data flow, often used for large applications. Zustand offers a more minimalistic and unopinionated approach, using hooks for a simpler API. The Context API is built into React and can be suitable for less complex global state scenarios.",
       "Choosing the right state management solution depends on the project's scale, complexity, team familiarity, and specific requirements. The goal is always to make state predictable, manageable, and easy to debug."
     ]
   }
-  // Add more hardcoded posts here if your BlogList typically shows more than 6 titles.
-  // Ensure the 'id' matches the index from the BlogList.
 ];
 
 // Helper function to get a clean, processed title
@@ -79,21 +82,27 @@ function getProcessedTitle(titleParam: string | string[] | undefined): string {
     singleTitle = titleParam;
   }
 
-  if (typeof singleTitle !== 'string' || !singleTitle) {
+  if (typeof singleTitle !== 'string' || !singleTitle) { // Check if not a string or if it's an empty string before trim
     return '';
   }
 
   try {
     const decoded = decodeURIComponent(singleTitle);
-    return decoded.trim(); // Decode and then trim whitespace
+    const trimmedDecoded = decoded.trim(); // Trim after decoding
+    if (!trimmedDecoded) { // Check if trimmed decoded string is empty
+        return '';
+    }
+    return trimmedDecoded;
   } catch (e) {
+    // console.error("Error decoding title in getProcessedTitle:", e, "Original title:", singleTitle);
     return ''; // URIError if malformed, treat as missing/invalid
   }
 }
 
 export default function BlogPostPageClient({ params, searchParams }: BlogPageProps) {
   const { id } = params;
-  const pageTitle = getProcessedTitle(searchParams.title);
+  // pageTitle is derived once based on initial searchParams
+  const pageTitle = getProcessedTitle(searchParams.title); 
   
   const [publicationDate, setPublicationDate] = useState<string | null>(null);
   const [displayedParagraphs, setDisplayedParagraphs] = useState<string[]>([]);
@@ -101,6 +110,7 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
   const [contentNotFound, setContentNotFound] = useState(false);
 
   useEffect(() => {
+    // Set publication date (client-side only)
     setPublicationDate(
       new Date().toLocaleDateString('en-US', {
         year: 'numeric',
@@ -109,25 +119,38 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
       })
     );
 
+    // Check if the pageTitle (derived from searchParams.title) is valid
     if (!pageTitle) {
       setIsTitleMissingError(true);
       setDisplayedParagraphs(["To view a blog post, please return to the main blog page and click on one of the available titles. This page requires a title to load the correct content."]);
-      return;
+      setContentNotFound(false); // Explicitly set contentNotFound to false, as the issue is a missing title
+      return; // Exit early if title is missing
     }
 
-    const postIndex = parseInt(id, 10);
-    const selectedPost = hardcodedBlogPosts.find(p => parseInt(p.id, 10) === postIndex);
+    // If pageTitle is valid, ensure isTitleMissingError is false.
+    setIsTitleMissingError(false);
+    setContentNotFound(false); // Reset contentNotFound as well, as we are about to load content.
 
-    if (selectedPost && selectedPost.paragraphs) {
-      setDisplayedParagraphs(selectedPost.paragraphs);
-      setContentNotFound(false);
+    const postIndex = parseInt(id, 10);
+    // Check if postIndex is a valid number and within the bounds of hardcodedBlogPosts
+    if (!isNaN(postIndex) && postIndex >= 0 && postIndex < hardcodedBlogPosts.length) {
+        const selectedPost = hardcodedBlogPosts[postIndex];
+        // Ensure selectedPost and its paragraphs exist
+        if (selectedPost && selectedPost.paragraphs) {
+            setDisplayedParagraphs(selectedPost.paragraphs);
+            // setContentNotFound(false); // Already false from above
+        } else {
+            // This case means the hardcoded data for a valid index might be malformed.
+            setDisplayedParagraphs(["Content for this post could not be loaded correctly at this time."]);
+            setContentNotFound(true);
+        }
     } else {
+      // No hardcoded content for this specific ID (index)
       setDisplayedParagraphs(["Content for this topic is currently being crafted. Please check back soon!"]);
       setContentNotFound(true);
     }
-    setIsTitleMissingError(false);
 
-  }, [id, pageTitle]);
+  }, [id, pageTitle]); // pageTitle is stable per render, derived from searchParams
 
 
   return (
@@ -141,7 +164,7 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
         <article className="bg-background dark:bg-card p-6 sm:p-8 md:p-10 rounded-xl shadow-xl">
           <header className="mb-8">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-headline text-primary mb-4 leading-tight">
-              {isTitleMissingError ? "Blog Post Unavailable" : pageTitle || "Blog Post"}
+              {isTitleMissingError ? "Blog Post Unavailable" : pageTitle || "Blog Post"} {/* Fallback for pageTitle still needed if it's empty but somehow isTitleMissingError is false */}
             </h1>
             <div className="text-sm text-muted-foreground flex items-center space-x-4">
               <span>By {AUTHOR_NAME}</span>
@@ -154,7 +177,7 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
             </div>
           </header>
 
-          {!isTitleMissingError && pageTitle && (
+          {!isTitleMissingError && pageTitle && ( // Only show image if title is valid and present
             <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-8 shadow-lg">
               <Image
                 src={`https://placehold.co/1200x675.png?text=${encodeURIComponent((pageTitle || "Blog").substring(0,30))}`}
@@ -189,8 +212,8 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
                 <p key={index}>{paragraph}</p>
               ))
             )}
+            {/* Fallback for loading state or if paragraphs are empty for a non-error, non-contentNotFound case (unlikely with current logic) */}
             {!isTitleMissingError && displayedParagraphs.length === 0 && !contentNotFound && (
-                // This case should ideally not be hit if logic is correct, but as a fallback
                 <p>Loading content...</p> 
             )}
           </div>
@@ -212,4 +235,3 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
     </SectionWrapper>
   );
 }
-
