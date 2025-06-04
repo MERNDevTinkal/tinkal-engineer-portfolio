@@ -50,10 +50,21 @@ export function ChatbotDialog() {
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
-  // Load messages from localStorage or set initial message when dialog opens
+  // Handle body scroll lock
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = ''; // Ensure cleanup on unmount
+    };
+  }, [isOpen]);
+
+  // Load messages from localStorage or set initial message when dialog opens
+  useEffect(() => {
+    if (isOpen) {
       if (typeof window !== 'undefined') {
         try {
           const savedMessages = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -61,6 +72,12 @@ export function ChatbotDialog() {
             const parsedMessages = JSON.parse(savedMessages);
             if (Array.isArray(parsedMessages) && parsedMessages.length > 0) {
               setMessages(parsedMessages);
+              // If loaded messages exist, potentially fetch new suggestions based on last interaction
+              const lastUserMessage = parsedMessages.filter(m => m.sender === 'user').pop();
+              if (lastUserMessage && lastUserMessage.text) {
+                // This is an advanced step: could re-trigger AI for suggestions
+                // For now, let's keep it simple and use initial suggestions if AI hasn't provided any yet from current session
+              }
             } else {
               setMessages([initialBotMessage]);
             }
@@ -74,26 +91,19 @@ export function ChatbotDialog() {
       }
       // Always set initial suggestions or update if needed
       if (messages.length <= 1 || !messages.find(msg => msg.sender === 'user')) {
-        setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0, 4));
+         setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0, 4));
       }
       setSuggestionsExpanded(false);
       setTimeout(() => inputRef.current?.focus(), 100);
-    } else {
-      document.body.style.overflow = '';
     }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
+  }, [isOpen]); // Removed messages from here to avoid re-triggering on message load if not needed
 
   // Save messages to localStorage whenever they change
   useEffect(() => {
     if (isOpen && typeof window !== 'undefined' && messages.length > 0) {
       try {
-        // Avoid saving if it's just the initial bot message and no interaction yet
         if (messages.length === 1 && messages[0].id === "initial-bot-message" && !messages[0].isLoading && !messages.find(msg => msg.sender === 'user')) {
-           // Optionally, remove if you want a clean slate until user interacts
-           // localStorage.removeItem(LOCAL_STORAGE_KEY); 
+           // localStorage.removeItem(LOCAL_STORAGE_KEY); // Optional: clear if only initial message
         } else {
           localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(messages));
         }
@@ -105,21 +115,24 @@ export function ChatbotDialog() {
 
   // Auto-scroll
   useEffect(() => {
-    if (scrollAreaRef.current && scrollAreaRef.current.children[0]) {
-      const viewport = scrollAreaRef.current.children[0] as HTMLElement;
+    const viewport = scrollAreaRef.current?.children[0] as HTMLElement | undefined;
+    if (viewport) {
+      // Use requestAnimationFrame to ensure scrolling happens after the DOM has updated
       requestAnimationFrame(() => {
+        // console.log(`Scrolling to: ${viewport.scrollHeight} (Viewport clientHeight: ${viewport.clientHeight})`);
         viewport.scrollTo({
           top: viewport.scrollHeight,
           behavior: "smooth",
         });
       });
     }
-  }, [messages]);
+  }, [messages]); // Trigger whenever messages array changes
+
 
   const processMessage = async (messageText: string) => {
     if (!messageText.trim() || isLoading) return;
 
-    setSuggestionsExpanded(false);
+    setSuggestionsExpanded(false); // Collapse suggestions when a message is sent
 
     const userMessage: Message = {
       id: `${Date.now()}-user-${Math.random().toString(36).substring(7)}`,
@@ -143,27 +156,39 @@ export function ChatbotDialog() {
             : msg
         )
       );
+      
+      const validSuggestions = (result.suggestedFollowUps || [])
+        .filter(s => s && s.trim() !== "")
+        .slice(0, 4);
 
-      if (result.suggestedFollowUps && result.suggestedFollowUps.length > 0) {
-        setCurrentSuggestions(result.suggestedFollowUps.filter(s => s && s.trim() !== "").slice(0, 4));
+      if (validSuggestions.length > 0) {
+        setCurrentSuggestions(validSuggestions);
       } else {
+        // Fallback if AI provides no suggestions
         const fallbackSuggestions = INITIAL_SUGGESTIONS
-          .filter(s => s.toLowerCase() !== messageText.trim().toLowerCase())
-          .sort(() => 0.5 - Math.random())
+          .filter(s => s.toLowerCase() !== messageText.trim().toLowerCase()) // Avoid suggesting the same thing
+          .sort(() => 0.5 - Math.random()) // Shuffle
           .slice(0, 4);
         setCurrentSuggestions(fallbackSuggestions.length > 0 ? fallbackSuggestions : INITIAL_SUGGESTIONS.slice(0, 4));
       }
 
     } catch (error) {
       console.error("Chatbot error:", error);
+      let errorMessage = "Sorry, I encountered an issue. Please try asking in a different way or check back later.";
+      if (error instanceof Error && error.message.includes("system role is not supported")) {
+        errorMessage = "There's a configuration issue with my AI. My team is on it!";
+      } else if (error instanceof Error && (error.message.includes("503") || error.message.toLowerCase().includes("overloaded"))) {
+        errorMessage = "My AI brain is a bit overloaded right now. Could you try that again in a moment?";
+      }
+
       setMessages((prevMessages) =>
         prevMessages.map(msg =>
           msg.id === loadingBotMessageId
-            ? { ...msg, text: "Sorry, I encountered an issue. Please try asking in a different way or check back later.", isLoading: false }
+            ? { ...msg, text: errorMessage, isLoading: false }
             : msg
         )
       );
-      setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0, 4));
+      setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0, 4)); // Fallback suggestions on error
     } finally {
       setIsLoading(false);
       inputRef.current?.focus();
@@ -176,7 +201,7 @@ export function ChatbotDialog() {
   };
 
   const handleSuggestionClick = (suggestion: string) => {
-    setCurrentInput(""); // Clear input before processing suggestion
+    setCurrentInput(""); 
     processMessage(suggestion);
   };
 
@@ -237,7 +262,7 @@ export function ChatbotDialog() {
             exit="closed"
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className="fixed bottom-24 right-6 z-40 w-full max-w-md rounded-xl bg-background shadow-2xl border border-border overflow-hidden flex flex-col"
-            style={{ height: 'min(75vh, 700px)' }} // Slightly adjusted height for better layout
+            style={{ height: 'min(75vh, 700px)' }}
           >
             <header className="bg-card p-3 border-b border-border flex items-center justify-between">
               <h3 className="font-semibold text-lg text-primary font-headline pl-2">Chat with {AUTHOR_NAME}'s Assistant</h3>
@@ -329,3 +354,4 @@ export function ChatbotDialog() {
     </>
   );
 }
+
