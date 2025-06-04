@@ -69,6 +69,7 @@ export function ChatbotDialog() {
 
   useEffect(() => {
     if (isOpen) {
+      // Load messages from localStorage only on client-side
       if (typeof window !== 'undefined') {
         try {
           const savedMessages = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -104,6 +105,7 @@ export function ChatbotDialog() {
   }, [isOpen]);
 
   useEffect(() => {
+    // Save messages to localStorage only on client-side
     if (isOpen && typeof window !== 'undefined' && messages.length > 0) {
       try {
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(messages));

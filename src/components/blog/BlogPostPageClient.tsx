@@ -98,19 +98,15 @@ function getProcessedTitleParam(titleParam: string | string[] | undefined): stri
 
 export default function BlogPostPageClient({ params, searchParams }: BlogPageProps) {
   const { id } = params;
-  // pageTitle is derived once from initial searchParams and should be stable for this component instance.
   const pageTitle = getProcessedTitleParam(searchParams.title);
 
   const [publicationDate, setPublicationDate] = useState<string | null>(null);
   const [actualBlogParagraphs, setActualBlogParagraphs] = useState<string[]>([]);
   
-  // Initialize isTitleMissing based on the initially processed pageTitle
   const [isTitleMissing, setIsTitleMissing] = useState<boolean>(!pageTitle);
-  // isContentUnavailable means title is valid, but no content for this ID
   const [isContentUnavailable, setIsContentUnavailable] = useState<boolean>(false);
 
   useEffect(() => {
-    // Set publication date (client-side only behavior)
     setPublicationDate(
       new Date().toLocaleDateString('en-US', {
         year: 'numeric',
@@ -119,34 +115,30 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
       })
     );
 
-    // Determine content based on pageTitle and id
     if (!pageTitle) {
       setIsTitleMissing(true);
       setActualBlogParagraphs([]);
-      setIsContentUnavailable(false); // Not content unavailable, it's a title issue
-      return; // Exit if title is missing
+      setIsContentUnavailable(false);
+      return;
     }
 
-    // If we reach here, title is considered valid.
-    setIsTitleMissing(false); // Ensure title missing flag is false
+    setIsTitleMissing(false);
 
     const postIndex = parseInt(id, 10);
     if (!isNaN(postIndex) && postIndex >= 0 && postIndex < hardcodedBlogPosts.length) {
       const selectedPost = hardcodedBlogPosts[postIndex];
       if (selectedPost && selectedPost.paragraphs) {
         setActualBlogParagraphs(selectedPost.paragraphs);
-        setIsContentUnavailable(false); // Content found
+        setIsContentUnavailable(false);
       } else {
-        // This case means hardcoded data for a valid index is malformed.
         setActualBlogParagraphs([]);
-        setIsContentUnavailable(true); // Mark as content unavailable
+        setIsContentUnavailable(true);
       }
     } else {
-      // No hardcoded content for this specific ID (index), even if title is valid.
       setActualBlogParagraphs([]);
-      setIsContentUnavailable(true); // Mark as content unavailable (e.g., "coming soon")
+      setIsContentUnavailable(true);
     }
-  }, [id, pageTitle]); // Dependencies: id (from params) and pageTitle (derived from searchParams)
+  }, [id, pageTitle]);
 
   const displayHeading = isTitleMissing ? "Blog Post Unavailable" : pageTitle || "Blog Post";
 
@@ -178,7 +170,7 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
             </div>
           </header>
 
-          {!isTitleMissing && pageTitle && ( // Only show image if title is valid and present
+          {!isTitleMissing && pageTitle && (
             <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-8 shadow-lg">
               <Image
                 src={`https://placehold.co/1200x675.png?text=${encodeURIComponent((pageTitle || "Blog").substring(0,30))}`}
