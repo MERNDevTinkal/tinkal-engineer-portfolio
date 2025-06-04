@@ -47,7 +47,7 @@ export function BlogList() {
         setBlogData(data);
         setError(null);
       } catch (err) {
-        console.error("Failed to generate blog titles:", err);
+        // console.error("Failed to generate blog titles:", err);
         let errorMessage = "Failed to load blog titles. Please try again later.";
         if (err instanceof Error) {
             if (err.message.includes("503") || err.message.toLowerCase().includes("service unavailable") || err.message.toLowerCase().includes("model is overloaded")) {
@@ -146,4 +146,3 @@ export function BlogList() {
     </div>
   );
 }
-

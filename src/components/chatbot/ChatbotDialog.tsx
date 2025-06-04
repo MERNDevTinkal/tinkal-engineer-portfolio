@@ -93,7 +93,7 @@ export function ChatbotDialog() {
             setCurrentSuggestions(initialBotMessage.suggestions || INITIAL_SUGGESTIONS.slice(0, 4));
           }
         } catch (error) {
-          console.error("Failed to load chat history from localStorage:", error);
+          // console.error("Failed to load chat history from localStorage:", error);
           setMessages([initialBotMessage]);
           setCurrentSuggestions(initialBotMessage.suggestions || INITIAL_SUGGESTIONS.slice(0, 4));
         }
@@ -108,23 +108,15 @@ export function ChatbotDialog() {
       try {
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(messages));
       } catch (error) {
-        console.error("Failed to save chat history to localStorage:", error);
+        // console.error("Failed to save chat history to localStorage:", error);
       }
     }
   }, [messages, isOpen]);
 
   useEffect(() => {
     if (messagesEndRef.current) {
-      // Using requestAnimationFrame to ensure scroll happens after layout update
       requestAnimationFrame(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-        // if (scrollAreaRef.current?.firstChild) {
-        //   const scrollViewport = scrollAreaRef.current.firstChild as HTMLElement;
-        //   if (scrollViewport) {
-        //     console.log("Scrolling to:", scrollViewport.scrollHeight);
-        //     scrollViewport.scrollTop = scrollViewport.scrollHeight;
-        //   }
-        // }
       });
     }
   }, [messages]);
@@ -181,7 +173,7 @@ export function ChatbotDialog() {
       }
 
     } catch (error) {
-      console.error("Chatbot error:", error);
+      // console.error("Chatbot error:", error);
       let errorMessage = "Sorry, I encountered an issue. Please try asking in a different way or check back later.";
        if (error instanceof Error) {
         if (error.message.includes("system role is not supported") || error.message.includes("model_error")) {
@@ -227,7 +219,7 @@ export function ChatbotDialog() {
       try {
         localStorage.removeItem(LOCAL_STORAGE_KEY);
       } catch (error) {
-        console.error("Failed to clear chat history from localStorage:", error);
+        // console.error("Failed to clear chat history from localStorage:", error);
       }
     }
     toast({
@@ -288,10 +280,10 @@ export function ChatbotDialog() {
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className={cn(
               "fixed bottom-24 z-40 rounded-xl bg-background shadow-2xl border border-border overflow-hidden flex flex-col",
-              "left-4 right-4 w-auto", // Mobile: small margins, auto width
-              "md:left-auto md:right-6 md:w-full md:max-w-md", // Medium screens
-              "lg:max-w-lg", // Large screens
-              "xl:max-w-xl"  // Extra large screens
+              "left-4 right-4 w-auto", 
+              "md:left-auto md:right-6 md:w-full md:max-w-md", 
+              "lg:max-w-lg", 
+              "xl:max-w-xl"  
             )}
             style={{ maxHeight: 'min(calc(100vh - 12rem), 85vh)' }} 
           >
