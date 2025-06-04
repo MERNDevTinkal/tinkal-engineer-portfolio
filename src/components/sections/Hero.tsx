@@ -7,7 +7,7 @@ import { Typewriter } from "react-simple-typewriter";
 import dynamic from 'next/dynamic';
 import { motion } from "framer-motion";
 import { Download, ArrowRight } from "lucide-react";
-import { useState, useEffect } from 'react'; 
+import { useState, useEffect, Suspense } from 'react'; // Added Suspense
 
 import { Button } from "@/components/ui/button";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
@@ -21,7 +21,7 @@ const Swiper = dynamic(() => import('swiper/react').then(mod => mod.Swiper), {
 });
 const SwiperSlide = dynamic(() => import('swiper/react').then(mod => mod.SwiperSlide), { ssr: false });
 
-// CSS imports are fine here as this is a client component.
+// Conditionally import Swiper modules on the client-side
 if (typeof window !== 'undefined') {
   import('swiper/css');
   import('swiper/css/pagination');
@@ -31,11 +31,17 @@ if (typeof window !== 'undefined') {
 
 export function Hero() {
   const [swiperModules, setSwiperModules] = useState<any[] | undefined>(undefined);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true); // Indicate component has mounted
     if (typeof window !== 'undefined') {
-      import('swiper/modules').then(mod => {
-        setSwiperModules([mod.Autoplay, mod.Pagination, mod.EffectFade]);
+      Promise.all([
+        import('swiper/modules').then(mod => mod.Autoplay),
+        import('swiper/modules').then(mod => mod.Pagination),
+        import('swiper/modules').then(mod => mod.EffectFade)
+      ]).then(([Autoplay, Pagination, EffectFade]) => {
+        setSwiperModules([Autoplay, Pagination, EffectFade]);
       }).catch(err => console.error("Failed to load Swiper modules", err));
     }
   }, []);
@@ -110,18 +116,14 @@ export function Hero() {
           >
             <Button size="lg" asChild className="shadow-lg hover:shadow-primary/50 transition-all duration-300 ease-in-out transform hover:scale-105">
               <Link href={RESUME_PATH} target="_blank" download>
-                <span>
-                  <Download className="mr-2 h-5 w-5 inline" /> {/* Default icon size from button.tsx will apply */}
-                  Download Resume
-                </span>
+                <Download className="mr-2 h-5 w-5 inline" />
+                Download Resume
               </Link>
             </Button>
             <Button size="lg" variant="outline" asChild className="shadow-lg hover:shadow-accent/50 transition-all duration-300 ease-in-out transform hover:scale-105">
               <Link href="#contact">
-                <span>
-                  Contact Me
-                  <ArrowRight className="ml-2 h-5 w-5 inline" /> {/* Default icon size from button.tsx will apply */}
-                </span>
+                Contact Me
+                <ArrowRight className="ml-2 h-5 w-5 inline" />
               </Link>
             </Button>
           </motion.div>
@@ -133,15 +135,13 @@ export function Hero() {
             {SOCIAL_LINKS.map(({ name, Icon, href }) => (
                <motion.div
                 key={name}
-                whileHover={{ scale: 1.2, rotate: 3, y: -2 }} // Adjusted hover for social icons
+                whileHover={{ scale: 1.2, rotate: 3, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
-                <Button variant="ghost" size="icon" asChild className="h-12 w-12"> {/* Custom size for Hero social icons */}
+                <Button variant="ghost" size="icon" asChild className="h-12 w-12">
                   <Link href={href} target="_blank" rel="noopener noreferrer" aria-label={name}>
-                    <span>
-                      <Icon className="h-8 w-8 text-muted-foreground hover:text-primary" /> {/* Increased icon size */}
-                    </span>
+                    <Icon className="h-8 w-8 text-muted-foreground hover:text-primary" />
                   </Link>
                 </Button>
               </motion.div>
@@ -155,7 +155,7 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.8, type: "spring", stiffness: 100 }}
           className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto"
         >
-          {swiperModules ? ( 
+          {isClient && swiperModules && swiperModules.length > 0 ? (
             <Swiper
               modules={swiperModules}
               spaceBetween={30}
