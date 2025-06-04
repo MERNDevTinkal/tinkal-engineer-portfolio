@@ -9,7 +9,10 @@ import {
 
 export const APP_NAME = "Tinkal";
 export const AUTHOR_NAME = "Tinkal Kumar";
-export const AUTHOR_EMAIL = "tinkalkumar67693@gmail.com"; // This is your actual email for contact
+export const AUTHOR_EMAIL = "tinkalkumar67693@gmail.com"; // General author email for display
+
+// Email address that will RECEIVE contact form submissions. Configured via .env
+export const CONTACT_FORM_RECEIVER_EMAIL = process.env.NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL || AUTHOR_EMAIL;
 
 export const NAV_LINKS = [
   { name: "Home", href: "#home" },

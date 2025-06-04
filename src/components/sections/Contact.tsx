@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { CONTACT_DETAILS, EMAILJS_CONFIG, SOCIAL_LINKS, AUTHOR_EMAIL, AUTHOR_NAME } from "@/lib/data";
+import { CONTACT_DETAILS, EMAILJS_CONFIG, SOCIAL_LINKS, AUTHOR_EMAIL, AUTHOR_NAME, CONTACT_FORM_RECEIVER_EMAIL } from "@/lib/data";
 import Link from "next/link";
 
 const contactFormSchema = z.object({
@@ -89,6 +89,14 @@ export function Contact() {
           EMAILJS_CONFIG.serviceId.includes("YOUR_") || EMAILJS_CONFIG.templateId.includes("YOUR_") || EMAILJS_CONFIG.publicKey.includes("YOUR_")) {
         throw new Error("EmailJS credentials (Service ID, Template ID, or Public Key) are missing or still contain placeholders. Please ensure they are correctly set in your .env file (e.g., NEXT_PUBLIC_EMAILJS_TEMPLATE_ID) and that you have restarted your development server.");
       }
+      
+      if (!CONTACT_FORM_RECEIVER_EMAIL || CONTACT_FORM_RECEIVER_EMAIL.includes("YOUR_") || CONTACT_FORM_RECEIVER_EMAIL === AUTHOR_EMAIL && (process.env.NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL === undefined || process.env.NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL.includes("YOUR_"))) {
+         console.warn("Warning: NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL is not set or is using a placeholder/fallback. Ensure it's correctly configured in your .env file for production.");
+         if (CONTACT_FORM_RECEIVER_EMAIL.includes("YOUR_")) {
+            throw new Error("The contact form receiver email (NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL) is not configured. Please set it in your .env file.");
+         }
+      }
+
 
       await emailjs.send(
         EMAILJS_CONFIG.serviceId,
@@ -97,7 +105,7 @@ export function Contact() {
           from_name: data.name,
           to_name: AUTHOR_NAME,
           from_email: data.email,
-          to_email: AUTHOR_EMAIL, 
+          to_email: CONTACT_FORM_RECEIVER_EMAIL, 
           phone_number: data.phone || "Not provided",
           message: data.message,
         },
@@ -117,7 +125,7 @@ export function Contact() {
       }
     } catch (error) {
       console.error("EmailJS Error:", error);
-      const errorMessage = (error instanceof Error && error.message.includes("credentials"))
+      const errorMessage = (error instanceof Error && (error.message.includes("credentials") || error.message.includes("receiver email")))
         ? error.message
         : "Failed to send message. Please try again later or contact me directly.";
       toast({
@@ -209,9 +217,9 @@ export function Contact() {
           <Button type="submit" disabled={isSubmitting} className="w-full shadow-md">
             {isSubmitting ? "Sending..." : "Send Message"}
           </Button>
-           {(EMAILJS_CONFIG.serviceId.includes("YOUR_") || EMAILJS_CONFIG.templateId.includes("YOUR_") || EMAILJS_CONFIG.publicKey.includes("YOUR_")) && (
+           {(EMAILJS_CONFIG.serviceId.includes("YOUR_") || EMAILJS_CONFIG.templateId.includes("YOUR_") || EMAILJS_CONFIG.publicKey.includes("YOUR_") || (process.env.NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL && process.env.NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL.includes("YOUR_")) ) && (
             <p className="mt-2 text-xs text-amber-600 dark:text-amber-400 text-center">
-              Note: EmailJS is not fully configured. Please check your <code>.env</code> file for placeholders and restart your server.
+              Note: EmailJS or the Contact Form Receiver Email is not fully configured. Please check your <code>.env</code> file for placeholders and restart your server.
             </p>
           )}
         </motion.form>
