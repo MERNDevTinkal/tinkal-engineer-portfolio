@@ -10,6 +10,14 @@ import { ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 
+const BLOG_TITLES_CACHE_KEY = 'aiBlogTitlesCache';
+const CACHE_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
+
+interface CachedBlogTitles {
+  timestamp: number;
+  data: GenerateBlogTitlesOutput;
+}
+
 function BlogCardSkeleton() {
   return (
     <Card className="flex flex-col shadow-lg bg-card">
@@ -33,6 +41,22 @@ function BlogCardSkeleton() {
   );
 }
 
+const FALLBACK_TITLES: GenerateBlogTitlesOutput = {
+  titles: [
+    "Exploring the Latest in Tech.",
+    "DevOps Best Practices.",
+    "Software Engineering Insights.",
+    "The Future of Development.",
+    "AI in Modern Applications.",
+    "Cloud Computing Trends.",
+    "Cybersecurity Essentials.",
+    "Data Science Breakthroughs.",
+    "Web Performance Optimization.",
+    "Mobile App Development Innovations.",
+    "Blockchain Technology Explained.",
+    "Mastering New Programming Languages.",
+  ].slice(0, 12)
+};
 
 export function BlogList() {
   const [blogData, setBlogData] = useState<GenerateBlogTitlesOutput>({ titles: [] });
@@ -40,24 +64,44 @@ export function BlogList() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchData() {
+    async function loadBlogTitles() {
+      setIsLoading(true);
+      setError(null);
+
+      // Try to load from cache first
       try {
-        setIsLoading(true);
+        const cachedItem = localStorage.getItem(BLOG_TITLES_CACHE_KEY);
+        if (cachedItem) {
+          const cached: CachedBlogTitles = JSON.parse(cachedItem);
+          if (cached && cached.timestamp && cached.data && (Date.now() - cached.timestamp < CACHE_DURATION_MS)) {
+            setBlogData(cached.data);
+            setIsLoading(false);
+            return; // Use cached data
+          }
+        }
+      } catch (e) {
+        // Failed to read from localStorage, proceed to fetch
+      }
+
+      // Fetch new data if cache is invalid, stale, or unavailable
+      try {
         const data = await generateBlogTitles({ topic: "technology, software development, and DevOps", numTitles: 12 });
         setBlogData(data);
-        setError(null);
+        try {
+          localStorage.setItem(BLOG_TITLES_CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data }));
+        } catch (e) {
+          // Failed to write to localStorage, but data is fetched
+        }
       } catch (err) {
-        // Set a generic error message for any failure.
-        const genericErrorMessage = "Failed to load blog titles. Please try again later.";
-        setError(genericErrorMessage);
-        // Fallback titles in case of error
-        setBlogData({ titles: ["Exploring the Latest in Tech.", "DevOps Best Practices.", "Software Engineering Insights.", "The Future of Development.", "AI in Modern Applications.", "Cloud Computing Trends.", "Cybersecurity Essentials.", "Data Science Breakthroughs.", "Web Performance Optimization.", "Mobile App Development Innovations.", "Blockchain Technology Explained.", "Mastering New Programming Languages."].slice(0,12) });
+        setError("Failed to load blog titles. Please try again later.");
+        setBlogData(FALLBACK_TITLES); 
       } finally {
         setIsLoading(false);
       }
     }
-    fetchData();
-  }, []);
+
+    loadBlogTitles();
+  }, []); // Empty dependency array ensures this runs only once on mount
 
   const placeholderTags = ["Tech", "Development", "DevOps", "AI", "Cloud", "Security", "Web", "Software", "Engineering", "Trends", "Guide", "Insights"];
 
@@ -71,7 +115,7 @@ export function BlogList() {
     );
   }
 
-  if (error) { // Display error and fallback titles
+  if (error) { 
     return (
         <div className="text-center py-8">
             <p className="text-destructive mb-4 text-lg">{error}</p>
@@ -141,3 +185,4 @@ export function BlogList() {
     </div>
   );
 }
+
