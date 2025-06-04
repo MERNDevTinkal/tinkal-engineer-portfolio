@@ -12,12 +12,14 @@ import { AUTHOR_NAME } from "@/lib/data";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"; // Added Avatar imports
 
 interface Message {
   id: string;
   sender: "user" | "bot";
   text: string;
   isLoading?: boolean;
+  suggestions?: string[];
 }
 
 const INITIAL_SUGGESTIONS = [
@@ -31,12 +33,13 @@ const INITIAL_SUGGESTIONS = [
   `Is ${AUTHOR_NAME} open to relocation?`,
 ];
 
-const LOCAL_STORAGE_KEY = 'portfolioChatHistory_Sora'; // Changed key to avoid conflicts if old one existed
+const LOCAL_STORAGE_KEY = 'portfolioChatHistory_Sora_v2'; 
 
 const initialBotMessage: Message = {
   id: "initial-bot-message-sora",
   sender: "bot",
   text: `Hello! I'm Sora, Tinkal's personal AI assistant. Ask me about his skills, projects, experience, or how to get in touch! You can also use the suggestions.`,
+  suggestions: INITIAL_SUGGESTIONS.slice(0, 4),
 };
 
 export function ChatbotDialog() {
@@ -46,8 +49,11 @@ export function ChatbotDialog() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentSuggestions, setCurrentSuggestions] = useState<string[]>([]);
   const [suggestionsExpanded, setSuggestionsExpanded] = useState(false);
+  
   const inputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null); // Ref for the ScrollArea's viewport
+
   const { toast } = useToast();
 
   useEffect(() => {
@@ -70,28 +76,29 @@ export function ChatbotDialog() {
             const parsedMessages = JSON.parse(savedMessages);
             if (Array.isArray(parsedMessages) && parsedMessages.length > 0) {
               setMessages(parsedMessages);
-              // Set suggestions based on the last bot message if available
               const lastBotMessage = parsedMessages.filter(m => m.sender === 'bot' && !m.isLoading).pop();
-              if (lastBotMessage && (lastBotMessage as any).suggestions) {
-                 setCurrentSuggestions((lastBotMessage as any).suggestions.slice(0,4));
+              if (lastBotMessage && lastBotMessage.suggestions && lastBotMessage.suggestions.length > 0) {
+                 setCurrentSuggestions(lastBotMessage.suggestions);
               } else if (parsedMessages.length === 1 && parsedMessages[0].id === initialBotMessage.id) {
-                 setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0, 4));
+                 setCurrentSuggestions(initialBotMessage.suggestions || INITIAL_SUGGESTIONS.slice(0, 4));
+              } else {
+                setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0,4));
               }
             } else {
               setMessages([initialBotMessage]);
-              setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0, 4));
+              setCurrentSuggestions(initialBotMessage.suggestions || INITIAL_SUGGESTIONS.slice(0, 4));
             }
           } else {
             setMessages([initialBotMessage]);
-            setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0, 4));
+            setCurrentSuggestions(initialBotMessage.suggestions || INITIAL_SUGGESTIONS.slice(0, 4));
           }
         } catch (error) {
           console.error("Failed to load chat history from localStorage:", error);
           setMessages([initialBotMessage]);
-          setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0, 4));
+          setCurrentSuggestions(initialBotMessage.suggestions || INITIAL_SUGGESTIONS.slice(0, 4));
         }
       }
-      setSuggestionsExpanded(false);
+      setSuggestionsExpanded(false); // Keep suggestions collapsed initially
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [isOpen]);
@@ -99,22 +106,15 @@ export function ChatbotDialog() {
   useEffect(() => {
     if (isOpen && typeof window !== 'undefined' && messages.length > 0) {
       try {
-        // Attach suggestions to the last bot message before saving
-        const messagesToSave = messages.map(msg => {
-          if (msg.id === messages.filter(m => m.sender ==='bot' && !m.isLoading).pop()?.id) {
-            return {...msg, suggestions: currentSuggestions };
-          }
-          return msg;
-        });
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(messagesToSave));
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(messages));
       } catch (error) {
         console.error("Failed to save chat history to localStorage:", error);
       }
     }
-  }, [messages, currentSuggestions, isOpen]);
+  }, [messages, isOpen]);
 
-  useEffect(() => {
-     if (messagesEndRef.current) {
+ useEffect(() => {
+    if (messagesEndRef.current) {
         requestAnimationFrame(() => {
             messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
         });
@@ -132,28 +132,36 @@ export function ChatbotDialog() {
       sender: "user",
       text: messageText.trim(),
     };
-    setMessages((prev) => [...prev, userMessage]);
+    
+    const newMessagesBeforeBot = [...messages, userMessage];
+    setMessages(newMessagesBeforeBot);
+
 
     setIsLoading(true);
     const loadingBotMessageId = `${Date.now()}-bot-loading-${Math.random().toString(36).substring(7)}`;
-    setMessages((prev) => [...prev, { id: loadingBotMessageId, sender: 'bot', text: '...', isLoading: true }]);
+    
+    setMessages(prev => [...prev, { id: loadingBotMessageId, sender: 'bot', text: '...', isLoading: true }]);
 
     try {
       const chatInput: PortfolioChatInput = { userInput: messageText.trim() };
       const result: PortfolioChatOutput = await getPortfolioChatResponse(chatInput);
-
-      setMessages((prevMessages) =>
-        prevMessages.map(msg =>
-          msg.id === loadingBotMessageId
-            ? { ...msg, text: result.response, isLoading: false }
-            : msg
-        )
-      );
       
       const validSuggestions = (result.suggestedFollowUps || [])
         .filter(s => s && s.trim() !== "")
         .slice(0, 4);
 
+      const botMessage: Message = {
+        id: loadingBotMessageId,
+        sender: 'bot',
+        text: result.response,
+        isLoading: false,
+        suggestions: validSuggestions.length > 0 ? validSuggestions : INITIAL_SUGGESTIONS.slice(0,4) // Ensure suggestions are attached
+      };
+
+      setMessages((prevMessages) =>
+        prevMessages.map(msg => msg.id === loadingBotMessageId ? botMessage : msg)
+      );
+      
       if (validSuggestions.length > 0) {
         setCurrentSuggestions(validSuggestions);
       } else {
@@ -168,19 +176,21 @@ export function ChatbotDialog() {
       console.error("Chatbot error:", error);
       let errorMessage = "Sorry, I encountered an issue. Please try asking in a different way or check back later.";
        if (error instanceof Error) {
-        if (error.message.includes("system role is not supported")) {
+        if (error.message.includes("system role is not supported") || error.message.includes("model_error")) {
             errorMessage = "There's a configuration issue with my AI. My team is on it!";
         } else if (error.message.includes("503") || error.message.toLowerCase().includes("overloaded")) {
             errorMessage = "My AI brain is a bit overloaded right now. Could you try that again in a moment?";
         }
       }
-
+       const errorBotMessage: Message = {
+        id: loadingBotMessageId,
+        sender: 'bot',
+        text: errorMessage,
+        isLoading: false,
+        suggestions: INITIAL_SUGGESTIONS.slice(0,4)
+      };
       setMessages((prevMessages) =>
-        prevMessages.map(msg =>
-          msg.id === loadingBotMessageId
-            ? { ...msg, text: errorMessage, isLoading: false }
-            : msg
-        )
+        prevMessages.map(msg => msg.id === loadingBotMessageId ? errorBotMessage : msg)
       );
       setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0, 4));
     } finally {
@@ -200,7 +210,8 @@ export function ChatbotDialog() {
   };
 
   const handleClearChat = () => {
-    setMessages([initialBotMessage]);
+    const clearedInitialMessage = { ...initialBotMessage, suggestions: INITIAL_SUGGESTIONS.slice(0,4) };
+    setMessages([clearedInitialMessage]);
     setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0,4));
     setSuggestionsExpanded(false);
     setCurrentInput("");
@@ -240,10 +251,17 @@ export function ChatbotDialog() {
         <Button
           onClick={() => setIsOpen(!isOpen)}
           size="icon"
-          className="rounded-full h-14 w-14 shadow-lg hover:scale-110 transition-transform bg-primary hover:bg-primary/90"
+          className="rounded-full h-14 w-14 shadow-lg hover:scale-110 transition-transform bg-primary hover:bg-primary/90 p-0 overflow-hidden" // Added p-0 and overflow-hidden
           aria-label="Toggle Chatbot"
         >
-          {isOpen ? <X className="h-7 w-7" /> : <Smile className="h-7 w-7" />} {/* Changed icon for closed state */}
+          {isOpen ? (
+            <X className="h-7 w-7" />
+          ) : (
+            <Avatar className="h-full w-full">
+              <AvatarImage src="https://placehold.co/100x100.png" alt="Sora AI Assistant" data-ai-hint="female assistant portrait" />
+              <AvatarFallback className="bg-primary text-primary-foreground text-xl">SA</AvatarFallback>
+            </Avatar>
+          )}
         </Button>
       </motion.div>
 
@@ -256,7 +274,7 @@ export function ChatbotDialog() {
             exit="closed"
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className="fixed bottom-24 right-6 z-40 w-full max-w-md rounded-xl bg-background shadow-2xl border border-border overflow-hidden flex flex-col"
-            style={{ height: 'min(75vh, 720px)' }} 
+            style={{ height: 'min(80vh, 750px)' }} 
           >
             <header className="bg-card p-3 border-b border-border flex items-center justify-between">
               <h3 className="font-semibold text-lg text-primary font-headline pl-2">Sora - Tinkal's Assistant</h3>
@@ -313,7 +331,7 @@ export function ChatbotDialog() {
               </div>
             )}
 
-            <ScrollArea className="flex-grow p-4">
+            <ScrollArea ref={scrollAreaRef} className="flex-grow p-4">
               {messages.map((msg) => (
                 <ChatMessage key={msg.id} sender={msg.sender} text={msg.text} isLoading={msg.isLoading} />
               ))}
@@ -349,5 +367,3 @@ export function ChatbotDialog() {
     </>
   );
 }
-
-    

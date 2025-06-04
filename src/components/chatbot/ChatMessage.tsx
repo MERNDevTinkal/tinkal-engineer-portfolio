@@ -4,7 +4,7 @@
 import type { LucideIcon } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
-import { Bot, UserCircle2, Smile } from 'lucide-react'; // Added Smile
+import { Bot, UserCircle2, Smile } from 'lucide-react'; 
 import { AUTHOR_NAME } from '@/lib/data';
 
 interface ChatMessageProps {
@@ -16,13 +16,15 @@ interface ChatMessageProps {
 export function ChatMessage({ sender, text, isLoading = false }: ChatMessageProps) {
   const isUser = sender === "user";
   const authorInitials = AUTHOR_NAME.split(" ").map(n => n[0]).join("").substring(0,2).toUpperCase();
+  const soraInitials = "SA"; // Sora Assistant
 
   return (
     <div className={cn("flex items-start gap-3 mb-4", isUser ? "justify-end" : "justify-start")}>
       {!isUser && (
         <Avatar className="h-8 w-8 border border-primary/50">
+          <AvatarImage src="https://placehold.co/100x100.png" alt="Sora AI Assistant" data-ai-hint="female assistant portrait" />
           <AvatarFallback className="bg-primary text-primary-foreground">
-            <Smile className="h-5 w-5" /> {/* Changed Bot to Smile icon */}
+            {soraInitials}
           </AvatarFallback>
         </Avatar>
       )}
@@ -59,5 +61,3 @@ export function ChatMessage({ sender, text, isLoading = false }: ChatMessageProp
     </div>
   );
 }
-
-    
