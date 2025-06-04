@@ -23,9 +23,9 @@ export function ChatMessage({ sender, text, isLoading = false }: ChatMessageProp
       {!isUser && (
         <Avatar className="h-8 w-8 border border-primary/50">
           <AvatarImage 
-            src="https://static.vecteezy.com/system/resources/previews/038/281/907/large_2x/portrait-of-a-beautiful-woman-wearing-headset-photo.jpg" 
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQISscdGPN0f7hp7m9wka0VumVDqmaJYAkDLPnWCjeb7WhsvMBICoPLDHfD_3uWziaZeAc&usqp=CAU" 
             alt="Sora AI Assistant" 
-            data-ai-hint="headset portrait"
+            data-ai-hint="woman headset"
             className="object-cover"
           />
           <AvatarFallback className="bg-primary text-primary-foreground">
@@ -66,3 +66,4 @@ export function ChatMessage({ sender, text, isLoading = false }: ChatMessageProp
     </div>
   );
 }
+

@@ -259,9 +259,9 @@ export function ChatbotDialog() {
           ) : (
             <Avatar className="h-full w-full">
               <AvatarImage 
-                src="https://static.vecteezy.com/system/resources/previews/038/281/907/large_2x/portrait-of-a-beautiful-woman-wearing-headset-photo.jpg" 
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQISscdGPN0f7hp7m9wka0VumVDqmaJYAkDLPnWCjeb7WhsvMBICoPLDHfD_3uWziaZeAc&usqp=CAU" 
                 alt="Sora AI Assistant" 
-                data-ai-hint="headset portrait"
+                data-ai-hint="woman headset"
                 className="object-cover"
               />
               <AvatarFallback className="bg-primary text-primary-foreground text-xl">SA</AvatarFallback>
@@ -278,8 +278,8 @@ export function ChatbotDialog() {
             animate="open"
             exit="closed"
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed bottom-24 right-6 z-40 w-full max-w-md rounded-xl bg-background shadow-2xl border border-border overflow-hidden flex flex-col" // z-index for chat window
-            style={{ height: 'min(80vh, 700px)' }} // Slightly reduced max height to avoid top overlap
+            className="fixed bottom-24 right-6 z-40 w-full max-w-md rounded-xl bg-background shadow-2xl border border-border overflow-hidden flex flex-col" 
+            style={{ maxHeight: 'min(calc(100vh - 12rem), 700px)' }} 
           >
             <header className="bg-card p-3 border-b border-border flex items-center justify-between">
               <h3 className="font-semibold text-lg text-primary font-headline pl-2">Sora - Tinkal's Assistant</h3>
@@ -372,3 +372,4 @@ export function ChatbotDialog() {
     </>
   );
 }
+
