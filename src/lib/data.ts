@@ -98,8 +98,8 @@ export const HERO_TITLES = [
 export const PROFILE_IMAGES = [
   { src: "/profile-1.jpg", alt: "Tinkal Kumar - Professional Headshot", dataAiHint: "professional man" },
   { src: "/profile-2.jpg", alt: "Tinkal Kumar - Working at a desk", dataAiHint: "developer coding" },
-  { src: "/profile-3.jpg", alt: "Tinkal Kumar - Outdoor casual portrait", dataAiHint: "casual man" }, // Ensure this is profile-3.jpg, not .HEIC
-  { src: "/profile-4.jpg", alt: "Tinkal Kumar - Tech event or conference", dataAiHint: "tech conference" }, // Ensure this is profile-4.jpg, not .HEIC
+  { src: "/profile-3.jpg", alt: "Tinkal Kumar - Outdoor casual portrait", dataAiHint: "casual man" },
+  { src: "/profile-4.jpg", alt: "Tinkal Kumar - Tech event or conference", dataAiHint: "tech conference" },
 ];
 
 export const RESUME_PATH = "/Tinkal_Resume.pdf"; 
@@ -363,3 +363,5 @@ export const EMAILJS_CONFIG = {
   templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "YOUR_EMAILJS_TEMPLATE_ID",
   publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "YOUR_EMAILJS_PUBLIC_KEY",
 };
+
+    

@@ -176,7 +176,7 @@ export function Contact() {
       >
         <div>
           <Label htmlFor="name" className="text-sm font-medium">Full Name</Label>
-          <Input id="name" {...register("name")} placeholder={AUTHOR_NAME} className="mt-1" />
+          <Input id="name" {...register("name")} placeholder={"Your Full Name"} className="mt-1" />
           {errors.name && <p className="mt-1 text-xs text-destructive">{errors.name.message}</p>}
         </div>
         <div>
