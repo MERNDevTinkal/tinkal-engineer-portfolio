@@ -127,7 +127,7 @@ export function Footer() {
                 {footerLinkedIn && (
                   <li>
                     <Link href={footerLinkedIn.href} target="_blank" rel="noopener noreferrer" className="text-foreground/80 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors duration-300 ease-in-out text-sm flex items-center justify-center md:justify-start">
-                      <span className="flex items-center">
+                       <span className="flex items-center">
                         <footerLinkedIn.Icon className="h-5 w-5 mr-2" /> {footerLinkedIn.name}
                       </span>
                     </Link>
@@ -136,7 +136,7 @@ export function Footer() {
                 {footerInstagram && (
                   <li>
                     <Link href={footerInstagram.href} target="_blank" rel="noopener noreferrer" className="text-foreground/80 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors duration-300 ease-in-out text-sm flex items-center justify-center md:justify-start">
-                      <span className="flex items-center">
+                       <span className="flex items-center">
                         <footerInstagram.Icon className="h-5 w-5 mr-2" /> {footerInstagram.name}
                       </span>
                     </Link>
@@ -153,13 +153,13 @@ export function Footer() {
             </div>
           </div>
           <div className="border-t border-border/30 pt-8 text-center">
-            <p className="text-sm font-medium text-foreground/70 dark:text-gray-300">
-              {isMounted && currentYear !== null ? (
-                `© ${currentYear} ${AUTHOR_NAME}. All rights reserved.`
-              ) : (
-                 <Skeleton className="h-4 w-48 inline-block" />
-              )}
-            </p>
+            {isMounted && currentYear !== null ? (
+              <p className="text-sm font-medium text-foreground/70 dark:text-gray-300">
+                {`© ${currentYear} ${AUTHOR_NAME}. All rights reserved.`}
+              </p>
+            ) : (
+               <Skeleton className="h-4 w-48 inline-block" />
+            )}
           </div>
         </div>
       </footer>
