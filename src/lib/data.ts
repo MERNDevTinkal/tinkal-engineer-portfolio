@@ -93,8 +93,7 @@ export const HERO_TITLES = [
   "Digital Transformation Agent"
 ];
 
-// IMPORTANT: If using .HEIC files, ensure you convert them to .jpg or .png for better browser compatibility.
-// The paths below assume .jpg files are in the public folder.
+// IMPORTANT: Ensure these JPG files exist in your public folder.
 export const PROFILE_IMAGES = [
   { src: "/profile-1.jpg", alt: "Tinkal Kumar - Professional Headshot", dataAiHint: "professional man" },
   { src: "/profile-2.jpg", alt: "Tinkal Kumar - Working at a desk", dataAiHint: "developer coding" },
@@ -363,5 +362,7 @@ export const EMAILJS_CONFIG = {
   templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "YOUR_EMAILJS_TEMPLATE_ID",
   publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "YOUR_EMAILJS_PUBLIC_KEY",
 };
+
+    
 
     

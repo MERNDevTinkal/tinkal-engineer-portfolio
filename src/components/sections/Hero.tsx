@@ -14,6 +14,13 @@ import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { HERO_TITLES, SOCIAL_LINKS, PROFILE_IMAGES, RESUME_PATH, AUTHOR_NAME } from "@/lib/data";
 import { Skeleton } from "@/components/ui/skeleton";
 
+// Import Swiper styles at the top level
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/effect-fade';
+// Note: Autoplay module for Swiper typically does not require its own CSS import.
+// The main 'swiper/css' and effect/pagination CSS should cover styling.
+
 // Dynamically import Swiper and its CSS
 const Swiper = dynamic(() => import('swiper/react').then(mod => mod.Swiper), {
   ssr: false,
@@ -21,29 +28,20 @@ const Swiper = dynamic(() => import('swiper/react').then(mod => mod.Swiper), {
 });
 const SwiperSlide = dynamic(() => import('swiper/react').then(mod => mod.SwiperSlide), { ssr: false });
 
-// Conditionally import Swiper modules on the client-side
-if (typeof window !== 'undefined') {
-  import('swiper/css');
-  import('swiper/css/pagination');
-  import('swiper/css/effect-fade');
-  import('swiper/css/autoplay');
-}
-
 export function Hero() {
   const [swiperModules, setSwiperModules] = useState<any[] | undefined>(undefined);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true); // Indicate component has mounted
-    if (typeof window !== 'undefined') {
-      Promise.all([
-        import('swiper/modules').then(mod => mod.Autoplay),
-        import('swiper/modules').then(mod => mod.Pagination),
-        import('swiper/modules').then(mod => mod.EffectFade)
-      ]).then(([Autoplay, Pagination, EffectFade]) => {
-        setSwiperModules([Autoplay, Pagination, EffectFade]);
-      }).catch(err => console.error("Failed to load Swiper modules", err));
-    }
+    // Dynamically import Swiper modules only on the client-side
+    Promise.all([
+      import('swiper/modules').then(mod => mod.Autoplay),
+      import('swiper/modules').then(mod => mod.Pagination),
+      import('swiper/modules').then(mod => mod.EffectFade)
+    ]).then(([Autoplay, Pagination, EffectFade]) => {
+      setSwiperModules([Autoplay, Pagination, EffectFade]);
+    }).catch(err => console.error("Failed to load Swiper modules", err));
   }, []);
 
 
@@ -193,3 +191,6 @@ export function Hero() {
     </SectionWrapper>
   );
 }
+
+
+    
