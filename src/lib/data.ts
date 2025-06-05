@@ -95,10 +95,8 @@ export const HERO_TITLES = [
 
 // Ensure these JPG files exist in your public folder.
 export const PROFILE_IMAGES = [
-  { src: "/profile-1.jpg", alt: "Tinkal Kumar - Professional Headshot", dataAiHint: "professional man" },
-  { src: "/profile-2.jpg", alt: "Tinkal Kumar - Working at a desk", dataAiHint: "developer coding" },
-  // { src: "/profile-3.jpg", alt: "Tinkal Kumar - Outdoor casual portrait", dataAiHint: "casual man" }, // Example, ensure file exists if uncommented
-  // { src: "/profile-4.jpg", alt: "Tinkal Kumar - Tech event or conference", dataAiHint: "tech conference" }, // Example, ensure file exists if uncommented
+  { src: "https://images.unsplash.com/flagged/photo-1573603867003-89f5fd7a7576?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxwcm9mZXNzaW9uYWwlMjBtYW58ZW58MHx8fHwxNzQ5MTAxMDcwfDA&ixlib=rb-4.1.0&q=80&w=1080", alt: "Tinkal Kumar - Professional Headshot", dataAiHint: "professional man" },
+  { src: "https://images.unsplash.com/photo-1581094271901-8022df4466f9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxkZXZlbG9wZXIlMjBjb2Rpbmd8ZW58MHx8fHwxNzQ5MTAxMDcwfDA&ixlib=rb-4.1.0&q=80&w=1080", alt: "Tinkal Kumar - Working at a desk", dataAiHint: "developer coding" },
 ];
 
 export const RESUME_PATH = "/Tinkal_Resume.pdf"; 
