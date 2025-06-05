@@ -344,7 +344,7 @@ export function ChatbotDialog() {
               </div>
             )}
 
-            <ScrollArea ref={scrollAreaRef} className="flex-grow p-4">
+            <ScrollArea ref={scrollAreaRef} className="flex-grow p-4 min-h-0">
               {messages.map((msg) => (
                 <ChatMessage key={msg.id} sender={msg.sender} text={msg.text} isLoading={msg.isLoading} />
               ))}
@@ -380,3 +380,6 @@ export function ChatbotDialog() {
     </>
   );
 }
+
+
+    
