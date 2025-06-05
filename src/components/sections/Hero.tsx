@@ -7,21 +7,19 @@ import { Typewriter } from "react-simple-typewriter";
 import dynamic from 'next/dynamic';
 import { motion } from "framer-motion";
 import { Download, ArrowRight } from "lucide-react";
-import { useState, useEffect, Suspense } from 'react'; // Added Suspense
+import { useState, useEffect } from 'react'; 
+
+// Import Swiper styles at the top level
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/effect-fade';
 
 import { Button } from "@/components/ui/button";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { HERO_TITLES, SOCIAL_LINKS, PROFILE_IMAGES, RESUME_PATH, AUTHOR_NAME } from "@/lib/data";
 import { Skeleton } from "@/components/ui/skeleton";
 
-// Import Swiper styles at the top level
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/effect-fade';
-// Note: Autoplay module for Swiper typically does not require its own CSS import.
-// The main 'swiper/css' and effect/pagination CSS should cover styling.
-
-// Dynamically import Swiper and its CSS
+// Dynamically import Swiper components
 const Swiper = dynamic(() => import('swiper/react').then(mod => mod.Swiper), {
   ssr: false,
   loading: () => <Skeleton className="rounded-xl shadow-2xl aspect-[3/4] w-full h-full border-4 border-card" />
@@ -33,15 +31,14 @@ export function Hero() {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setIsClient(true); // Indicate component has mounted
-    // Dynamically import Swiper modules only on the client-side
+    setIsClient(true); 
     Promise.all([
       import('swiper/modules').then(mod => mod.Autoplay),
       import('swiper/modules').then(mod => mod.Pagination),
       import('swiper/modules').then(mod => mod.EffectFade)
     ]).then(([Autoplay, Pagination, EffectFade]) => {
       setSwiperModules([Autoplay, Pagination, EffectFade]);
-    }).catch(err => console.error("Failed to load Swiper modules", err));
+    }).catch(err => console.error("Failed to load Swiper modules for Hero slider:", err));
   }, []);
 
 
@@ -170,16 +167,22 @@ export function Hero() {
               className="rounded-xl shadow-2xl overflow-hidden aspect-[3/4] border-4 border-card hover:border-primary/30 transition-colors duration-300"
             >
               {PROFILE_IMAGES.map((image, index) => (
-                <SwiperSlide key={image.src}>
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    width={600}
-                    height={800}
-                    priority={index === 0}
-                    className="object-cover w-full h-full"
-                    data-ai-hint={image.dataAiHint}
-                  />
+                <SwiperSlide key={image.src || `slide-${index}`}>
+                  {(image && image.src) ? (
+                    <Image
+                      src={image.src}
+                      alt={image.alt || `Profile image ${index + 1}`}
+                      fill
+                      className="object-cover w-full h-full"
+                      priority={index === 0}
+                      data-ai-hint={image.dataAiHint}
+                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, (max-width: 1024px) 50vw, 33vw" // Example sizes, adjust as needed
+                    />
+                  ) : (
+                     <div className="w-full h-full flex items-center justify-center bg-muted text-destructive">
+                       Image data missing (slide {index})
+                     </div>
+                  )}
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -191,6 +194,5 @@ export function Hero() {
     </SectionWrapper>
   );
 }
-
 
     

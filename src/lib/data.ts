@@ -97,8 +97,8 @@ export const HERO_TITLES = [
 export const PROFILE_IMAGES = [
   { src: "/profile-1.jpg", alt: "Tinkal Kumar - Professional Headshot", dataAiHint: "professional man" },
   { src: "/profile-2.jpg", alt: "Tinkal Kumar - Working at a desk", dataAiHint: "developer coding" },
-  // { src: "/profile-3.jpg", alt: "Tinkal Kumar - Outdoor casual portrait", dataAiHint: "casual man" },
-  // { src: "/profile-4.jpg", alt: "Tinkal Kumar - Tech event or conference", dataAiHint: "tech conference" },
+  // { src: "/profile-3.jpg", alt: "Tinkal Kumar - Outdoor casual portrait", dataAiHint: "casual man" }, // Example, ensure file exists if uncommented
+  // { src: "/profile-4.jpg", alt: "Tinkal Kumar - Tech event or conference", dataAiHint: "tech conference" }, // Example, ensure file exists if uncommented
 ];
 
 export const RESUME_PATH = "/Tinkal_Resume.pdf"; 

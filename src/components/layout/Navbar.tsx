@@ -9,32 +9,32 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { APP_NAME, NAV_LINKS, LOGO_PATH } from "@/lib/data";
-import { useRouter } from 'next/navigation'; // Import useRouter
+import { useRouter } from 'next/navigation'; 
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const router = useRouter(); // Initialize useRouter
+  const router = useRouter(); 
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Call once on mount to set initial state
+    handleScroll(); 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const handleNavClick = (href: string) => {
-    setIsOpen(false); // Close mobile menu on click
+    setIsOpen(false); 
     if (href.startsWith("#")) {
       const element = document.getElementById(href.substring(1));
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
       } else {
-        router.push(`/${href}`); // Fallback for full page links or if element not found
+        router.push(`/${href}`); 
       }
     } else {
       router.push(href);
@@ -72,13 +72,13 @@ export function Navbar() {
     >
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         <Link href="#home" className="flex items-center space-x-3 text-2xl font-bold font-headline text-primary" onClick={(e) => { e.preventDefault(); handleNavClick("#home");}}>
-           <div className="flex items-center space-x-3"> {/* Wrapper for logo link content */}
+           <div className="flex items-center space-x-2"> {/* Reduced space for slightly tighter logo and text */}
             <Image
               src={LOGO_PATH}
               alt={`${APP_NAME} Logo`}
-              width={80} 
-              height={80} 
-              className="h-20 w-20 rounded-lg" // Increased logo size (5rem = 80px)
+              width={64} 
+              height={64} 
+              className="rounded-lg" // Removed h- w- classes, relying on width/height props
               data-ai-hint="website logo"
               priority
             />
