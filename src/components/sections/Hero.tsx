@@ -7,12 +7,14 @@ import { Typewriter } from "react-simple-typewriter";
 import dynamic from 'next/dynamic';
 import { motion } from "framer-motion";
 import { Download, ArrowRight } from "lucide-react";
-import { useState, useEffect } from 'react'; 
+// Removed useState and useEffect as Swiper modules are now imported statically
 
 // Import Swiper styles at the top level
 import 'swiper/css';
 import 'swiper/css/pagination';
-// Removed: import 'swiper/css/effect-fade'; // No longer using fade effect
+
+// Static import for Swiper modules as per the example
+import { Autoplay, Pagination } from 'swiper/modules';
 
 import { Button } from "@/components/ui/button";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
@@ -22,24 +24,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 // Dynamically import Swiper components
 const Swiper = dynamic(() => import('swiper/react').then(mod => mod.Swiper), {
   ssr: false,
-  loading: () => <Skeleton className="rounded-xl shadow-2xl aspect-[3/4] w-full h-full border-4 border-card" />
+  loading: () => <Skeleton className="rounded-xl shadow-xl aspect-[3/4] w-full h-full border-4 border-card" />
 });
 const SwiperSlide = dynamic(() => import('swiper/react').then(mod => mod.SwiperSlide), { ssr: false });
 
 export function Hero() {
-  const [swiperModules, setSwiperModules] = useState<any[] | undefined>(undefined);
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true); 
-    Promise.all([
-      import('swiper/modules').then(mod => mod.Autoplay),
-      import('swiper/modules').then(mod => mod.Pagination),
-    ]).then(([Autoplay, Pagination]) => { 
-      setSwiperModules([Autoplay, Pagination]); 
-    }).catch(err => console.error("Failed to load Swiper modules for Hero slider:", err));
-  }, []);
-
+  // Removed swiperModules state and useEffect for loading modules
 
   const textContainerVariants = {
     hidden: { opacity: 0 },
@@ -149,9 +139,10 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.8, type: "spring", stiffness: 100 }}
           className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto"
         >
-          {isClient && swiperModules && swiperModules.length > 0 ? (
+          {/* Check if Swiper component is available (it will be after dynamic import resolves) */}
+          {Swiper && SwiperSlide ? (
             <Swiper
-              modules={swiperModules}
+              modules={[Autoplay, Pagination]} // Pass statically imported modules
               spaceBetween={30}
               slidesPerView={1}
               loop={true}
@@ -160,8 +151,8 @@ export function Hero() {
                 disableOnInteraction: false,
                 pauseOnMouseEnter: true,
               }}
-              pagination={{ clickable: true, dynamicBullets: true }}
-              className="rounded-xl shadow-2xl overflow-hidden aspect-[3/4] border-4 border-card hover:border-primary/30 transition-colors duration-300"
+              pagination={{ clickable: true }} // Updated as per example
+              className="rounded-xl shadow-xl aspect-[3/4] border-4 border-card hover:border-primary/30 transition-colors duration-300" // Updated className as per example
             >
               {PROFILE_IMAGES.map((image, index) => (
                 <SwiperSlide key={image.src || `slide-${index}`}>
@@ -184,11 +175,10 @@ export function Hero() {
               ))}
             </Swiper>
           ) : (
-            <Skeleton className="rounded-xl shadow-2xl aspect-[3/4] w-full h-full border-4 border-card" />
+            <Skeleton className="rounded-xl shadow-xl aspect-[3/4] w-full h-full border-4 border-card" />
           )}
         </motion.div>
       </div>
     </SectionWrapper>
   );
 }
-
