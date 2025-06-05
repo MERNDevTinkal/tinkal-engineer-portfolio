@@ -4,28 +4,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Typewriter } from "react-simple-typewriter";
-import dynamic from 'next/dynamic';
 import { motion } from "framer-motion";
 import { Download, ArrowRight } from "lucide-react";
 
-// Import Swiper styles at the top level
-import 'swiper/css';
-import 'swiper/css/pagination';
-
-// Static import for Swiper modules
-import { Autoplay, Pagination } from 'swiper/modules';
-
 import { Button } from "@/components/ui/button";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
-import { HERO_TITLES, SOCIAL_LINKS, PROFILE_IMAGES, RESUME_PATH, AUTHOR_NAME } from "@/lib/data";
-import { Skeleton } from "@/components/ui/skeleton";
+import { HERO_TITLES, SOCIAL_LINKS, RESUME_PATH, AUTHOR_NAME } from "@/lib/data";
+import { Skeleton } from "@/components/ui/skeleton"; // Kept for potential future use or if image fails
 
-// Dynamically import Swiper components
-const Swiper = dynamic(() => import('swiper/react').then(mod => mod.Swiper), {
-  ssr: false,
-  loading: () => <Skeleton className="rounded-xl shadow-xl aspect-[3/4] w-full h-full border-4 border-card" />
-});
-const SwiperSlide = dynamic(() => import('swiper/react').then(mod => mod.SwiperSlide), { ssr: false });
+// Removed Swiper and related imports
 
 export function Hero() {
   const textContainerVariants = {
@@ -136,47 +123,20 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.8, type: "spring", stiffness: 100 }}
           className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto"
         >
-          {Swiper && SwiperSlide ? (
-            <Swiper
-              modules={[Autoplay, Pagination]}
-              spaceBetween={30}
-              slidesPerView={1}
-              loop={true}
-              autoplay={{
-                delay: 3500,
-                disableOnInteraction: false,
-                pauseOnMouseEnter: true,
-              }}
-              pagination={{ clickable: true }}
-              className="rounded-xl shadow-xl aspect-[3/4] border-4 border-card hover:border-primary/30 transition-colors duration-300"
-            >
-              {PROFILE_IMAGES.map((image, index) => (
-                <SwiperSlide key={image.src || `slide-${index}`}>
-                  {(image && image.src) ? (
-                    <Image
-                      src={image.src}
-                      alt={image.alt || `Profile image ${index + 1}`}
-                      fill
-                      className="object-cover" 
-                      priority={index === 0}
-                      data-ai-hint={image.dataAiHint}
-                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, (max-width: 1024px) 50vw, 33vw"
-                    />
-                  ) : (
-                     <div className="w-full h-full flex items-center justify-center bg-muted text-destructive">
-                       Image data missing (slide {index})
-                     </div>
-                  )}
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          ) : (
-            <Skeleton className="rounded-xl shadow-xl aspect-[3/4] w-full h-full border-4 border-card" />
-          )}
+          {/* Simplified to display a single static image */}
+          <div className="rounded-xl shadow-xl aspect-[3/4] border-4 border-card hover:border-primary/30 transition-colors duration-300 overflow-hidden relative">
+            <Image
+              src="/profile-1.jpg" // Directly accessing from public folder
+              alt="Tinkal Kumar - Profile Image"
+              fill
+              className="object-cover"
+              priority // Prioritize loading for LCP
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, (max-width: 1024px) 50vw, 33vw"
+              data-ai-hint="professional man"
+            />
+          </div>
         </motion.div>
       </div>
     </SectionWrapper>
   );
 }
-
-    
