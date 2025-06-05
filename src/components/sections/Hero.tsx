@@ -35,9 +35,8 @@ export function Hero() {
     Promise.all([
       import('swiper/modules').then(mod => mod.Autoplay),
       import('swiper/modules').then(mod => mod.Pagination),
-      // Removed: import('swiper/modules').then(mod => mod.EffectFade) 
-    ]).then(([Autoplay, Pagination]) => { // Updated destructuring
-      setSwiperModules([Autoplay, Pagination]); // Updated modules array
+    ]).then(([Autoplay, Pagination]) => { 
+      setSwiperModules([Autoplay, Pagination]); 
     }).catch(err => console.error("Failed to load Swiper modules for Hero slider:", err));
   }, []);
 
@@ -162,7 +161,6 @@ export function Hero() {
                 pauseOnMouseEnter: true,
               }}
               pagination={{ clickable: true, dynamicBullets: true }}
-              // Removed effect="fade" and fadeEffect props to default to "slide"
               className="rounded-xl shadow-2xl overflow-hidden aspect-[3/4] border-4 border-card hover:border-primary/30 transition-colors duration-300"
             >
               {PROFILE_IMAGES.map((image, index) => (
