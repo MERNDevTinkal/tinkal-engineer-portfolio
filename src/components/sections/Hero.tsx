@@ -16,7 +16,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
-// Removed Swiper effect-fade CSS as we are using the default slide effect
 
 export function Hero() {
   const textContainerVariants = {
@@ -141,8 +140,14 @@ export function Hero() {
             className="rounded-xl shadow-xl aspect-[3/4] border-4 border-card hover:border-primary/30 transition-colors duration-300 overflow-hidden"
           >
             {PROFILE_IMAGES.map((image, index) => (
-              <SwiperSlide key={index}>
-                <div className="relative w-full h-full"> {/* Added relative container for fill to work */}
+              <SwiperSlide key={image.src || index}>
+                <motion.div
+                  className="relative w-full h-full"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: false }} // Allow animation if slide re-enters view (e.g. in loop)
+                  transition={{ duration: 0.6, ease: "easeInOut", delay: 0.1 }}
+                >
                   <Image
                     src={image.src}
                     alt={image.alt}
@@ -152,7 +157,7 @@ export function Hero() {
                     sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, (max-width: 1024px) 50vw, 33vw"
                     data-ai-hint={image.dataAiHint || "profile image"}
                   />
-                </div>
+                </motion.div>
               </SwiperSlide>
             ))}
           </Swiper>
