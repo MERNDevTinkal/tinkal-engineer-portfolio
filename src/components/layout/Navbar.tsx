@@ -9,10 +9,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { APP_NAME, NAV_LINKS, LOGO_PATH } from "@/lib/data";
+import { useRouter } from 'next/navigation'; // Import useRouter
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const router = useRouter(); // Initialize useRouter
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,6 +26,21 @@ export function Navbar() {
   }, []);
 
   const toggleMenu = () => setIsOpen(!isOpen);
+
+  const handleNavClick = (href: string) => {
+    setIsOpen(false); // Close mobile menu on click
+    if (href.startsWith("#")) {
+      const element = document.getElementById(href.substring(1));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        router.push(`/${href}`); // Fallback for full page links or if element not found
+      }
+    } else {
+      router.push(href);
+    }
+  };
+
 
   const linkVariants = {
     hidden: { opacity: 0, y: -10 },
@@ -54,17 +71,19 @@ export function Navbar() {
       className="fixed top-0 left-0 right-0 z-50 w-full"
     >
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
-        <Link href="#home" className="flex items-center space-x-3 text-2xl font-bold font-headline text-primary">
-          <Image
-            src={LOGO_PATH}
-            alt={`${APP_NAME} Logo`}
-            width={56} 
-            height={56} 
-            className="h-14 w-14 rounded-lg" // Increased logo size and rounding
-            data-ai-hint="website logo"
-            priority
-          />
-          <span>{APP_NAME}</span>
+        <Link href="#home" className="flex items-center space-x-3 text-2xl font-bold font-headline text-primary" onClick={(e) => { e.preventDefault(); handleNavClick("#home");}}>
+           <div className="flex items-center space-x-3"> {/* Wrapper for logo link content */}
+            <Image
+              src={LOGO_PATH}
+              alt={`${APP_NAME} Logo`}
+              width={80} 
+              height={80} 
+              className="h-20 w-20 rounded-lg" // Increased logo size (5rem = 80px)
+              data-ai-hint="website logo"
+              priority
+            />
+            <span>{APP_NAME}</span>
+          </div>
         </Link>
 
         <div className="hidden items-center space-x-2 md:flex">
@@ -78,10 +97,8 @@ export function Navbar() {
               whileHover={{ scale: 1.05, color: "hsl(var(--primary))" }}
               whileTap={{ scale: 0.95 }}
             >
-              <Button variant="link" asChild>
-                <Link href={link.href} className="text-foreground hover:text-primary transition-colors duration-300 ease-in-out px-3 py-2 text-sm">
-                  {link.name}
-                </Link>
+              <Button variant="link" onClick={() => handleNavClick(link.href)} className="text-foreground hover:text-primary transition-colors duration-300 ease-in-out px-3 py-2 text-sm">
+                <span>{link.name}</span>
               </Button>
             </motion.div>
           ))}
@@ -90,7 +107,7 @@ export function Navbar() {
 
         <div className="md:hidden">
           <Button variant="ghost" size="icon" onClick={toggleMenu} aria-label="Toggle menu">
-            {isOpen ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />} {/* Icon size for menu toggle */}
+            {isOpen ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
           </Button>
         </div>
       </div>
@@ -111,9 +128,9 @@ export function Navbar() {
                   key={link.name}
                   href={link.href}
                   className="text-lg text-foreground hover:text-primary transition-colors duration-300 ease-in-out"
-                  onClick={() => setIsOpen(false)}
+                  onClick={(e) => { e.preventDefault(); handleNavClick(link.href); }}
                 >
-                  {link.name}
+                  <span>{link.name}</span>
                 </Link>
               ))}
               <ThemeToggle />
@@ -124,3 +141,5 @@ export function Navbar() {
     </motion.nav>
   );
 }
+
+    
