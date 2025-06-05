@@ -7,13 +7,12 @@ import { Typewriter } from "react-simple-typewriter";
 import dynamic from 'next/dynamic';
 import { motion } from "framer-motion";
 import { Download, ArrowRight } from "lucide-react";
-// Removed useState and useEffect as Swiper modules are now imported statically
 
 // Import Swiper styles at the top level
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-// Static import for Swiper modules as per the example
+// Static import for Swiper modules
 import { Autoplay, Pagination } from 'swiper/modules';
 
 import { Button } from "@/components/ui/button";
@@ -29,8 +28,6 @@ const Swiper = dynamic(() => import('swiper/react').then(mod => mod.Swiper), {
 const SwiperSlide = dynamic(() => import('swiper/react').then(mod => mod.SwiperSlide), { ssr: false });
 
 export function Hero() {
-  // Removed swiperModules state and useEffect for loading modules
-
   const textContainerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -139,10 +136,9 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.8, type: "spring", stiffness: 100 }}
           className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto"
         >
-          {/* Check if Swiper component is available (it will be after dynamic import resolves) */}
           {Swiper && SwiperSlide ? (
             <Swiper
-              modules={[Autoplay, Pagination]} // Pass statically imported modules
+              modules={[Autoplay, Pagination]}
               spaceBetween={30}
               slidesPerView={1}
               loop={true}
@@ -151,8 +147,8 @@ export function Hero() {
                 disableOnInteraction: false,
                 pauseOnMouseEnter: true,
               }}
-              pagination={{ clickable: true }} // Updated as per example
-              className="rounded-xl shadow-xl aspect-[3/4] border-4 border-card hover:border-primary/30 transition-colors duration-300" // Updated className as per example
+              pagination={{ clickable: true }}
+              className="rounded-xl shadow-xl aspect-[3/4] border-4 border-card hover:border-primary/30 transition-colors duration-300"
             >
               {PROFILE_IMAGES.map((image, index) => (
                 <SwiperSlide key={image.src || `slide-${index}`}>
@@ -161,7 +157,7 @@ export function Hero() {
                       src={image.src}
                       alt={image.alt || `Profile image ${index + 1}`}
                       fill
-                      className="object-cover w-full h-full"
+                      className="object-cover" 
                       priority={index === 0}
                       data-ai-hint={image.dataAiHint}
                       sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, (max-width: 1024px) 50vw, 33vw"
@@ -182,3 +178,5 @@ export function Hero() {
     </SectionWrapper>
   );
 }
+
+    
