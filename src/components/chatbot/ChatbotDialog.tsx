@@ -69,7 +69,6 @@ export function ChatbotDialog() {
 
   useEffect(() => {
     if (isOpen) {
-      // Load messages from localStorage only on client-side
       if (typeof window !== 'undefined') {
         try {
           const savedMessages = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -94,7 +93,6 @@ export function ChatbotDialog() {
             setCurrentSuggestions(initialBotMessage.suggestions || INITIAL_SUGGESTIONS.slice(0, 4));
           }
         } catch (error) {
-          // console.error("Failed to load chat history from localStorage:", error);
           setMessages([initialBotMessage]);
           setCurrentSuggestions(initialBotMessage.suggestions || INITIAL_SUGGESTIONS.slice(0, 4));
         }
@@ -105,7 +103,6 @@ export function ChatbotDialog() {
   }, [isOpen]);
 
   useEffect(() => {
-    // Save messages to localStorage only on client-side
     if (isOpen && typeof window !== 'undefined' && messages.length > 0) {
       try {
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(messages));
@@ -175,7 +172,6 @@ export function ChatbotDialog() {
       }
 
     } catch (error) {
-      // console.error("Chatbot error:", error);
       let errorMessage = "Sorry, I encountered an issue. Please try asking in a different way or check back later.";
        if (error instanceof Error) {
         if (error.message.includes("system role is not supported") || error.message.includes("model_error")) {
@@ -242,13 +238,16 @@ export function ChatbotDialog() {
     animate: { scale: 1, opacity: 1, transition: { delay: 1, type: "spring", stiffness: 200, damping: 20 } }
   };
 
+  const suggestionsVisible = currentSuggestions.length > 0;
+  const gridTemplateRows = suggestionsVisible ? "auto auto 1fr auto" : "auto 1fr auto";
+
   return (
     <>
       <motion.div
         variants={triggerButtonVariants}
         initial="initial"
         animate="animate"
-        className="fixed bottom-6 right-6 z-50" // z-index for trigger button
+        className="fixed bottom-6 right-6 z-50"
       >
         <Button
           onClick={() => setIsOpen(!isOpen)}
@@ -281,13 +280,16 @@ export function ChatbotDialog() {
             exit="closed"
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className={cn(
-              "fixed bottom-24 z-40 rounded-xl bg-background shadow-2xl border border-border overflow-hidden flex flex-col",
+              "fixed bottom-24 z-40 rounded-xl bg-background shadow-2xl border border-border overflow-hidden grid", // Changed to grid
               "left-4 right-4 w-auto", 
               "md:left-auto md:right-6 md:w-full md:max-w-md", 
               "lg:max-w-lg", 
               "xl:max-w-xl"  
             )}
-            style={{ maxHeight: 'min(calc(100vh - 12rem), 85vh)' }} 
+            style={{ 
+              maxHeight: 'min(calc(100vh - 12rem), 85vh)',
+              gridTemplateRows: gridTemplateRows // Added grid-template-rows
+            }} 
           >
             <header className="bg-card p-3 border-b border-border flex items-center justify-between">
               <h3 className="font-semibold text-lg text-primary font-headline pl-2">Sora - Tinkal's Assistant</h3>
@@ -301,7 +303,7 @@ export function ChatbotDialog() {
               </div>
             </header>
 
-            {currentSuggestions.length > 0 && (
+            {suggestionsVisible && (
               <div className="p-3 border-b border-border bg-card/50">
                 {!suggestionsExpanded ? (
                   <Button
@@ -344,7 +346,7 @@ export function ChatbotDialog() {
               </div>
             )}
 
-            <ScrollArea ref={scrollAreaRef} className="flex-grow p-4 min-h-0">
+            <ScrollArea ref={scrollAreaRef} className="p-4 min-h-0"> {/* Removed flex-grow */}
               {messages.map((msg) => (
                 <ChatMessage key={msg.id} sender={msg.sender} text={msg.text} isLoading={msg.isLoading} />
               ))}
@@ -380,6 +382,3 @@ export function ChatbotDialog() {
     </>
   );
 }
-
-
-    
