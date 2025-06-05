@@ -12,7 +12,7 @@ import { useState, useEffect } from 'react';
 // Import Swiper styles at the top level
 import 'swiper/css';
 import 'swiper/css/pagination';
-import 'swiper/css/effect-fade';
+// Removed: import 'swiper/css/effect-fade'; // No longer using fade effect
 
 import { Button } from "@/components/ui/button";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
@@ -35,9 +35,9 @@ export function Hero() {
     Promise.all([
       import('swiper/modules').then(mod => mod.Autoplay),
       import('swiper/modules').then(mod => mod.Pagination),
-      import('swiper/modules').then(mod => mod.EffectFade)
-    ]).then(([Autoplay, Pagination, EffectFade]) => {
-      setSwiperModules([Autoplay, Pagination, EffectFade]);
+      // Removed: import('swiper/modules').then(mod => mod.EffectFade) 
+    ]).then(([Autoplay, Pagination]) => { // Updated destructuring
+      setSwiperModules([Autoplay, Pagination]); // Updated modules array
     }).catch(err => console.error("Failed to load Swiper modules for Hero slider:", err));
   }, []);
 
@@ -162,8 +162,7 @@ export function Hero() {
                 pauseOnMouseEnter: true,
               }}
               pagination={{ clickable: true, dynamicBullets: true }}
-              effect={"fade"}
-              fadeEffect={{ crossFade: true }}
+              // Removed effect="fade" and fadeEffect props to default to "slide"
               className="rounded-xl shadow-2xl overflow-hidden aspect-[3/4] border-4 border-card hover:border-primary/30 transition-colors duration-300"
             >
               {PROFILE_IMAGES.map((image, index) => (
@@ -176,7 +175,7 @@ export function Hero() {
                       className="object-cover w-full h-full"
                       priority={index === 0}
                       data-ai-hint={image.dataAiHint}
-                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, (max-width: 1024px) 50vw, 33vw" // Example sizes, adjust as needed
+                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, (max-width: 1024px) 50vw, 33vw"
                     />
                   ) : (
                      <div className="w-full h-full flex items-center justify-center bg-muted text-destructive">
@@ -195,4 +194,3 @@ export function Hero() {
   );
 }
 
-    
