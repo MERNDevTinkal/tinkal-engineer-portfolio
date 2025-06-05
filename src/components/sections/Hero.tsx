@@ -9,10 +9,14 @@ import { Download, ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
-import { HERO_TITLES, SOCIAL_LINKS, RESUME_PATH, AUTHOR_NAME } from "@/lib/data";
-import { Skeleton } from "@/components/ui/skeleton"; // Kept for potential future use or if image fails
+import { HERO_TITLES, SOCIAL_LINKS, RESUME_PATH, AUTHOR_NAME, PROFILE_IMAGES } from "@/lib/data";
 
-// Removed Swiper and related imports
+// Swiper imports
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+// Removed Swiper effect-fade CSS as we are using the default slide effect
 
 export function Hero() {
   const textContainerVariants = {
@@ -123,18 +127,35 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.8, type: "spring", stiffness: 100 }}
           className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto"
         >
-          {/* Simplified to display a single static image */}
-          <div className="rounded-xl shadow-xl aspect-[3/4] border-4 border-card hover:border-primary/30 transition-colors duration-300 overflow-hidden relative">
-            <Image
-              src="/profile-1.jpg" // Directly accessing from public folder
-              alt="Tinkal Kumar - Profile Image"
-              fill
-              className="object-cover"
-              priority // Prioritize loading for LCP
-              sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, (max-width: 1024px) 50vw, 33vw"
-              data-ai-hint="professional man"
-            />
-          </div>
+          <Swiper
+            modules={[Autoplay, Pagination]}
+            spaceBetween={30}
+            slidesPerView={1}
+            loop
+            autoplay={{
+              delay: 3500,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true,
+            }}
+            pagination={{ clickable: true }}
+            className="rounded-xl shadow-xl aspect-[3/4] border-4 border-card hover:border-primary/30 transition-colors duration-300 overflow-hidden"
+          >
+            {PROFILE_IMAGES.map((image, index) => (
+              <SwiperSlide key={index}>
+                <div className="relative w-full h-full"> {/* Added relative container for fill to work */}
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    fill
+                    className="object-cover"
+                    priority={index === 0}
+                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, (max-width: 1024px) 50vw, 33vw"
+                    data-ai-hint={image.dataAiHint || "profile image"}
+                  />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </motion.div>
       </div>
     </SectionWrapper>
