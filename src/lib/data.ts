@@ -93,12 +93,11 @@ export const HERO_TITLES = [
   "Digital Transformation Agent"
 ];
 
-// Ensure these JPG files exist in your public folder.
 export const PROFILE_IMAGES = [
   { src: "/profile-1.jpg", alt: "Tinkal Kumar - Professional Headshot", dataAiHint: "professional man" },
   { src: "/profile-2.jpg", alt: "Tinkal Kumar - Working at a desk", dataAiHint: "developer coding" },
-  { src: "/profile-3.HEIC", alt: "Tinkal Kumar - Casual Portrait", dataAiHint: "man portrait" },
-  { src: "/profile-4.HEIC", alt: "Tinkal Kumar - Tech Event", dataAiHint: "developer conference" },
+  { src: "/profile-3.jpg", alt: "Tinkal Kumar - Casual Portrait", dataAiHint: "man portrait" },
+  { src: "/profile-4.jpg", alt: "Tinkal Kumar - Tech Event", dataAiHint: "developer conference" },
 ];
 
 export const RESUME_PATH = "/Tinkal_Resume.pdf"; 
@@ -233,55 +232,67 @@ export const CERTIFICATIONS_DATA: CertificationEntry[] = [
 export interface TechStackItem {
   name: string;
   Icon: LucideIcon | string;
+  category: string;
 }
 
+export const TECH_STACK_CATEGORIES_ORDER = [
+  "Languages & Core Technologies",
+  "Frontend Development",
+  "Backend Development",
+  "Databases & Storage",
+  "AI, Cloud & Specialized Tech",
+  "Developer Tools & DevOps",
+  "Methodologies & Practices",
+];
+
 export const TECH_STACK: TechStackItem[] = [
-  // Frontend
-  { name: "React.js", Icon: CodeXml },
-  { name: "Next.js", Icon: CodeXml },
-  { name: "TypeScript", Icon: CodeXml },
-  { name: "JavaScript (ES6+)", Icon: CodeXml },
-  { name: "HTML5", Icon: CodeXml },
-  { name: "CSS3", Icon: Palette },
-  { name: "Tailwind CSS", Icon: Palette },
-  { name: "Redux", Icon: CodeXml },
-  { name: "Zustand", Icon: CodeXml },
-  // Backend
-  { name: "Node.js", Icon: ServerCog },
-  { name: "Express.js", Icon: ServerCog },
-  { name: "REST APIs", Icon: Settings2 },
-  { name: "JWT Auth", Icon: KeyRound },
-  { name: "Bcrypt", Icon: ShieldCheck },
-  { name: "Multer", Icon: UploadCloud },
-  { name: "Nodemailer", Icon: Mail },
-  { name: "EmailJS", Icon: Send },
-  // Databases
-  { name: "MongoDB", Icon: Database },
-  { name: "Mongoose", Icon: Database },
-  { name: "SQL", Icon: Database },
-  { name: "MySQL", Icon: Database },
-  { name: "Firestore", Icon: Database }, // Added Firestore
-  // Tools & DevOps
-  { name: "Git", Icon: GitCommit },
-  { name: "GitHub", Icon: Github },
-  { name: "Postman", Icon: Settings2 },
-  { name: "Redux DevTools", Icon: Wrench },
-  { name: "DevOps", Icon: TerminalSquare },
-  { name: "Basic CI/CD", Icon: Layers },
-  { name: "Kubernetes", Icon: ServerCog },
-  // AI & Cloud
-  { name: "Firebase", Icon: Wand2 }, // Added Firebase
-  { name: "Genkit AI", Icon: Wand2 },
-  { name: "Machine Learning Integration", Icon: Brain },
-  { name: "Natural Language Processing (NLP)", Icon: MessageSquareText },
-  { name: "AI Model Deployment", Icon: Rocket },
-  { name: "Large Language Models (LLMs)", Icon: NotebookText },
-  { name: "Responsible AI & Ethics", Icon: Scale },
-  // Methodologies & Other
-  { name: "Responsive Design", Icon: Smartphone },
-  { name: "Clean Architecture", Icon: Layers },
-  { name: "Component Reusability", Icon: Puzzle },
-  { name: "Problem Solving", Icon: Lightbulb },
+  // Languages & Core Technologies
+  { name: "TypeScript", Icon: CodeXml, category: "Languages & Core Technologies" },
+  { name: "JavaScript (ES6+)", Icon: CodeXml, category: "Languages & Core Technologies" },
+  { name: "HTML5", Icon: CodeXml, category: "Languages & Core Technologies" },
+  { name: "CSS3", Icon: Palette, category: "Languages & Core Technologies" },
+  // Frontend Development
+  { name: "React.js", Icon: CodeXml, category: "Frontend Development" },
+  { name: "Next.js", Icon: CodeXml, category: "Frontend Development" },
+  { name: "Tailwind CSS", Icon: Palette, category: "Frontend Development" },
+  { name: "Redux", Icon: CodeXml, category: "Frontend Development" },
+  { name: "Zustand", Icon: CodeXml, category: "Frontend Development" },
+  { name: "Responsive Design", Icon: Smartphone, category: "Frontend Development" },
+  // Backend Development
+  { name: "Node.js", Icon: ServerCog, category: "Backend Development" },
+  { name: "Express.js", Icon: ServerCog, category: "Backend Development" },
+  { name: "REST APIs", Icon: Settings2, category: "Backend Development" },
+  { name: "JWT Auth", Icon: KeyRound, category: "Backend Development" },
+  { name: "Bcrypt", Icon: ShieldCheck, category: "Backend Development" },
+  { name: "Multer", Icon: UploadCloud, category: "Backend Development" },
+  { name: "Nodemailer", Icon: Mail, category: "Backend Development" },
+  { name: "EmailJS", Icon: Send, category: "Backend Development" },
+  // Databases & Storage
+  { name: "MongoDB", Icon: Database, category: "Databases & Storage" },
+  { name: "Mongoose", Icon: Database, category: "Databases & Storage" },
+  { name: "SQL", Icon: Database, category: "Databases & Storage" },
+  { name: "MySQL", Icon: Database, category: "Databases & Storage" },
+  { name: "Firestore", Icon: Database, category: "Databases & Storage" },
+  // AI, Cloud & Specialized Tech
+  { name: "Firebase", Icon: Wand2, category: "AI, Cloud & Specialized Tech" },
+  { name: "Genkit AI", Icon: Wand2, category: "AI, Cloud & Specialized Tech" },
+  { name: "Machine Learning Integration", Icon: Brain, category: "AI, Cloud & Specialized Tech" },
+  { name: "Natural Language Processing (NLP)", Icon: MessageSquareText, category: "AI, Cloud & Specialized Tech" },
+  { name: "AI Model Deployment", Icon: Rocket, category: "AI, Cloud & Specialized Tech" },
+  { name: "Large Language Models (LLMs)", Icon: NotebookText, category: "AI, Cloud & Specialized Tech" },
+  { name: "Responsible AI & Ethics", Icon: Scale, category: "AI, Cloud & Specialized Tech" },
+  // Developer Tools & DevOps
+  { name: "Git", Icon: GitCommit, category: "Developer Tools & DevOps" },
+  { name: "GitHub", Icon: Github, category: "Developer Tools & DevOps" },
+  { name: "Postman", Icon: Settings2, category: "Developer Tools & DevOps" },
+  { name: "Redux DevTools", Icon: Wrench, category: "Developer Tools & DevOps" },
+  { name: "DevOps", Icon: TerminalSquare, category: "Developer Tools & DevOps" },
+  { name: "Basic CI/CD", Icon: Layers, category: "Developer Tools & DevOps" },
+  { name: "Kubernetes", Icon: ServerCog, category: "Developer Tools & DevOps" },
+  // Methodologies & Practices
+  { name: "Clean Architecture", Icon: Layers, category: "Methodologies & Practices" },
+  { name: "Component Reusability", Icon: Puzzle, category: "Methodologies & Practices" },
+  { name: "Problem Solving", Icon: Lightbulb, category: "Methodologies & Practices" },
 ];
 
 export interface Project {
@@ -290,7 +301,7 @@ export interface Project {
   description: string;
   liveDemoUrl?: string;
   githubRepoUrl: string;
-  techStack: TechStackItem[];
+  techStack: Pick<TechStackItem, 'name' | 'Icon'>[]; // Use Pick to only get name and Icon
   Icon: LucideIcon;
 }
 
@@ -365,6 +376,3 @@ export const EMAILJS_CONFIG = {
 };
 
     
-
-    
-

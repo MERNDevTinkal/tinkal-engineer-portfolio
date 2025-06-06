@@ -4,9 +4,10 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { SectionWrapper, SectionHeader } from "@/components/ui/SectionWrapper";
-import { ABOUT_ME, TECH_STACK, AUTHOR_NAME, EDUCATION_DATA, WORK_EXPERIENCE_DATA, CERTIFICATIONS_DATA } from "@/lib/data";
+import { ABOUT_ME, TECH_STACK, TECH_STACK_CATEGORIES_ORDER, EDUCATION_DATA, WORK_EXPERIENCE_DATA, CERTIFICATIONS_DATA } from "@/lib/data";
+import type { TechStackItem } from "@/lib/data";
 import { TechBadge } from "@/components/ui/TechBadge";
-import { UserCircle2, Briefcase, GraduationCap, Award, ExternalLink } from "lucide-react";
+import { UserCircle2, Briefcase, GraduationCap, Award, ExternalLink, Wrench } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -28,12 +29,21 @@ export function About() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
 
+  const categorizedSkills = TECH_STACK.reduce<Record<string, TechStackItem[]>>((acc, skill) => {
+    const category = skill.category || 'Other Skills';
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(skill);
+    return acc;
+  }, {});
+
   return (
     <SectionWrapper id="about">
       <SectionHeader title="About Me" Icon={UserCircle2} />
       <div className="grid md:grid-cols-5 gap-12 items-start mb-16">
         <motion.div
-          className="md:col-span-2 space-y-6" // Added space-y-6 for spacing between images
+          className="md:col-span-2 space-y-6"
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
@@ -48,7 +58,6 @@ export function About() {
             data-ai-hint={ABOUT_ME.image.dataAiHint}
             priority
           />
-          {/* Removed second image tech-stackmern.png from here */}
         </motion.div>
         <motion.div
           className="md:col-span-3 space-y-6"
@@ -67,11 +76,11 @@ export function About() {
           </div>
           <div className="space-y-2">
             <div className="flex items-center text-muted-foreground">
-              <ABOUT_ME.IconLocation className="h-6 w-6 mr-2 text-accent" /> {/* Increased icon size */}
+              <ABOUT_ME.IconLocation className="h-6 w-6 mr-2 text-accent" />
               <span>{ABOUT_ME.location}</span>
             </div>
             <div className="flex items-center text-muted-foreground">
-              <ABOUT_ME.IconRelocation className="h-6 w-6 mr-2 text-accent" /> {/* Increased icon size */}
+              <ABOUT_ME.IconRelocation className="h-6 w-6 mr-2 text-accent" />
               <span>{ABOUT_ME.relocation}</span>
             </div>
           </div>
@@ -184,7 +193,7 @@ export function About() {
                       <Button asChild variant="outline" className="w-full transform hover:scale-105">
                         <Link href={cert.credentialUrl} target="_blank" rel="noopener noreferrer">
                           <span>
-                            <ExternalLink className="mr-2 h-4 w-4" /> {/* Default icon size from button.tsx */}
+                            <ExternalLink className="mr-2 h-4 w-4" />
                             View Credential
                           </span>
                         </Link>
@@ -198,20 +207,49 @@ export function About() {
         </motion.div>
       )}
 
+      {/* Categorized Tech Toolkit Section */}
       <motion.div
-        className="mt-16"
+        className="mt-20" // Increased top margin
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true, amount: 0.1 }} // Adjusted amount for earlier trigger
         variants={containerVariants}
       >
-        <h3 className="text-3xl font-semibold text-center mb-10 text-primary font-headline">My Tech Toolkit</h3>
-        <div className="flex flex-wrap justify-center gap-4">
-          {TECH_STACK.map((tech, index) => (
-            <TechBadge key={`tech-${tech.name.replace(/\s+/g, '-')}-${index}`} name={tech.name} Icon={tech.Icon} index={index} />
-          ))}
+        <h3 className="text-3xl font-bold text-center mb-12 text-primary font-headline flex items-center justify-center">
+          <Wrench className="h-10 w-10 mr-3 text-primary" /> My Tech Toolkit
+        </h3>
+        <div className="space-y-12">
+          {TECH_STACK_CATEGORIES_ORDER.map((category, catIndex) => {
+            const skillsInCategory = categorizedSkills[category];
+            if (!skillsInCategory || skillsInCategory.length === 0) {
+              return null;
+            }
+            return (
+              <motion.div 
+                key={category} 
+                variants={itemVariants} // Use itemVariants for each category block
+                className="p-6 bg-card/50 dark:bg-card/80 rounded-xl shadow-lg"
+              >
+                <h4 className="text-2xl font-semibold mb-6 text-center text-accent font-headline">
+                  {category}
+                </h4>
+                <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6">
+                  {skillsInCategory.map((tech, index) => (
+                    <TechBadge 
+                      key={`tech-${tech.name.replace(/\s+/g, '-')}-${index}`} 
+                      name={tech.name} 
+                      Icon={tech.Icon} 
+                      index={index} // index for internal TechBadge animation delay
+                    />
+                  ))}
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </motion.div>
     </SectionWrapper>
   );
 }
+
+    
