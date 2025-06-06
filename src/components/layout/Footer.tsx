@@ -16,7 +16,7 @@ export function Footer() {
 
   useEffect(() => {
     setIsMounted(true);
-    setCurrentYear(new Date().getFullYear());
+    setCurrentYear(new Date().getFullYear()); // Dynamically sets the current year
 
     const toggleVisibility = () => {
       if (window.pageYOffset > 300) {
