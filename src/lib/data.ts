@@ -249,12 +249,13 @@ export const TECH_STACK: TechStackItem[] = [
   // Languages & Core Technologies
   { name: "Java", Icon: CodeXml, category: "Languages & Core Technologies" },
   { name: "TypeScript", Icon: CodeXml, category: "Languages & Core Technologies" },
-  { name: "JavaScript (ES6+)", Icon: CodeXml, category: "Languages & Core Technologies" },
-  { name: "HTML5", Icon: CodeXml, category: "Languages & Core Technologies" },
-  { name: "CSS3", Icon: Palette, category: "Languages & Core Technologies" },
+  { name: "JavaScript (ES7+)", Icon: CodeXml, category: "Languages & Core Technologies" },
   // Frontend Development
+  { name: "HTML5", Icon: CodeXml, category: "Frontend Development" },
+  { name: "CSS3", Icon: Palette, category: "Frontend Development" },
   { name: "React.js", Icon: CodeXml, category: "Frontend Development" },
   { name: "Next.js", Icon: CodeXml, category: "Frontend Development" },
+  { name: "ShadCN UI", Icon: Layers, category: "Frontend Development" },
   { name: "Tailwind CSS", Icon: Palette, category: "Frontend Development" },
   { name: "Redux", Icon: CodeXml, category: "Frontend Development" },
   { name: "Zustand", Icon: CodeXml, category: "Frontend Development" },
@@ -377,4 +378,3 @@ export const EMAILJS_CONFIG = {
 };
 
     
-

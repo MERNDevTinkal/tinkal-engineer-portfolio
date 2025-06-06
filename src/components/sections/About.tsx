@@ -7,7 +7,7 @@ import { SectionWrapper, SectionHeader } from "@/components/ui/SectionWrapper";
 import { ABOUT_ME, TECH_STACK, TECH_STACK_CATEGORIES_ORDER, EDUCATION_DATA, WORK_EXPERIENCE_DATA, CERTIFICATIONS_DATA } from "@/lib/data";
 import type { TechStackItem } from "@/lib/data";
 import { TechBadge } from "@/components/ui/TechBadge";
-import { UserCircle2, Briefcase, GraduationCap, Award, ExternalLink, Wrench } from "lucide-react";
+import { UserCircle2, Briefcase, GraduationCap, Award, ExternalLink, Layers } from "lucide-react"; // Changed Wrench to Layers
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -216,7 +216,7 @@ export function About() {
         variants={containerVariants}
       >
         <h3 className="text-3xl font-bold text-center mb-12 text-primary font-headline flex items-center justify-center">
-          <Wrench className="h-10 w-10 mr-3 text-primary" /> My Tech Toolkit
+          <Layers className="h-10 w-10 mr-3 text-primary" /> My Tech Toolkit {/* Changed Icon from Wrench to Layers */}
         </h3>
         <div className="space-y-12">
           {TECH_STACK_CATEGORIES_ORDER.map((category, catIndex) => {
