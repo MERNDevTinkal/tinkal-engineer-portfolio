@@ -5,7 +5,7 @@
 
 Welcome to the official repository for Tinkal Kumar's personal portfolio website. This project showcases his skills, projects, and journey as a passionate MERN Stack Developer and Full Stack Engineer. It's built with modern web technologies, emphasizing clean design, responsiveness, and AI-powered interactions.
 
-**Live Demo:** [https://tinkal.example.com](https://tinkal.example.com) <!-- Replace with actual deployment URL -->
+**Live Demo:** [https://tinkal-engineer-portfolio.vercel.app/](https://tinkal-engineer-portfolio.vercel.app/)
 
 ## ✨ Features
 
@@ -22,7 +22,7 @@ This portfolio is packed with features designed to provide an engaging and infor
     *   Detailed education background.
     *   Professional work experience.
     *   List of certifications with links (if available).
-    *   Visually appealing "Tech Toolkit" showcasing key skills with icons.
+    *   Visually appealing "Tech Toolkit" showcasing key skills with icons, categorized for clarity.
 *   **Interactive "Projects" Section:**
     *   Displays project cards with titles, descriptions, and tech stacks.
     *   Direct links to live demos (if available) and GitHub repositories.
@@ -41,7 +41,7 @@ This portfolio is packed with features designed to provide an engaging and infor
     *   Direct email and social media links for alternative contact methods.
 *   **🤖 AI Chatbot "Sora":**
     *   Powered by Genkit (Google AI - Gemini models).
-    *   Acts as Tinkal Kumar's personal AI assistant.
+    *   Acts as Tinkal Kumar's personal AI assistant, aware of the current year and time for context.
     *   Answers user queries about Tinkal's profile (skills, projects, experience, contact).
     *   Provides relevant suggested follow-up questions to guide the conversation.
     *   Chat history is saved to `localStorage` for persistence.
@@ -72,7 +72,7 @@ This portfolio is packed with features designed to provide an engaging and infor
 This project leverages a modern and robust technology stack:
 
 *   **Frontend Framework:** [Next.js](https://nextjs.org/) (v15+ with App Router, Server Components)
-*   **Language:** [TypeScript](https://www.typescriptlang.org/)
+*   **Language:** [TypeScript](https://www.typescriptlang.org/), [JavaScript (ES7+)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 *   **UI Library:** [React](https://react.dev/)
 *   **Styling:** [Tailwind CSS](https://tailwindcss.com/)
 *   **UI Components:** [ShadCN UI](https://ui.shadcn.com/)
@@ -81,16 +81,18 @@ This project leverages a modern and robust technology stack:
 *   **Image Slider:** [Swiper](https://swiperjs.com/)
 *   **Forms:** [React Hook Form](https://react-hook-form.com/), [Zod](https://zod.dev/) (for validation)
 *   **Email Service:** [EmailJS](https://www.emailjs.com/) (for contact form)
-*   **State Management:** React Hooks (`useState`, `useEffect`, `useContext`), `localStorage` for client-side persistence (chat history, form drafts, blog titles).
+*   **Databases:** [MongoDB](https://www.mongodb.com/) (with Mongoose), [Firestore](https://firebase.google.com/docs/firestore)
+*   **State Management:** React Hooks (`useState`, `useEffect`, `useContext`), `localStorage` for client-side persistence (chat history, form drafts, blog titles), Redux Toolkit, Zustand.
+*   **Backend Technologies:** [Node.js](https://nodejs.org/), [Express.js](https://expressjs.com/)
 *   **Icons:** [Lucide React](https://lucide.dev/)
 *   **Utilities:** `clsx`, `tailwind-merge`, `date-fns`
-*   **Deployment:** [Firebase App Hosting](https://firebase.google.com/docs/app-hosting) (implied by `apphosting.yaml`)
+*   **Deployment:** [Vercel](https://vercel.com/), [Render](https://render.com/), [Firebase App Hosting](https://firebase.google.com/docs/app-hosting) (implied by `apphosting.yaml`)
 
 ## 📂 Folder Structure
 
 ```
 .
-├── public/                  # Static assets (images, fonts, resume PDF)
+├── public/                  # Static assets (images, fonts, resume PDF, websitelogo.png)
 ├── src/
 │   ├── ai/                  # Genkit AI integration
 │   │   ├── flows/           # AI flows (chatbot, blog title/content generation)
@@ -104,13 +106,13 @@ This project leverages a modern and robust technology stack:
 │   │   ├── error.tsx        # Custom global error page
 │   │   └── not-found.tsx    # Custom 404 Not Found page
 │   ├── components/          # Reusable UI components
-│   │   ├── blog/            # Components specific to the blog section
-│   │   ├── chatbot/         # Components for the AI Chatbot "Sora"
+│   │   ├── blog/            # Components specific to the blog section (BlogPostPageClient)
+│   │   ├── chatbot/         # Components for the AI Chatbot "Sora" (ChatbotDialog, ChatMessage)
 │   │   ├── layout/          # Layout components (Navbar, Footer, DynamicChatbotLoader)
-│   │   ├── sections/        # Major page sections (Hero, About, Projects, Blogs, Contact)
-│   │   ├── ui/              # ShadCN UI components & custom UI elements (e.g., ProjectCard, TechBadge)
+│   │   ├── sections/        # Major page sections (Hero, About, Projects, Blogs, BlogList, Contact)
+│   │   ├── ui/              # ShadCN UI components & custom UI elements (ProjectCard, TechBadge, SectionWrapper, etc.)
 │   │   └── theme-provider.tsx # Theme (dark/light) management
-│   ├── hooks/               # Custom React hooks (e.g., useToast, useMobile)
+│   ├── hooks/               # Custom React hooks (useToast, useMobile)
 │   ├── lib/                 # Core utilities, constants, and application data
 │   │   ├── data.ts          # Centralized data (profile info, project details, tech stack, etc.)
 │   │   └── utils.ts         # Utility functions (e.g., cn for classnames)
@@ -120,7 +122,7 @@ This project leverages a modern and robust technology stack:
 ├── tailwind.config.ts       # Tailwind CSS configuration
 ├── tsconfig.json            # TypeScript configuration
 ├── components.json          # ShadCN UI configuration
-├── apphosting.yaml          # Firebase App Hosting configuration
+├── apphosting.yaml          # Firebase App Hosting configuration (if used)
 └── README.md                # This file
 ```
 
@@ -137,8 +139,8 @@ Follow these steps to set up and run the project locally:
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY_NAME.git
-    cd YOUR_REPOSITORY_NAME
+    git clone https://github.com/MERNDevTinkal/Portfolio-Website.git # Replace with your actual repo URL if different
+    cd Portfolio-Website
     ```
 
 2.  **Install dependencies:**
@@ -157,16 +159,16 @@ Follow these steps to set up and run the project locally:
     NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=YOUR_EMAILJS_TEMPLATE_ID
     NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=YOUR_EMAILJS_PUBLIC_KEY
 
-    # Email address to receive contact form submissions
-    NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL=your_receiving_email@example.com
+    # Email address to receive contact form submissions (This is where emails get sent)
+    NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL=your_actual_receiving_email@example.com
 
     # For Genkit AI (Google AI - Gemini)
     # You'll typically set this in your environment or use service account authentication for deployed environments.
-    # For local development, ensure your gcloud CLI is authenticated or set GOOGLE_API_KEY.
-    # GOOGLE_API_KEY=YOUR_GOOGLE_AI_API_KEY
+    # For local development, ensure your gcloud CLI is authenticated or set GOOGLE_API_KEY / GEMINI_API_KEY.
+    # GEMINI_API_KEY=YOUR_GOOGLE_AI_API_KEY 
     ```
     *   Replace placeholder values with your actual credentials from [EmailJS](https://www.emailjs.com/) and [Google AI Studio](https://aistudio.google.com/app/apikey).
-    *   Ensure `NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL` is the email address where you want to receive messages from the contact form.
+    *   Ensure `NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL` is the email address where you want to receive messages from the contact form. This is crucial for the contact form to work.
 
 4.  **Run the Next.js development server:**
     This server handles the frontend application.
@@ -203,28 +205,28 @@ npm run start
 Developing this portfolio involved several interesting challenges:
 
 1.  **AI Integration with Genkit:**
-    *   **Challenge:** Designing prompts for the "Sora" chatbot to maintain a consistent persona, provide accurate information based *only* on provided context, and generate relevant follow-up questions. Structuring blog content generation for desired length and format.
-    *   **Resolution:** Employed detailed system instructions for the AI persona. Used Zod schemas within Genkit to define strict input and output structures, guiding the LLM's responses. Iterative prompt engineering and testing were crucial. For blog content, the prompt specified paragraph count and output format.
+    *   **Challenge:** Designing prompts for the "Sora" chatbot to maintain a consistent persona, provide accurate information based *only* on provided context (including dynamic data like current year/time), and generate relevant follow-up questions. Structuring blog content generation for desired length and format.
+    *   **Resolution:** Employed detailed system instructions for the AI persona. Used Zod schemas within Genkit to define strict input and output structures, guiding the LLM's responses. Dynamically passed current year and IST date/time to the AI flow for contextual awareness. Iterative prompt engineering and testing were crucial. For blog content, the prompt specified paragraph count and output format.
 
 2.  **Dynamic Content & Caching (Blogs):**
     *   **Challenge:** Efficiently managing AI-generated blog titles and content to provide a good user experience without excessive API calls or long load times.
     *   **Resolution:** Implemented client-side caching for blog titles using `localStorage` with a randomized expiry (48-98 hours) to balance freshness and performance. Blog content is a mix: some articles are hardcoded for immediate display, while others have their full content generated by AI on-demand when the user expands the "Read More" section. Fallback titles and error messages are in place for AI service failures.
 
 3.  **Responsive and Interactive UI:**
-    *   **Challenge:** Ensuring all components, especially the Hero image slider (Swiper.js) and the Chatbot dialog, are fully responsive and interactive across various screen sizes.
-    *   **Resolution:** Leveraged Tailwind CSS extensively for responsive styling. Used `next/image` with `fill` and `sizes` props for optimized, responsive images. The `useIsMobile` hook aids in adapting certain UI elements (like the sidebar behavior, though the portfolio doesn't have a traditional sidebar). CSS Grid was used for the chatbot dialog layout to better manage scrollable areas.
+    *   **Challenge:** Ensuring all components, especially the Hero image slider (Swiper.js) and the Chatbot dialog, are fully responsive and interactive across various screen sizes. Making text (like titles and card content) wrap correctly without breaking layouts on small screens.
+    *   **Resolution:** Leveraged Tailwind CSS extensively for responsive styling (e.g., `sm:`, `md:`, `lg:` prefixes, flexbox, grid). Used `next/image` with `fill` and `sizes` props for optimized, responsive images. The `useIsMobile` hook aids in adapting certain UI elements. CSS Grid was used for the chatbot dialog layout to better manage scrollable areas. Added `break-words` to key title elements to ensure graceful text wrapping.
 
 4.  **State Management for Complex Components:**
     *   **Challenge:** Managing local UI state for the AI Chatbot (messages, loading states, suggestions, input) and the BlogList (expanded posts, AI content loading/errors).
     *   **Resolution:** Primarily used React Hooks (`useState`, `useEffect`). Chat history and suggestions are updated carefully to reflect the conversation flow. `localStorage` is used for persisting chat history and form drafts.
 
-5.  **Image Loading and Optimization:**
-    *   **Challenge:** Initial difficulties ensuring local images from the `public` folder and remote images (Unsplash) loaded correctly, especially within the Swiper component and with `next/image` optimizations.
-    *   **Resolution:** Ensured correct path conventions (`/image.jpg` for public folder). Configured `next.config.ts` with `remotePatterns` for Unsplash. Used `fill` and `sizes` props consistently with `next/image` for responsive handling. Ensured parent containers of `next/image` with `fill` had `position: relative` and defined dimensions.
+5.  **Environment Variable Handling (EmailJS & AI):**
+    *   **Challenge:** Ensuring that EmailJS and Genkit AI services are correctly configured with API keys and service IDs, and providing clear instructions for users setting up the project locally. Also, ensuring the contact form directs emails to the intended recipient.
+    *   **Resolution:** Clearly documented the required `.env` variables (`NEXT_PUBLIC_EMAILJS_SERVICE_ID`, `NEXT_PUBLIC_EMAILJS_TEMPLATE_ID`, `NEXT_PUBLIC_EMAILJS_PUBLIC_KEY`, `NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL`, and `GEMINI_API_KEY`). Added conditional checks in the contact form logic to provide helpful error messages if credentials are missing or use placeholders. The `CONTACT_FORM_RECEIVER_EMAIL` is now distinctly defined.
 
-6.  **Chatbot Scrolling:**
-    *   **Challenge:** The chat message area in the chatbot dialog initially had scrolling issues, where older messages would not scroll out of view correctly.
-    *   **Resolution:** Refactored the chatbot dialog's layout to use CSS Grid (`grid-template-rows`) to explicitly define how space is allocated, with the message area (`ScrollArea`) set to take `1fr` (all remaining flexible space). The `ScrollArea` itself uses `min-h-0` to work correctly within the grid/flex context.
+6.  **Chatbot Scrolling & Layout:**
+    *   **Challenge:** The chat message area in the chatbot dialog initially had scrolling issues, where older messages would not scroll out of view correctly or the suggestions area would take too much space.
+    *   **Resolution:** Refactored the chatbot dialog's layout to use CSS Grid (`grid-template-rows`) to explicitly define how space is allocated, with the message area (`ScrollArea`) set to take `1fr` (all remaining flexible space) and the suggestions area adjusting based on content. The `ScrollArea` itself uses `min-h-0` to work correctly within the grid/flex context.
 
 ## 🤝 Contributing
 
@@ -256,7 +258,7 @@ If you find any bugs or have a feature request, please open an issue on GitHub.
 
 ## 📄 License
 
-This project is licensed under the **MIT License**. See the `LICENSE` file for more details (if one is present, otherwise assume MIT).
+This project is licensed under the **MIT License**. You can create a `LICENSE` file with the MIT license text if you wish.
 
 ## 🙏 Acknowledgements
 
@@ -268,6 +270,7 @@ This project is licensed under the **MIT License**. See the `LICENSE` file for m
 *   [SwiperJS](https://swiperjs.com/) for the versatile slider component.
 *   [Lucide React](https://lucide.dev/) for the beautiful icon set.
 *   [EmailJS](https://www.emailjs.com/) for simplifying client-side email sending.
+*   [Vercel](https://vercel.com/) for seamless deployment.
 
 ## 📞 Contact
 
@@ -279,3 +282,4 @@ Tinkal Kumar
 ---
 
 Thank you for checking out my portfolio project!
+
