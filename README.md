@@ -1,5 +1,5 @@
 
-![Portfolio Logo](/websitelogo.png)
+![Portfolio Logo](./public/websitelogo.png)
 
 # Tinkal Kumar - Full Stack Developer Portfolio
 
@@ -271,6 +271,7 @@ This project is licensed under the **MIT License**. You can create a `LICENSE` f
 *   [Lucide React](https://lucide.dev/) for the beautiful icon set.
 *   [EmailJS](https://www.emailjs.com/) for simplifying client-side email sending.
 *   [Vercel](https://vercel.com/) for seamless deployment.
+*   [Render](https://render.com/) for deployment options.
 
 ## 📞 Contact
 
