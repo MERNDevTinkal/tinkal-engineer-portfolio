@@ -1,0 +1,6 @@
+# robots.txt for Tinkal Kumar's Portfolio
+
+User-agent: *
+Allow: /
+
+Sitemap: https://tinkal-engineer-portfolio.vercel.app/sitemap.xml
