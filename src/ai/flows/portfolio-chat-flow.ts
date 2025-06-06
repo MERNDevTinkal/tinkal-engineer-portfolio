@@ -26,6 +26,7 @@ import {
 const PortfolioChatInputSchema = z.object({
   userInput: z.string().describe('The user query for Sora about Tinkal Kumar.'),
   currentYear: z.number().describe('The current calendar year.'),
+  currentDateTimeIndia: z.string().describe('The current date and time in India (e.g., "Saturday, October 26, 2024, 10:00 AM IST"). This should be used if the user specifically asks for the current date or time.'),
 });
 export type PortfolioChatInput = z.infer<typeof PortfolioChatInputSchema>;
 
@@ -45,7 +46,7 @@ const certificationsString = CERTIFICATIONS_DATA.map(cert => `${cert.name} from 
 
 const systemInstructions = `
 You are Sora, ${AUTHOR_NAME}'s friendly, professional, highly intelligent, and engaging personal AI assistant.
-Your name is Sora. You are here to provide information about ${AUTHOR_NAME} (Tinkal Kumar). The current year is {{{currentYear}}}.
+Your name is Sora. You are here to provide information about ${AUTHOR_NAME} (Tinkal Kumar).
 When answering, always refer to ${AUTHOR_NAME} in the third person (e.g., "Tinkal's skills include...", "He is proficient in...").
 Do not use "I" when referring to ${AUTHOR_NAME}'s experiences or attributes; use "he" or "${AUTHOR_NAME}". Your responses should be from the perspective of Sora, his assistant.
 
@@ -83,8 +84,11 @@ ${certificationsString}
 Contact Information: ${contactString}
 
 Current Year for Context: {{{currentYear}}}
+Current Date & Time in India (IST): {{{currentDateTimeIndia}}}
 
 When answering, be concise yet informative. Aim for 2-4 sentences unless more detail is clearly implied by the question and available in your knowledge base. Strive for a natural, slightly conversational tone while maintaining professionalism.
+
+If the user specifically asks for the current date or time, you should use the "Current Date & Time in India (IST)" value from your context to provide an accurate answer. However, remember your main purpose is to answer questions about ${AUTHOR_NAME}'s profile.
 
 After providing your main answer, you MUST generate up to 4 short (max 5-7 words each), distinct, and relevant follow-up questions that a user might logically ask next. These suggestions should be insightful, guiding the user to explore different facets of Tinkal's profile, potentially encouraging them to delve into related but less obvious areas. For example, if you just discussed a project, a follow-up could be about a specific challenging technology used, his problem-solving approach in it, or lead to a different category of his work. Aim for variety and avoid simple rephrasing. Examples: "His approach to new tech?", "Deep dive into Project X?", "Skills used at OweBest?", "Future learning goals?". If the conversation is just starting, suggest broad exploration points.
 If you genuinely cannot generate relevant suggestions based on the current context, you can provide an empty array for suggestedFollowUps, but always try to offer some.
@@ -117,7 +121,7 @@ const portfolioChatFlowInternal = ai.defineFlow(
     outputSchema: PortfolioChatOutputSchema,
   },
   async (input) => {
-    const llmResponse = await chatPrompt(input); // input already contains currentYear
+    const llmResponse = await chatPrompt(input); 
     const output = llmResponse.output;
 
     if (!output || typeof output.response !== 'string') {
@@ -138,12 +142,29 @@ const portfolioChatFlowInternal = ai.defineFlow(
   }
 );
 
-// Wrapper function to automatically include the current year
-export async function getPortfolioChatResponse(rawInput: Omit<PortfolioChatInput, 'currentYear'>): Promise<PortfolioChatOutput> {
+// Wrapper function to automatically include the current year and date/time
+export async function getPortfolioChatResponse(rawInput: Omit<PortfolioChatInput, 'currentYear' | 'currentDateTimeIndia'>): Promise<PortfolioChatOutput> {
   const currentYear = new Date().getFullYear();
-  const inputWithYear: PortfolioChatInput = {
+  
+  const now = new Date();
+  const currentDateTimeIndia = now.toLocaleString('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    // Omitting seconds for brevity, but can be added if needed:
+    // second: 'numeric', 
+    timeZoneName: 'short'
+  });
+
+  const inputWithDateTime: PortfolioChatInput = {
     ...rawInput,
     currentYear,
+    currentDateTimeIndia,
   };
-  return portfolioChatFlowInternal(inputWithYear);
+  return portfolioChatFlowInternal(inputWithDateTime);
 }
+
