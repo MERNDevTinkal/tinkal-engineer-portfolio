@@ -247,6 +247,7 @@ export const TECH_STACK_CATEGORIES_ORDER = [
 
 export const TECH_STACK: TechStackItem[] = [
   // Languages & Core Technologies
+  { name: "Java", Icon: CodeXml, category: "Languages & Core Technologies" },
   { name: "TypeScript", Icon: CodeXml, category: "Languages & Core Technologies" },
   { name: "JavaScript (ES6+)", Icon: CodeXml, category: "Languages & Core Technologies" },
   { name: "HTML5", Icon: CodeXml, category: "Languages & Core Technologies" },
@@ -376,3 +377,4 @@ export const EMAILJS_CONFIG = {
 };
 
     
+
