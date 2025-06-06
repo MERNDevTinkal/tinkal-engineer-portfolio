@@ -260,6 +260,7 @@ export const TECH_STACK: TechStackItem[] = [
   { name: "Mongoose", Icon: Database },
   { name: "SQL", Icon: Database },
   { name: "MySQL", Icon: Database },
+  { name: "Firestore", Icon: Database }, // Added Firestore
   // Tools & DevOps
   { name: "Git", Icon: GitCommit },
   { name: "GitHub", Icon: Github },
@@ -269,7 +270,7 @@ export const TECH_STACK: TechStackItem[] = [
   { name: "Basic CI/CD", Icon: Layers },
   { name: "Kubernetes", Icon: ServerCog },
   // AI & Cloud
-  { name: "Firebase", Icon: Wand2 },
+  { name: "Firebase", Icon: Wand2 }, // Added Firebase
   { name: "Genkit AI", Icon: Wand2 },
   { name: "Machine Learning Integration", Icon: Brain },
   { name: "Natural Language Processing (NLP)", Icon: MessageSquareText },
@@ -366,3 +367,4 @@ export const EMAILJS_CONFIG = {
     
 
     
+
