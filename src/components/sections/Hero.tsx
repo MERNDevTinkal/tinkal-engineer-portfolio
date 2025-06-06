@@ -53,7 +53,7 @@ export function Hero() {
           <div className="space-y-4 mb-8">
             <motion.h1
               variants={textItemVariants}
-              className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight font-headline"
+              className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight font-headline break-words"
             >
               Hi, I&apos;m <span className="text-primary">{AUTHOR_NAME}</span>
             </motion.h1>
@@ -144,8 +144,7 @@ export function Hero() {
                 <motion.div
                   className="relative w-full h-full"
                   initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: false }} // Allow animation if slide re-enters view (e.g. in loop)
+                  animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.6, ease: "easeInOut", delay: 0.1 }}
                 >
                   <Image

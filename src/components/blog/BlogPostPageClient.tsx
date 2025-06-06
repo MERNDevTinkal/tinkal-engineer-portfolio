@@ -156,7 +156,7 @@ export default function BlogPostPageClient({ params, searchParams }: BlogPagePro
 
         <article className="bg-background dark:bg-card p-6 sm:p-8 md:p-10 rounded-xl shadow-xl">
           <header className="mb-8">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-headline text-primary mb-4 leading-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-headline text-primary mb-4 leading-tight break-words">
               {displayHeading}
             </h1>
             <div className="text-sm text-muted-foreground flex items-center space-x-4">
