@@ -291,6 +291,8 @@ export const TECH_STACK: TechStackItem[] = [
   { name: "DevOps", Icon: TerminalSquare, category: "Developer Tools & DevOps" },
   { name: "Basic CI/CD", Icon: Layers, category: "Developer Tools & DevOps" },
   { name: "Kubernetes", Icon: ServerCog, category: "Developer Tools & DevOps" },
+  { name: "Vercel", Icon: Rocket, category: "Developer Tools & DevOps" },
+  { name: "Render", Icon: Rocket, category: "Developer Tools & DevOps" },
   // Methodologies & Practices
   { name: "Clean Architecture", Icon: Layers, category: "Methodologies & Practices" },
   { name: "Component Reusability", Icon: Puzzle, category: "Methodologies & Practices" },

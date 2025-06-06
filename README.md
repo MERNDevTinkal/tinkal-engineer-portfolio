@@ -1,7 +1,7 @@
 
-# Tinkal Kumar - Full Stack Developer Portfolio
+![Portfolio Logo](/websitelogo.png)
 
-![Portfolio Logo](/websitelogo.png) <!-- Assuming websitelogo.png is in the public folder -->
+# Tinkal Kumar - Full Stack Developer Portfolio
 
 Welcome to the official repository for Tinkal Kumar's personal portfolio website. This project showcases his skills, projects, and journey as a passionate MERN Stack Developer and Full Stack Engineer. It's built with modern web technologies, emphasizing clean design, responsiveness, and AI-powered interactions.
 
@@ -22,7 +22,7 @@ This portfolio is packed with features designed to provide an engaging and infor
     *   Detailed education background.
     *   Professional work experience.
     *   List of certifications with links (if available).
-    *   Visually appealing "Tech Toolkit" showcasing key skills with icons, categorized for clarity.
+    *   Visually appealing "Tech Toolkit" showcasing key skills with icons, categorized for clarity (e.g., Languages, Frontend, Backend, Databases, AI/Cloud, Tools/DevOps).
 *   **Interactive "Projects" Section:**
     *   Displays project cards with titles, descriptions, and tech stacks.
     *   Direct links to live demos (if available) and GitHub repositories.
@@ -282,4 +282,3 @@ Tinkal Kumar
 ---
 
 Thank you for checking out my portfolio project!
-
