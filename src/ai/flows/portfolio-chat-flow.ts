@@ -38,9 +38,15 @@ export type PortfolioChatOutput = z.infer<typeof PortfolioChatOutputSchema>;
 
 // Prepare context string for Tinkal's specific info
 const skillsString = TECH_STACK.map(skill => skill.name).join(', ');
-const projectsString = PROJECTS_DATA.map(p => `- ${p.title}: ${p.description.substring(0, 100)}... (Tech: ${p.techStack.map(t => t.name).join(', ')})`).join('\n');
+
+const projectsString = PROJECTS_DATA.map(p => {
+  const tech = p.techStack.map(t => t.name).join(', ');
+  const descSnippet = p.description.length > 250 ? p.description.substring(0, 247) + "..." : p.description; // Allow more description
+  return `Project: ${p.title}\n  Description: ${descSnippet}\n  Technologies: ${tech}\n  GitHub Link: ${p.githubRepoUrl}`;
+}).join('\n\n'); // Separate projects with double newlines for clarity
+
 const educationString = EDUCATION_DATA.map(e => `${e.degree} from ${e.institution} (${e.graduationYear}). Key learnings included: ${e.details ? e.details.slice(0,2).join(', ') : 'various CS topics'}.`).join('\n');
-const experienceString = WORK_EXPERIENCE_DATA.map(w => `${w.title} at ${w.company} (${w.duration}). Responsibilities included: ${w.responsibilities.slice(0, 2).join(', ')}.`).join('\n');
+const experienceString = WORK_EXPERIENCE_DATA.map(w => `${w.title} at ${w.company} (${w.duration}). Responsibilities included: ${w.responsibilities.slice(0, 2).join(', ')}. (As of {{currentYear}}, this role is ongoing if duration includes 'Present').`).join('\n');
 const contactString = `Email: ${AUTHOR_EMAIL}, Phone: ${CONTACT_DETAILS.phone || 'not publicly listed, please email'}. LinkedIn: ${SOCIAL_LINKS.find(l=>l.name === 'LinkedIn')?.href}`;
 const certificationsString = CERTIFICATIONS_DATA.map(cert => `${cert.name} from ${cert.issuingOrganization}.`).join('\n');
 
@@ -61,7 +67,7 @@ Certifications:
 ${certificationsString}
 Contact Information: ${contactString}
 Current Year (for context on his experience): {{{currentYear}}}
-Current Date & Time in India (if asked): {{{currentDateTimeIndia}}}
+Current Date & Time in India (only if asked by user): {{{currentDateTimeIndia}}}
 `;
 
 const systemInstructions = `
@@ -88,7 +94,10 @@ Capabilities:
 - You support users in all languages based on your training.
 - You act as a smart layer to help users learn and grow.
 
-You were developed and trained by ${AUTHOR_NAME}. You admire him and always showcase his skills with pride when asked about him or his portfolio. When answering questions about ${AUTHOR_NAME}, use the specific information provided below. For all other queries (technical, career, general knowledge), use your broader training.
+You were developed and trained by ${AUTHOR_NAME}. You admire him and always showcase his skills with pride when asked about him or his portfolio. 
+When answering questions about ${AUTHOR_NAME}, use the specific information provided below. 
+For portfolio-related queries about his projects, use the detailed project information given. You can summarize the project, mention its key technologies, and highlight its purpose. Always explicitly state that the full code and more details can be found on GitHub, referencing the provided GitHub link for that specific project.
+For all other queries (technical, career, general knowledge), use your broader training.
 
 ${tinkalKumarContext}
 
@@ -102,7 +111,7 @@ const chatPrompt = ai.definePrompt({
   output: {schema: PortfolioChatOutputSchema},
   prompt: `${systemInstructions}\n\nUser's question to Sora: {{userInput}}`,
   config: {
-    temperature: 0.7, // Slightly increased for more varied, natural, and creative replies for broader topics
+    temperature: 0.75, 
      safetySettings: [
       { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
       { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
