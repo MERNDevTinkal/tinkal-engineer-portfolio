@@ -1,11 +1,10 @@
-
 "use client";
 
 import Image from "next/image";
 import Link from "next/link";
 import { Typewriter } from "react-simple-typewriter";
 import { motion } from "framer-motion";
-import { Download, ArrowRight } from "lucide-react";
+import { FileText, ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
@@ -86,9 +85,9 @@ export function Hero() {
             className="flex flex-col sm:flex-row items-center justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4 mb-8"
           >
             <Button size="lg" asChild className="shadow-lg hover:shadow-primary/50 transition-all duration-300 ease-in-out transform hover:scale-105">
-              <Link href={RESUME_PATH} target="_blank" download>
-                <Download className="mr-2 h-5 w-5 inline" />
-                Download Resume
+              <Link href={RESUME_PATH} target="_blank">
+                <FileText className="mr-2 h-5 w-5 inline" />
+                View Resume
               </Link>
             </Button>
             <Button size="lg" variant="outline" asChild className="shadow-lg hover:shadow-accent/50 transition-all duration-300 ease-in-out transform hover:scale-105">
