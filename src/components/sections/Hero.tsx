@@ -76,7 +76,7 @@ export function Hero() {
               variants={textItemVariants}
               className="text-lg text-muted-foreground max-w-xl mx-auto md:mx-0"
             >
-              A passionate developer transforming ideas into powerful and engaging web experiences.
+              An engineer passionate about automation, system reliability, and delivering production-ready web applications.
             </motion.p>
           </div>
 
@@ -103,7 +103,7 @@ export function Hero() {
             className="flex items-center justify-center md:justify-start space-x-4"
           >
             {SOCIAL_LINKS.map(({ name, Icon, href }) => (
-               <motion.div
+              <motion.div
                 key={name}
                 whileHover={{ scale: 1.2, rotate: 3, y: -2 }}
                 whileTap={{ scale: 0.95 }}

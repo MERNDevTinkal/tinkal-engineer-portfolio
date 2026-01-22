@@ -33,8 +33,110 @@ export const SOCIAL_LINKS = [
 ];
 
 export const HERO_TITLES = [
-  "MERN Stack Developer",
-  "Full Stack Engineer",
+  "Full Stack Engineer",            // 1
+  "DevOps-Oriented Software Engineer",       // 2
+  "Cloud-Focused Application Engineer",      // 3
+  "AWS Cloud Practitioner",                  // 4
+  "Infrastructure as Code Engineer",         // 5
+  "Automation-Driven Engineer",              // 6
+  "Scalable Systems Engineer",        
+  "Terraform Infrastructure Engineer",         // 71
+  "Cloud Resource Automation Engineer",        // 72
+  "Provisioning and Deployment Engineer",      // 73
+  "IaC-Focused DevOps Engineer",                // 74
+  "Repeatable Infrastructure Specialist",      // 75
+  "Cloud Environment Engineer",                // 76
+  "Infrastructure Lifecycle Manager",          // 77
+  "Automated Infrastructure Developer",        // 78
+  "Cloud Provisioning Specialist",             // 79
+  "Declarative Infrastructure Engineer",       // 80
+  "Production-Ready Application Developer",  // 8
+  "Cloud-Native Software Engineer",           // 9
+  "Reliability-Focused Engineer",
+  "DevOps Engineer (AWS)",                    // 21
+  "Cloud Infrastructure Engineer",            // 22
+  "CI/CD Pipeline Engineer",                  // 23
+  "Build and Release Automation Engineer",    // 24
+  "Docker and Containerization Engineer",     // 25
+  "Infrastructure Automation Engineer",       // 26
+  "Cloud Deployment Specialist",              // 27
+  "Environment Automation Engineer",          // 28
+  "DevOps Automation Specialist",             // 29
+  "Cloud Operations Engineer",                // 30
+  "Cloud Security Engineer",                  // 31
+  "Cloud Security Specialist",                // 32
+  "Scalable Backend Engineer",                // 31
+  "Distributed Systems Enthusiast",           // 32
+  "High-Availability Systems Builder",        // 33
+  "Performance-Oriented Engineer",            // 34
+  "Fault-Tolerant Application Developer",     // 35
+  "System Scalability Engineer",               // 36
+  "Cloud Scalability Specialist",              // 37
+  "Load-Aware Application Engineer",           // 38
+  "System Optimization Engineer",              // 39
+  "Cloud Performance Engineer",                // 40
+  "Secure Application Developer",              // 41
+  "Cloud Security-Aware Engineer",             // 42
+  "Security-First Software Engineer",          // 43
+  "IAM and Access Control Practitioner",       // 44
+  "Infrastructure Security Engineer",          // 45
+  "Secure Cloud Deployment Engineer",          // 46
+  "Compliance-Conscious Engineer",             // 47
+  "Security-Driven DevOps Engineer",           // 48
+  "Application Hardening Specialist",          // 49
+  "Cloud Risk-Aware Engineer",   
+  "Node.js Backend Engineer",                  // 61
+  "REST API Developer",                        // 62
+  "API-First Application Engineer",            // 63
+  "Backend Services Engineer",                 // 64
+  "Server-Side Application Developer",         
+  "Monitoring and Observability Engineer",     // 81
+  "Cloud Monitoring Specialist",               // 82
+  "System Health and Alerting Engineer",        // 83
+  "Proactive Operations Engineer",              // 84
+  "Cloud Reliability Practitioner",            // 85
+  "Metrics-Driven Engineer",                   // 86
+  "Operational Visibility Engineer",           // 87
+  "Incident-Aware Engineer",                   // 88
+  "Production Monitoring Engineer",            // 89
+  "Infrastructure Observability Engineer",     // 90
+
+  // 91–100
+  "Agile Software Engineer",                    // 91
+  "Continuous Improvement Engineer",           // 92
+  "Automation-First Developer",                // 93
+  "DevOps Culture Advocate",                   // 94
+  "Engineering Best Practices Follower",       // 95
+  "Clean Code Practitioner",                   // 96
+  "Maintainable Systems Engineer",             // 97
+  "Engineering Quality Advocate",              // 98
+  "Process-Oriented Engineer",                 // 99
+  "Operational Excellence Engineer",           // 100
+  "Cloud Application Engineer",                // 101
+  "Serverless-Aware Developer",                // 102
+  "Cloud Service Integration Engineer",        // 103
+  "AWS Services Practitioner",                 // 104
+  "Cloud Resource Optimization Engineer",      // 105
+  "Cost-Aware Cloud Engineer",                 // 106
+  "Cloud Architecture Learner",                // 107
+  "Cloud Systems Engineer",                    // 108
+  "Cloud Enablement Engineer",                 // 109
+  "Platform Engineering Enthusiast",           // 110
+  "Problem-Solving Software Engineer",          // 111
+  "Technology-Driven Engineer",                // 112
+  "Engineering Growth Mindset Practitioner",   // 113
+  "Modern Software Engineering Professional",  // 114
+  "Real-World Systems Builder",                // 115
+  "Business-Aware Engineer",                   // 116
+  "Solution-Oriented Developer",               // 117
+  "Production Systems Engineer",               // 118
+  "Scalable Product Engineer",                 // 119
+  "Cloud-Ready Software Engineer",             // 120
+  "Automation and Reliability Engineer",       // 121
+  "DevOps and Cloud Practitioner",              // 122
+  "Infrastructure and Application Engineer",   // 123
+  "End-to-End Cloud Engineer",                 // 124
+  "Future-Ready Software Engineer"   ,   
   "Next.js Specialist",
   "React Virtuoso",
   "Node.js Architect",
@@ -263,6 +365,7 @@ export const TECH_STACK: TechStackItem[] = [
   // Backend Development
   { name: "Node.js", Icon: ServerCog, category: "Backend Development" },
   { name: "Express.js", Icon: ServerCog, category: "Backend Development" },
+  { name: "Nest.js", Icon: ServerCog, category: "Backend Development" },
   { name: "REST APIs", Icon: Settings2, category: "Backend Development" },
   { name: "JWT Auth", Icon: KeyRound, category: "Backend Development" },
   { name: "Bcrypt", Icon: ShieldCheck, category: "Backend Development" },
@@ -439,4 +542,3 @@ export const EMAILJS_CONFIG = {
   templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "YOUR_EMAILJS_TEMPLATE_ID",
   publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "YOUR_EMAILJS_PUBLIC_KEY",
 };
-
