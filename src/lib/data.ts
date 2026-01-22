@@ -103,9 +103,9 @@ export const PROFILE_IMAGES = [
 export const RESUME_PATH = "/Tinkal_Resume.pdf"; 
 
 export const ABOUT_ME = {
-  summary: `An Indian software engineer hailing from Jamui district, Bihar, I am a results-driven MERN Stack Developer with expertise in building scalable full-stack web applications using MongoDB, Express.js, React.js, and Node.js. Passionate about clean code, component reusability, performance optimization, and collaborating on real-world client projects. I thrive on solving complex challenges with innovation and continuously learning new technologies.`,
-  passion: "My journey in tech is fueled by a relentless curiosity and a love for building impactful digital solutions. I'm particularly excited by AI integration in web apps, advanced JavaScript frameworks, and contributing to the open-source community to drive innovation.",
-  location: "Jaipur, India (Originally from Jamui, Bihar)",
+  summary: `Results-driven software engineer with strong experience in full-stack web development and growing expertise in DevOps and AWS cloud technologies. Skilled in building scalable applications using MongoDB, Express.js, React.js, and Node.js, along with deploying, monitoring, and securing applications on AWS. Hands-on experience with Docker, CI/CD pipelines, infrastructure automation, and cloud security best practices. Passionate about clean code, system reliability, performance optimization, and continuously learning modern cloud-native and DevOps technologies.`,
+  passion: "Driven by a strong curiosity for cloud computing and automation, I enjoy working at the intersection of development and operations. I am particularly interested in DevOps tooling, infrastructure as code, CI/CD automation, and improving system reliability while continuing to build impactful, production-ready applications.",
+  location: "Jaipur, India",
   relocation: "Open to relocating for compelling opportunities",
   IconLocation: MapPin,
   IconRelocation: Briefcase,
@@ -152,23 +152,23 @@ export interface ExperienceEntry {
 }
 
 export const WORK_EXPERIENCE_DATA: ExperienceEntry[] = [
+  // {
+  //   title: "MERN Stack Developer",
+  //   company: "OweBest Technologies Pvt Ltd",
+  //   duration: "Feb 2025 – Present",
+  //   location: "Jaipur, Rajasthan",
+  //   responsibilities: [
+  //     "Developing and maintaining scalable full-stack web applications using the MERN stack (MongoDB, Express.js, React.js, Node.js) and TypeScript.",
+  //     "Designing and implementing RESTful APIs for seamless frontend-backend communication.",
+  //     "Focusing on writing clean, maintainable, and efficient code with an emphasis on component reusability and performance optimization.",
+  //     "Collaborating closely with cross-functional teams in an agile environment to deliver high-quality software solutions for real-world client projects.",
+  //     "Implementing user authentication and authorization mechanisms using JWT and Bcrypt.",
+  //     "Integrating third-party services and APIs as per project requirements."
+  //   ],
+  //   Icon: Building,
+  // },
   {
-    title: "MERN Stack Developer",
-    company: "OweBest Technologies Pvt Ltd",
-    duration: "Feb 2025 – Present",
-    location: "Jaipur, Rajasthan",
-    responsibilities: [
-      "Developing and maintaining scalable full-stack web applications using the MERN stack (MongoDB, Express.js, React.js, Node.js) and TypeScript.",
-      "Designing and implementing RESTful APIs for seamless frontend-backend communication.",
-      "Focusing on writing clean, maintainable, and efficient code with an emphasis on component reusability and performance optimization.",
-      "Collaborating closely with cross-functional teams in an agile environment to deliver high-quality software solutions for real-world client projects.",
-      "Implementing user authentication and authorization mechanisms using JWT and Bcrypt.",
-      "Integrating third-party services and APIs as per project requirements."
-    ],
-    Icon: Building,
-  },
-  {
-    title: "Web Developer",
+    title: "IT Executive",
     company: "Apex Hospitals, Jaipur",
     duration: "Aug 2024 – Feb 2025",
     location: "Jaipur, Rajasthan",
@@ -185,7 +185,7 @@ export const WORK_EXPERIENCE_DATA: ExperienceEntry[] = [
 export interface CertificationEntry {
   name: string;
   issuingOrganization: string;
-  credentialUrl?: string; // Optional URL to the credential
+  credentialUrl?: string;
   Icon: LucideIcon;
 }
 
