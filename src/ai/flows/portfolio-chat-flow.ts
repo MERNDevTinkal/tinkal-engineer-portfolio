@@ -104,7 +104,6 @@ After providing your main answer, you MUST generate up to 4 short (max 5-7 words
 
 const chatPrompt = ai.definePrompt({
   name: 'portfolioChatSoraPrompt', 
-  model: 'googleai/gemini-1.5-flash-latest',
   input: {schema: PortfolioChatInputSchema},
   output: {schema: PortfolioChatOutputSchema},
   prompt: `${systemInstructions}\n\nUser's question to Sora: {{userInput}}`,
@@ -153,6 +152,8 @@ const portfolioChatFlowInternal = ai.defineFlow(
             const lowerCaseError = error.message.toLowerCase();
             if (lowerCaseError.includes("api key not valid") || lowerCaseError.includes("permission denied") || lowerCaseError.includes("authentication failed")) {
                 errorMessage = "It looks like there's an issue with the AI service authentication. The API key may be invalid or expired. Please contact the site administrator to have it checked.";
+            } else if (lowerCaseError.includes("429") || lowerCaseError.includes("quota exceeded")) {
+                errorMessage = "The AI service has reached its usage limit for the day. This is a temporary issue related to the free tier plan. Please try again tomorrow.";
             } else if (lowerCaseError.includes("503") || lowerCaseError.includes("overloaded") || lowerCaseError.includes("resource has been exhausted")) {
                 errorMessage = "My AI brain is a bit overloaded right now. Could you please try that again in a moment?";
             }
