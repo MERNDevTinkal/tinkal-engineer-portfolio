@@ -1,6 +1,7 @@
 
 import type {NextConfig} from 'next';
 
+// Triggering a hard restart of the server.
 const nextConfig: NextConfig = {
   /* config options here */
   typescript: {
@@ -28,4 +29,3 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-
