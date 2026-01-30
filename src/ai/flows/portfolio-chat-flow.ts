@@ -132,12 +132,8 @@ const portfolioChatFlowInternal = ai.defineFlow(
         
         if (error instanceof Error) {
             const lowerCaseError = error.message.toLowerCase();
-            if (lowerCaseError.includes("api key not valid") || lowerCaseError.includes("permission denied") || lowerCaseError.includes("authentication failed")) {
+            if (lowerCaseError.includes("api key not valid") || lowerCaseError.includes("permission denied")) {
                 errorMessage = "It looks like there's an issue with the AI service authentication. The API key may be invalid or expired. Please contact the site administrator to have it checked.";
-            } else if (lowerCaseError.includes("429") || lowerCaseError.includes("quota exceeded")) {
-                errorMessage = "The AI service has reached its usage limit for the day. This is a temporary issue related to the free tier plan. Please try again tomorrow.";
-            } else if (lowerCaseError.includes("503") || lowerCaseError.includes("overloaded") || lowerCaseError.includes("resource has been exhausted")) {
-                errorMessage = "My AI brain is a bit overloaded right now. Could you please try that again in a moment?";
             }
         }
 
