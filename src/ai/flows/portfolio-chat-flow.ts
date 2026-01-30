@@ -109,12 +109,6 @@ const chatPrompt = ai.definePrompt({
   prompt: `${systemInstructions}\n\nUser's question to Sora: {{userInput}}`,
   config: {
     temperature: 0.75, 
-     safetySettings: [
-      { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
-      { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
-      { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-      { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_LOW_AND_ABOVE' },
-    ],
   }
 });
 
@@ -129,12 +123,8 @@ const portfolioChatFlowInternal = ai.defineFlow(
       const llmResponse = await chatPrompt(input); 
       const output = llmResponse.output;
 
-      if (!output || typeof output.response !== 'string') {
-        console.error('Invalid or missing response from LLM:', output);
-        return {
-          response: `I'm having a little trouble forming a response right now. My knowledge is focused on ${AUTHOR_NAME}'s profile and general tech topics. Could you try asking in a slightly different way?`,
-          suggestedFollowUps: ["Tell me about Tinkal's skills?", "What is Next.js?", "MERN stack explained?", "Firebase basics?"]
-        };
+      if (!output) {
+        throw new Error("The AI returned an empty or invalid response.");
       }
       
       const followUps = (output.suggestedFollowUps && Array.isArray(output.suggestedFollowUps))
@@ -195,3 +185,8 @@ export async function getPortfolioChatResponse(rawInput: Omit<PortfolioChatInput
   };
   return portfolioChatFlowInternal(inputWithDateTime);
 }
+
+// These types are defined here but not exported to comply with 'use server' constraints.
+// They are used internally by the flow and the wrapper function.
+type AppPortfolioChatInput = z.infer<typeof PortfolioChatInputSchema>;
+type AppPortfolioChatOutput = z.infer<typeof PortfolioChatOutputSchema>;
