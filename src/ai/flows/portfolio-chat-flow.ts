@@ -4,8 +4,6 @@
  * @fileOverview A portfolio chatbot AI flow for Sora, Tinkal Kumar's assistant.
  *
  * - getPortfolioChatResponse - A function that responds to user queries about Tinkal Kumar.
- * - PortfolioChatInput - The input type for the getPortfolioChatResponse.
- * - PortfolioChatOutput - The return type for the getPortfolioChatResponse.
  */
 
 import {ai} from '@/ai/genkit';
@@ -128,24 +126,48 @@ const portfolioChatFlowInternal = ai.defineFlow(
     outputSchema: PortfolioChatOutputSchema,
   },
   async (input) => {
-    const llmResponse = await chatPrompt(input); 
-    const output = llmResponse.output;
+    try {
+      const llmResponse = await chatPrompt(input); 
+      const output = llmResponse.output;
 
-    if (!output || typeof output.response !== 'string') {
-      console.error('Invalid or missing response from LLM:', output);
+      if (!output || typeof output.response !== 'string') {
+        console.error('Invalid or missing response from LLM:', output);
+        return {
+          response: `I'm having a little trouble forming a response right now. My knowledge is focused on ${AUTHOR_NAME}'s profile and general tech topics. Could you try asking in a slightly different way?`,
+          suggestedFollowUps: ["Tell me about Tinkal's skills?", "What is Next.js?", "MERN stack explained?", "Firebase basics?"]
+        };
+      }
+      
+      const followUps = (output.suggestedFollowUps && Array.isArray(output.suggestedFollowUps))
+                        ? output.suggestedFollowUps.filter(s => typeof s === 'string' && s.trim() !== "").slice(0, 4)
+                        : [];
       return {
-        response: `I'm having a little trouble forming a response right now. My knowledge is focused on ${AUTHOR_NAME}'s profile and general tech topics. Could you try asking in a slightly different way?`,
-        suggestedFollowUps: ["Tell me about Tinkal's skills?", "What is Next.js?", "MERN stack explained?", "Firebase basics?"]
+          response: output.response,
+          suggestedFollowUps: followUps,
       };
+    } catch (error) {
+        console.error("Error in portfolioChatFlowInternal:", error);
+        let errorMessage = "Sorry, I encountered an issue. Please try asking in a different way or check back later.";
+        
+        if (error instanceof Error) {
+            const lowerCaseError = error.message.toLowerCase();
+            if (lowerCaseError.includes("api key not valid") || lowerCaseError.includes("permission denied") || lowerCaseError.includes("authentication failed")) {
+                errorMessage = "It looks like there's an issue with the AI service authentication. The API key may be invalid or expired. Please contact the site administrator to have it checked.";
+            } else if (lowerCaseError.includes("503") || lowerCaseError.includes("overloaded") || lowerCaseError.includes("resource has been exhausted")) {
+                errorMessage = "My AI brain is a bit overloaded right now. Could you please try that again in a moment?";
+            }
+        }
+
+        return {
+            response: errorMessage,
+            suggestedFollowUps: [
+                "Tell me about Tinkal's skills?",
+                `What is ${AUTHOR_NAME}'s latest project?`,
+                "What's his educational background?",
+                "How do I contact him?"
+            ]
+        };
     }
-    
-    const followUps = (output.suggestedFollowUps && Array.isArray(output.suggestedFollowUps))
-                      ? output.suggestedFollowUps.filter(s => typeof s === 'string' && s.trim() !== "").slice(0, 4)
-                      : [];
-    return {
-        response: output.response,
-        suggestedFollowUps: followUps,
-    };
   }
 );
 
@@ -172,4 +194,3 @@ export async function getPortfolioChatResponse(rawInput: Omit<PortfolioChatInput
   };
   return portfolioChatFlowInternal(inputWithDateTime);
 }
-
