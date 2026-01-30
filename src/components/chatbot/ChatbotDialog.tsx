@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChatMessage } from "./ChatMessage";
-import { getPortfolioChatResponse, type PortfolioChatInput, type PortfolioChatOutput } from "@/ai/flows/portfolio-chat-flow";
+import { getPortfolioChatResponse } from "@/ai/flows/portfolio-chat-flow";
+import type { PortfolioChatInput, PortfolioChatOutput } from "@/ai/flows/portfolio-chat-types";
 import { AUTHOR_NAME } from "@/lib/data";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -142,8 +143,7 @@ export function ChatbotDialog() {
     setMessages(prev => [...prev, { id: loadingBotMessageId, sender: 'bot', text: '...', isLoading: true }]);
 
     try {
-      const chatInput: Omit<PortfolioChatInput, 'currentYear' | 'currentDateTimeIndia'> = { userInput: messageText.trim() };
-      const result: PortfolioChatOutput = await getPortfolioChatResponse(chatInput);
+      const result: PortfolioChatOutput = await getPortfolioChatResponse({ userInput: messageText.trim() });
       
       const validSuggestions = (result.suggestedFollowUps || [])
         .filter(s => s && s.trim() !== "")
@@ -174,12 +174,9 @@ export function ChatbotDialog() {
     } catch (error) {
       let errorMessage = "Sorry, I encountered an issue. Please try asking in a different way or check back later.";
        if (error instanceof Error) {
-        const lowerCaseError = error.message.toLowerCase();
-        if (lowerCaseError.includes("api key not valid") || lowerCaseError.includes("permission denied") || lowerCaseError.includes("authentication failed")) {
-            errorMessage = "It looks like there might be an issue with the Google AI API key. It could be expired or invalid. Please check the `GEMINI_API_KEY` in your Vercel project's environment variables.";
-        } else if (lowerCaseError.includes("system role is not supported") || lowerCaseError.includes("model_error")) {
+        if (error.message.includes("system role is not supported") || error.message.includes("model_error")) {
             errorMessage = "There's a configuration issue with my AI. My team is on it!";
-        } else if (lowerCaseError.includes("503") || lowerCaseError.includes("overloaded")) {
+        } else if (error.message.includes("503") || error.message.toLowerCase().includes("overloaded")) {
             errorMessage = "My AI brain is a bit overloaded right now. Could you try that again in a moment?";
         }
       }
@@ -385,5 +382,3 @@ export function ChatbotDialog() {
     </>
   );
 }
-
-    
