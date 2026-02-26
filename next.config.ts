@@ -1,9 +1,8 @@
 
 import type {NextConfig} from 'next';
 
-// Triggering a hard restart of the server.
+// Forcing a hard restart of the application server to apply new AI plugins.
 const nextConfig: NextConfig = {
-  /* config options here */
   typescript: {
     ignoreBuildErrors: true,
   },
