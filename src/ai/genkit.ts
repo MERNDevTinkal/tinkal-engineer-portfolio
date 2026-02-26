@@ -13,7 +13,7 @@ export const ai = genkit({
       baseURL: 'https://api.groq.com/openai/v1',
     }),
   ],
-  // Using Llama 3.3 70B via Groq for high-speed, high-quality multilingual responses.
-  // The 'openai/' prefix is required by the genkitx-openai plugin.
+  // Use the standard string identifier for the model. 
+  // 'openai' is the provider name registered by the genkitx-openai plugin.
   model: 'openai/llama-3.3-70b-versatile',
 });

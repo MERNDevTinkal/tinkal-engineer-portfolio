@@ -1,7 +1,7 @@
 
 'use server';
 /**
- * @fileOverview Redesigned Sora assistant: Powered by Groq (Llama 3.3), Multilingual, Portfolio-aware, and General Expert.
+ * @fileOverview Redesigned Sora assistant: Powered by Groq, Multilingual, Portfolio-aware, and General Expert.
  */
 
 import {ai} from '@/ai/genkit';
@@ -88,6 +88,8 @@ const portfolioChatFlowInternal = ai.defineFlow(
           userFriendlyError = "My brain is working too fast (Groq quota reached). Can we try again in a minute?";
         } else if (errorMsg.includes("401") || errorMsg.includes("API key")) {
           userFriendlyError = "I need a valid Groq API Key to function. Please check the .env configuration!";
+        } else if (errorMsg.includes("404")) {
+          userFriendlyError = "I'm having trouble locating my AI model on Groq Cloud. My team is checking the configuration!";
         }
 
         return {
