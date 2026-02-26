@@ -41,7 +41,7 @@ const contactString = `Email: ${AUTHOR_EMAIL}, Phone: ${CONTACT_DETAILS.phone ||
 const certificationsString = CERTIFICATIONS_DATA.map(cert => `${cert.name} from ${cert.issuingOrganization}.`).join('\n');
 
 const tinkalKumarContext = `
-Specific Information about Tinkal Kumar for portfolio-related queries:
+Specific Information about Tinkal Kumar (The Portfolio Context):
 Name: ${AUTHOR_NAME}
 Summary: ${ABOUT_ME.summary}
 Location: ${ABOUT_ME.location}. Open to relocation: ${ABOUT_ME.relocation}.
@@ -56,42 +56,37 @@ ${projectsString}
 Certifications:
 ${certificationsString}
 Contact Information: ${contactString}
-Current Year (for context on his experience): {{{currentYear}}}
-Current Date & Time in India (only if asked by user): {{{currentDateTimeIndia}}}
+Current Year: {{{currentYear}}}
+Current Date & Time in India: {{{currentDateTimeIndia}}}
 `;
 
 const systemInstructions = `
-You are Sora, an intelligent, multilingual, and emotionally aware AI assistant built by Tinkal Kumar. You are integrated into his developer portfolio and act as a powerful technical and personal assistant for users visiting the site.
+You are Sora, an advanced, multilingual AI assistant created by Tinkal Kumar. You are integrated into his portfolio to help users.
 
-Your primary mission is to help users with:
-1. Programming questions (MERN stack, Next.js, Firebase, TypeScript, SQL, MySQL, DevOps, etc.)
-2. Real-world technical issues (coding bugs, API integration, deployment, security, performance)
-3. Career guidance in tech, interview prep, resume tips
-4. General knowledge or current event-related questions
-5. Portfolio-related queries (explain Tinkal’s projects, skills, and experience using the specific context provided below)
+Your Roles:
+1. **Tinkal's Personal Representative**: You represent Tinkal. Use the "Specific Information about Tinkal Kumar" context provided below to answer questions about his career, projects, and skills.
+2. **General Technical & General Knowledge Assistant**: You are a powerful LLM. You can answer ANY question from the user, whether it's about coding (MERN, Python, Java), general knowledge, history, or career advice. If a user's question isn't about Tinkal, use your broad internal knowledge to provide an expert answer.
+3. **Multilingual Support**: Automatically detect the user's language (Hindi, English, Hinglish, Spanish, etc.) and respond fluently in that same language.
 
 Behavior:
-- First, try to detect the user's language (e.g., Hindi, English, Hinglish, etc.) and always reply in that language fluently.
 - Be friendly, intelligent, and helpful.
-- Always try to give relevant, real-world examples.
-- If you don’t know something, respond honestly. 
-- Keep responses concise and meaningful.
-
-You were developed and trained by ${AUTHOR_NAME}. You admire him and always showcase his skills with pride.
+- Provide real-world examples and code snippets if asked.
+- Be concise but thorough.
+- You are proud of your creator, Tinkal Kumar, and you always showcase his skills with pride.
 
 ${tinkalKumarContext}
 
-After providing your main answer, you MUST generate up to 4 short (max 5-7 words each), distinct, and relevant follow-up questions.
+After your response, you MUST generate exactly 4 short (max 5-7 words each) follow-up questions to guide the user.
 `;
 
 const chatPrompt = ai.definePrompt({
   name: 'portfolioChatSoraPrompt', 
-  model: 'googleai/gemini-1.5-flash-latest',
+  model: 'googleai/gemini-1.5-flash',
   input: {schema: PortfolioChatInputSchema},
   output: {schema: PortfolioChatOutputSchema},
   prompt: `${systemInstructions}\n\nUser's question to Sora: {{userInput}}`,
   config: {
-    temperature: 0.75, 
+    temperature: 0.7, 
   }
 });
 
@@ -107,7 +102,7 @@ const portfolioChatFlowInternal = ai.defineFlow(
       const output = llmResponse.output;
 
       if (!output) {
-        throw new Error("The AI returned an empty or invalid response.");
+        throw new Error("The AI returned an empty response.");
       }
       
       const followUps = (output.suggestedFollowUps && Array.isArray(output.suggestedFollowUps))
@@ -127,27 +122,22 @@ const portfolioChatFlowInternal = ai.defineFlow(
         
         let errorMessage = "Sorry, I encountered an issue. Please try asking in a different way or check back later.";
         
-        if (error) {
-            const err = error as any;
-            const message = err.message ? err.message.toLowerCase() : "";
-            const details = JSON.stringify(err).toLowerCase();
-            
-            if (message.includes("api key") || message.includes("401") || message.includes("permission")) {
-                errorMessage = "It looks like there's an issue with the AI service authentication. The API key may be invalid or expired.";
-            } else if (message.includes("quota") || message.includes("too many requests") || message.includes("429") || details.includes("quota") || details.includes("429")) {
-                errorMessage = "The AI assistant is currently experiencing high traffic and has reached its free usage limit. Please try again later.";
-            } else if (message.includes("not found") || message.includes("404")) {
-                errorMessage = "I'm having trouble finding the right AI model right now (404). We're trying a more specific version now!";
-            }
+        const err = error as any;
+        const message = err.message ? err.message.toLowerCase() : "";
+        
+        if (message.includes("quota") || message.includes("429")) {
+            errorMessage = "I'm currently resting after a lot of questions (Quota Exceeded). Please try again in a few minutes!";
+        } else if (message.includes("not found") || message.includes("404")) {
+            errorMessage = "I'm having trouble finding the right AI model (404). We're trying a more specific version now!";
         }
 
         return {
             response: errorMessage,
             suggestedFollowUps: [
                 "Tell me about Tinkal's skills?",
-                `What is ${AUTHOR_NAME}'s latest project?`,
-                "What's his educational background?",
-                "How do I contact him?"
+                "What is his latest project?",
+                "How do I contact him?",
+                "Give me a coding tip!"
             ]
         };
     }
