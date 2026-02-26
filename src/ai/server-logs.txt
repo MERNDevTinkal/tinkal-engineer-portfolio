@@ -1,3 +1,0 @@
-
-[2026-02-26T10:40:00.000Z] [System] Personality Refinement: Sora updated to handle image sharing more naturally and avoid technical filename exposure. Default language set to English with active mirroring.
---------------------------------------------------
