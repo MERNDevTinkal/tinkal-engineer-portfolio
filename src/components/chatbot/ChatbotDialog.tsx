@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Bot, Send, Loader2, X, MessageSquarePlus, ChevronDown, ChevronUp, Trash2, Copy, CheckCircle2 } from "lucide-react";
+import { Send, Loader2, X, MessageSquarePlus, ChevronDown, ChevronUp, Trash2, Copy, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -14,6 +14,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import placeholderImages from '@/app/lib/placeholder-images.json';
 
 interface Message {
   id: string;
@@ -135,7 +136,6 @@ export function ChatbotDialog() {
     const newMessagesBeforeBot = [...messages, userMessage];
     setMessages(newMessagesBeforeBot);
 
-    // Prepare history for AI
     const history = newMessagesBeforeBot.map(m => ({
       role: m.sender === 'bot' ? 'assistant' : 'user',
       content: m.text
@@ -149,7 +149,7 @@ export function ChatbotDialog() {
     try {
       const result: PortfolioChatOutput = await getPortfolioChatResponse({ 
         userInput: messageText.trim(),
-        history: history.slice(-10) // Only send last 10 messages to keep it fast
+        history: history.slice(-10)
       });
       
       const validSuggestions = (result.suggestedFollowUps || [])
@@ -254,9 +254,10 @@ export function ChatbotDialog() {
           ) : (
             <Avatar className="h-full w-full">
               <AvatarImage 
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQISscdGPN0f7hp7m9wka0VumVDqmaJYAkDLPnWCjeb7WhsvMBICoPLDHfD_3uWziaZeAc&usqp=CAU" 
+                src={placeholderImages.soraAvatar.url} 
                 alt="Sora"
                 className="object-cover"
+                data-ai-hint={placeholderImages.soraAvatar.hint}
               />
               <AvatarFallback>SA</AvatarFallback>
             </Avatar>
@@ -285,7 +286,12 @@ export function ChatbotDialog() {
             <header className="bg-card p-3 border-b border-border flex items-center justify-between">
               <div className="flex items-center gap-2">
                  <Avatar className="h-8 w-8 border border-primary/50">
-                  <AvatarImage src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQISscdGPN0f7hp7m9wka0VumVDqmaJYAkDLPnWCjeb7WhsvMBICoPLDHfD_3uWziaZeAc&usqp=CAU" />
+                  <AvatarImage 
+                    src={placeholderImages.soraAvatar.url} 
+                    alt="Sora AI Assistant"
+                    className="object-cover"
+                    data-ai-hint={placeholderImages.soraAvatar.hint}
+                  />
                   <AvatarFallback>SA</AvatarFallback>
                 </Avatar>
                 <h3 className="font-semibold text-lg text-primary font-headline">Sora Assistant</h3>

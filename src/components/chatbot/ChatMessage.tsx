@@ -1,12 +1,12 @@
 
 "use client";
 
-import React from 'react'; // Import React
-import type { LucideIcon } from 'lucide-react';
+import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
-import { Bot, UserCircle2, Smile } from 'lucide-react'; 
+import { UserCircle2 } from 'lucide-react'; 
 import { AUTHOR_NAME } from '@/lib/data';
+import placeholderImages from '@/app/lib/placeholder-images.json';
 
 interface ChatMessageProps {
   sender: "user" | "bot";
@@ -14,20 +14,18 @@ interface ChatMessageProps {
   isLoading?: boolean;
 }
 
-// Wrap ChatMessage with React.memo
 export const ChatMessage = React.memo(function ChatMessage({ sender, text, isLoading = false }: ChatMessageProps) {
   const isUser = sender === "user";
-  const authorInitials = AUTHOR_NAME.split(" ").map(n => n[0]).join("").substring(0,2).toUpperCase();
-  const soraInitials = "SA"; // Sora Assistant
+  const soraInitials = "SA";
 
   return (
     <div className={cn("flex items-start gap-3 mb-4", isUser ? "justify-end" : "justify-start")}>
       {!isUser && (
         <Avatar className="h-8 w-8 border border-primary/50">
           <AvatarImage 
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQISscdGPN0f7hp7m9wka0VumVDqmaJYAkDLPnWCjeb7WhsvMBICoPLDHfD_3uWziaZeAc&usqp=CAU" 
+            src={placeholderImages.soraAvatar.url} 
             alt="Sora AI Assistant" 
-            data-ai-hint="woman headset"
+            data-ai-hint={placeholderImages.soraAvatar.hint}
             className="object-cover"
           />
           <AvatarFallback className="bg-primary text-primary-foreground">
@@ -68,4 +66,4 @@ export const ChatMessage = React.memo(function ChatMessage({ sender, text, isLoa
     </div>
   );
 });
-ChatMessage.displayName = 'ChatMessage'; // Optional: for better debugging
+ChatMessage.displayName = 'ChatMessage';

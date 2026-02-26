@@ -1,0 +1,15 @@
+
+{
+  "soraAvatar": {
+    "url": "https://picsum.photos/seed/sora-ai-assistant/200/200",
+    "width": 200,
+    "height": 200,
+    "hint": "professional woman"
+  },
+  "blogHero": {
+    "url": "https://picsum.photos/seed/tech-blog/1200/675",
+    "width": 1200,
+    "height": 675,
+    "hint": "technology abstract"
+  }
+}
