@@ -2,13 +2,13 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Bot, Send, Loader2, X, MessageSquarePlus, ChevronDown, ChevronUp, Trash2, Smile } from "lucide-react";
+import { Bot, Send, Loader2, X, MessageSquarePlus, ChevronDown, ChevronUp, Trash2, Copy, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChatMessage } from "./ChatMessage";
 import { getPortfolioChatResponse } from "@/ai/flows/portfolio-chat-flow";
-import type { PortfolioChatInput, PortfolioChatOutput } from "@/ai/flows/portfolio-chat-types";
+import type { PortfolioChatOutput } from "@/ai/flows/portfolio-chat-types";
 import { AUTHOR_NAME } from "@/lib/data";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -50,6 +50,7 @@ export function ChatbotDialog() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentSuggestions, setCurrentSuggestions] = useState<string[]>([]);
   const [suggestionsExpanded, setSuggestionsExpanded] = useState(false);
+  const [copied, setCopied] = useState(false);
   
   const inputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -176,8 +177,8 @@ export function ChatbotDialog() {
        if (error instanceof Error) {
         if (error.message.includes("system role is not supported") || error.message.includes("model_error")) {
             errorMessage = "There's a configuration issue with my AI. My team is on it!";
-        } else if (error.message.includes("503") || error.message.toLowerCase().includes("overloaded")) {
-            errorMessage = "My AI brain is a bit overloaded right now. Could you try that again in a moment?";
+        } else if (error.message.includes("503") || error.message.toLowerCase().includes("overloaded") || error.message.includes("429")) {
+            errorMessage = "My AI brain is a bit overloaded right now (quota exceeded). Could you try that again in a moment?";
         }
       }
        const errorBotMessage: Message = {
@@ -226,6 +227,22 @@ export function ChatbotDialog() {
       variant: "default"
     });
     inputRef.current?.focus();
+  };
+
+  const handleCopyChat = () => {
+    const chatText = messages
+      .filter(m => !m.isLoading)
+      .map(m => `${m.sender.toUpperCase()}: ${m.text}`)
+      .join('\n\n');
+    
+    navigator.clipboard.writeText(chatText).then(() => {
+      setCopied(true);
+      toast({
+        title: "Copied to Clipboard",
+        description: "You can now paste the conversation for analysis.",
+      });
+      setTimeout(() => setCopied(false), 2000);
+    });
   };
 
   const chatWindowVariants = {
@@ -280,7 +297,7 @@ export function ChatbotDialog() {
             exit="closed"
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className={cn(
-              "fixed bottom-24 z-40 rounded-xl bg-background shadow-2xl border border-border overflow-hidden grid", // Changed to grid
+              "fixed bottom-24 z-40 rounded-xl bg-background shadow-2xl border border-border overflow-hidden grid",
               "left-4 right-4 w-auto", 
               "md:left-auto md:right-6 md:w-full md:max-w-md", 
               "lg:max-w-lg", 
@@ -288,12 +305,26 @@ export function ChatbotDialog() {
             )}
             style={{ 
               maxHeight: 'min(calc(100vh - 12rem), 85vh)',
-              gridTemplateRows: gridTemplateRows // Added grid-template-rows
+              gridTemplateRows: gridTemplateRows 
             }} 
           >
             <header className="bg-card p-3 border-b border-border flex items-center justify-between">
-              <h3 className="font-semibold text-lg text-primary font-headline pl-2">Sora - Tinkal's Assistant</h3>
+              <div className="flex items-center gap-2">
+                 <Avatar className="h-8 w-8 border border-primary/50">
+                  <AvatarImage 
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQISscdGPN0f7hp7m9wka0VumVDqmaJYAkDLPnWCjeb7WhsvMBICoPLDHfD_3uWziaZeAc&usqp=CAU" 
+                    alt="Sora AI Assistant" 
+                    data-ai-hint="woman headset"
+                    className="object-cover"
+                  />
+                  <AvatarFallback className="bg-primary text-primary-foreground text-xs">SA</AvatarFallback>
+                </Avatar>
+                <h3 className="font-semibold text-lg text-primary font-headline">Sora Assistant</h3>
+              </div>
               <div className="flex items-center gap-1">
+                <Button variant="ghost" size="icon" onClick={handleCopyChat} className="h-8 w-8 text-muted-foreground hover:text-primary" title="Copy Chat for Analysis">
+                  {copied ? <CheckCircle2 className="h-5 w-5 text-green-500" /> : <Copy className="h-5 w-5" />}
+                </Button>
                 <Button variant="ghost" size="icon" onClick={handleClearChat} className="h-8 w-8 text-muted-foreground hover:text-destructive" aria-label="Clear Chat">
                   <Trash2 className="h-5 w-5" />
                 </Button>
@@ -346,7 +377,7 @@ export function ChatbotDialog() {
               </div>
             )}
 
-            <ScrollArea ref={scrollAreaRef} className="p-4 min-h-0"> {/* Removed flex-grow */}
+            <ScrollArea ref={scrollAreaRef} className="p-4 min-h-0">
               {messages.map((msg) => (
                 <ChatMessage key={msg.id} sender={msg.sender} text={msg.text} isLoading={msg.isLoading} />
               ))}

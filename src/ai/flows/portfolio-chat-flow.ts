@@ -122,19 +122,25 @@ const portfolioChatFlowInternal = ai.defineFlow(
       const followUps = (output.suggestedFollowUps && Array.isArray(output.suggestedFollowUps))
                         ? output.suggestedFollowUps.filter(s => typeof s === 'string' && s.trim() !== "").slice(0, 4)
                         : [];
+
+      // Analysis Logging: Log the interaction to the server console for debugging/analysis
+      console.log(`[Sora Analysis] User Input: "${input.userInput}"`);
+      console.log(`[Sora Analysis] AI Response: "${output.response.substring(0, 200)}..."`);
+
       return {
           response: output.response,
           suggestedFollowUps: followUps,
       };
     } catch (error) {
         console.error("Error in portfolioChatFlowInternal:", error);
+        
         let errorMessage = "Sorry, I encountered an issue. Please try asking in a different way or check back later.";
         
         if (error instanceof Error) {
             const lowerCaseError = error.message.toLowerCase();
             if (lowerCaseError.includes("api key not valid") || lowerCaseError.includes("permission denied")) {
                 errorMessage = "It looks like there's an issue with the AI service authentication. The API key may be invalid or expired. Please contact the site administrator to have it checked.";
-            } else if (lowerCaseError.includes("quota") || lowerCaseError.includes("too many requests")) {
+            } else if (lowerCaseError.includes("quota") || lowerCaseError.includes("too many requests") || lowerCaseError.includes("429")) {
                 errorMessage = "The AI assistant is currently experiencing high traffic and has reached its free usage limit. Please try again later.";
             }
         }
