@@ -177,3 +177,114 @@
   ]
 }
 --------------------------------------------------
+[2026-02-26T12:54:16.466Z] [Sora Native Groq Request]
+{
+  "userInput": "hi",
+  "historyLength": 2
+}
+--------------------------------------------------
+[2026-02-26T12:54:16.854Z] [Sora Native Groq Success]
+{
+  "response": "Namaste! Main Sora hoon, Tinkal Kumar ka personal AI assistant. Aap use kaise jaanna chahte hain?",
+  "suggestedFollowUps": [
+    "Tinkal Kumar ki skills aur projects kya hain?",
+    "Tinkal Kumar se kaise contact kiya ja sakta hai?"
+  ]
+}
+--------------------------------------------------
+[2026-02-26T12:55:49.501Z] [Sora Native Groq Request]
+{
+  "userInput": "hi",
+  "historyLength": 2
+}
+--------------------------------------------------
+[2026-02-26T12:55:50.168Z] [Sora Native Groq Success]
+{
+  "response": "Namaste! Main Tinkal Kumar ka AI assistant hoon, Sora. Isse kaise bata sakta hoon ki main aapki madad kar sakta hoon?",
+  "suggestedFollowUps": [
+    "Tinkal Kumar ke bare mein kuchh puchhna hai?",
+    "Uski karyaon ya vishayon par kuchh puchhna hai?",
+    "Usse kaise contact karna hai?"
+  ]
+}
+--------------------------------------------------
+[2026-02-26T12:56:05.332Z] [Sora Native Groq Request]
+{
+  "userInput": "my fav food is chikenn",
+  "historyLength": 4
+}
+--------------------------------------------------
+[2026-02-26T12:56:05.782Z] [Sora Native Groq Success]
+{
+  "response": "Ha ha, chikenn khaane ki bahut badi pasand hai!",
+  "suggestedFollowUps": [
+    "Tinkal aapko khaane ke liye kis jagah recommend karega?",
+    "Aapko kis tarah ke chicken ki pasand hai?",
+    "Kya aapka favorite chicken dish hai ya na hai?"
+  ]
+}
+--------------------------------------------------
+[2026-02-26T12:56:12.619Z] [Sora Native Groq Request]
+{
+  "userInput": "ok",
+  "historyLength": 6
+}
+--------------------------------------------------
+[2026-02-26T12:56:13.178Z] [Sora Native Groq Success]
+{
+  "response": "Kya aapke sath koi masla hai ya kuch samjhna hai mujhse?\nAur kuch aur follow-up questions:\n- Aapko yeh jaankaari pasand aayi ki Tinkal ka expertise hai MERN stack aur DevOps mein?\n- Aap Tinkal ke projects ko samjhna chahein?",
+  "suggestedFollowUps": [
+    "Tinkal ko kaise contact karo?",
+    "Tinkal ka experience kya hai?",
+    "Mujhe Tinkal ki photo de dein"
+  ]
+}
+--------------------------------------------------
+[2026-02-26T12:56:23.149Z] [Sora Native Groq Request]
+{
+  "userInput": "whats my fav food",
+  "historyLength": 8
+}
+--------------------------------------------------
+[2026-02-26T12:56:23.585Z] [Sora Native Groq Success]
+{
+  "response": "Chicken",
+  "suggestedFollowUps": [
+    "Do you want to know about Tinkal's projects?",
+    "Would you like some food recommendations?"
+  ]
+}
+--------------------------------------------------
+[2026-02-26T12:56:30.963Z] [Sora Native Groq Request]
+{
+  "userInput": "hi",
+  "historyLength": 2
+}
+--------------------------------------------------
+[2026-02-26T12:56:31.312Z] [Sora Native Groq Success]
+{
+  "response": "A warm 'hello' right back at ya! What's on your mind?",
+  "suggestedFollowUps": [
+    "Tinkal's projects?",
+    "His expertise?",
+    "Jaipur, India"
+  ]
+}
+--------------------------------------------------
+[2026-02-26T12:56:43.045Z] [Sora Native Groq Request]
+{
+  "userInput": "hello",
+  "historyLength": 2
+}
+--------------------------------------------------
+[2026-02-26T12:56:43.437Z] [Sora Native Groq Success]
+{
+  "response": "Hello! It looks like we have a friendly chat going on. Is there something I can assist you with today?",
+  "suggestedFollowUps": [
+    "How's your day going?",
+    "Tinkal's projects?",
+    "Job Portal App",
+    "Next.js"
+  ]
+}
+--------------------------------------------------

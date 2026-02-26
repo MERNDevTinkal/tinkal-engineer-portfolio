@@ -298,9 +298,9 @@ export function ChatbotDialog() {
                 <h3 className="font-semibold text-lg text-primary font-headline">Sora Assistant</h3>
               </div>
               <div className="flex items-center gap-1">
-                <Button variant="ghost" size="icon" onClick={handleCopyChat} className="h-8 w-8">
+                {/* <Button variant="ghost" size="icon" onClick={handleCopyChat} className="h-8 w-8">
                   {copied ? <CheckCircle2 className="h-5 w-5 text-green-500" /> : <Copy className="h-5 w-5" />}
-                </Button>
+                </Button> */}
                 <Button variant="ghost" size="icon" onClick={handleClearChat} className="h-8 w-8 hover:text-destructive">
                   <Trash2 className="h-5 w-5" />
                 </Button>
