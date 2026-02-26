@@ -2,6 +2,7 @@
 'use server';
 /**
  * @fileOverview Sora: Tinkal's Multilingual Personal Assistant & General Knowledge Expert.
+ * Optimized for Gemini 1.5 Flash.
  */
 
 import { ai } from '@/ai/genkit';
@@ -57,8 +58,6 @@ const chatPrompt = ai.definePrompt({
   name: 'portfolioChatSoraPrompt', 
   input: {schema: PortfolioChatInputSchema},
   output: {schema: PortfolioChatOutputSchema},
-  // We specify the model here to ensure it uses the Groq Llama model registered via the plugin
-  model: 'openai/llama-3.3-70b-versatile',
   prompt: `${systemInstructions}\n\nUser Question: {{userInput}}`,
 });
 
@@ -72,7 +71,6 @@ const portfolioChatFlowInternal = ai.defineFlow(
     serverLog('Sora Request', { input });
 
     try {
-      console.log(`[Sora] Processing: "${input.userInput}"`);
       const { output } = await chatPrompt(input); 
 
       if (!output) {
@@ -97,7 +95,7 @@ const portfolioChatFlowInternal = ai.defineFlow(
         console.error("Sora Flow Error:", error);
         
         return {
-            response: `I'm currently recalibrating my connection to Groq Cloud. Details: ${error.message}`,
+            response: `I'm currently recalibrating my neural networks. Please try again in a moment. Error: ${error.message}`,
             suggestedFollowUps: ["Tell me about Tinkal?", "What are his skills?", "Show me projects", "How to contact him?"]
         };
     }

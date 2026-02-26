@@ -1,17 +1,14 @@
 
 import { genkit } from 'genkit';
-import { openAI } from 'genkitx-openai';
+import { googleAI } from '@genkit-ai/google-genai';
 
 /**
- * Genkit initialization configured for Groq Cloud using the OpenAI-compatible plugin.
- * We explicitly register the Groq models so Genkit's registry recognizes them.
+ * Genkit initialization configured for Google AI (Gemini).
+ * This is the most stable and high-performance setup for 2026 tech standards.
  */
 export const ai = genkit({
   plugins: [
-    openAI({
-      apiKey: process.env.GROQ_API_KEY,
-      baseURL: 'https://api.groq.com/openai/v1',
-    }),
+    googleAI(),
   ],
-  model: 'openai/llama-3.3-70b-versatile',
+  model: 'googleai/gemini-1.5-flash',
 });
