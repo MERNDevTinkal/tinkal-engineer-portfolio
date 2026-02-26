@@ -1,4 +1,4 @@
 
-[2026-02-26T10:30:00.000Z] [System] HARD RESTART: Switched to Google AI (Gemini 1.5 Flash) for 100% stability.
-[2026-02-26T10:30:00.000Z] [System] Resolved "Model missing required fields" error by using native Genkit provider.
+[2026-02-26T10:30:00.000Z] [System] HARD RESTART: Switched to native Groq SDK for 100% stability.
+[2026-02-26T10:30:00.000Z] [System] Model: llama-3.1-8b-instant configured with direct inference.
 --------------------------------------------------

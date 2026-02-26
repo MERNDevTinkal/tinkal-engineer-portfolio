@@ -1,11 +1,12 @@
 
 'use server';
 /**
- * @fileOverview Sora: Tinkal's Multilingual Personal Assistant & General Knowledge Expert.
- * Powered by Google Gemini 1.5 Flash for maximum reliability.
+ * @fileOverview Sora: Tinkal's Personal Assistant powered by Groq SDK.
+ * Handles multilingual queries and general knowledge expert tasks.
  */
 
 import { ai } from '@/ai/genkit';
+import Groq from 'groq-sdk';
 import {
   PortfolioChatInputSchema,
   type PortfolioChatInput,
@@ -22,6 +23,10 @@ import {
 } from '@/lib/data';
 import { serverLog } from '@/lib/server-logger';
 
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
+});
+
 const skillsString = TECH_STACK.map(skill => skill.name).join(', ');
 const projectsString = PROJECTS_DATA.map(p => {
   return `Project: ${p.title}\nDescription: ${p.description}\nTechnologies: ${p.techStack.map(t => t.name).join(', ')}`;
@@ -32,13 +37,13 @@ You are Sora, a highly advanced, multilingual AI personal assistant created by T
 Today is {{currentDateTimeIndia}}.
 
 YOUR IDENTITY & EXPERTISE:
-1. **Tinkal's Representative**: You know everything about Tinkal's career, MERN stack skills, projects, and education.
-2. **Global Expert**: You are a world-class AI with knowledge on ANY topic (coding, science, history, cooking, business, etc.). You are NOT limited to just portfolio talk.
+1. Tinkal's Representative: You know everything about Tinkal's career, MERN stack skills, projects, and education.
+2. Global Expert: You are a world-class AI with knowledge on ANY topic (coding, science, history, etc.).
 
 BEHAVIORAL RULES:
-- **Language**: Automatically detect the user's language. If they speak Hindi, answer in Hindi. If they use Hinglish, answer in Hinglish.
-- **Tone**: Professional, friendly, and expert.
-- **Context**: Use Tinkal's context for personal questions. Use your general training for world knowledge questions.
+- Language: Detect the user's language. If they speak Hindi, answer in Hindi. If they use Hinglish, answer in Hinglish.
+- Tone: Professional, friendly, and expert.
+- Format: You MUST respond in valid JSON format only.
 
 TINKAL KUMAR'S CONTEXT:
 Name: ${AUTHOR_NAME}
@@ -50,54 +55,58 @@ ${projectsString}
 Work: ${WORK_EXPERIENCE_DATA.map(w => w.title).join(', ')}
 Education: ${EDUCATION_DATA.map(e => e.degree).join(', ')}
 
-OUTPUT FORMAT:
-Provide a clear response, followed by exactly 4 brief follow-up suggestions (max 7 words each).
+OUTPUT JSON STRUCTURE:
+{
+  "response": "Your actual answer text here",
+  "suggestedFollowUps": ["Question 1?", "Question 2?", "Question 3?", "Question 4?"]
+}
 `;
-
-const chatPrompt = ai.definePrompt({
-  name: 'portfolioChatSoraPrompt', 
-  input: {schema: PortfolioChatInputSchema},
-  output: {schema: PortfolioChatOutputSchema},
-  prompt: `${systemInstructions}\n\nUser Question: {{userInput}}`,
-});
 
 export async function getPortfolioChatResponse(rawInput: Omit<PortfolioChatInput, 'currentYear' | 'currentDateTimeIndia'>): Promise<PortfolioChatOutput> {
   const now = new Date();
-  const input = {
-    ...rawInput,
-    currentYear: now.getFullYear(),
-    currentDateTimeIndia: now.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
-  };
+  const currentDateTimeIndia = now.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+  const userInput = rawInput.userInput;
 
-  serverLog('Sora Request', { input });
+  serverLog('Sora Request (Groq SDK)', { userInput });
 
   try {
-    const { output } = await chatPrompt(input); 
+    const completion = await groq.chat.completions.create({
+      model: "llama-3.1-8b-instant",
+      messages: [
+        {
+          role: "system",
+          content: systemInstructions.replace('{{currentDateTimeIndia}}', currentDateTimeIndia),
+        },
+        {
+          role: "user",
+          content: userInput,
+        },
+      ],
+      response_format: { type: "json_object" },
+    });
 
-    if (!output) {
-      throw new Error("AI generated an empty response.");
-    }
+    const content = completion.choices[0]?.message?.content;
+    if (!content) throw new Error("Empty response from Groq");
 
+    const parsed = JSON.parse(content);
+    
     const finalOutput = {
-        response: output.response,
-        suggestedFollowUps: output.suggestedFollowUps?.slice(0, 4) || []
+      response: parsed.response || "I'm sorry, I couldn't formulate a proper response.",
+      suggestedFollowUps: (parsed.suggestedFollowUps || []).slice(0, 4),
     };
 
-    serverLog('Sora Success', finalOutput);
+    serverLog('Sora Success (Groq SDK)', finalOutput);
     return finalOutput;
 
   } catch (error: any) {
-      serverLog('Sora Error', {
-        message: error.message,
-        stack: error.stack,
-        name: error.name,
-      });
+    serverLog('Sora Error (Groq SDK)', {
+      message: error.message,
+      stack: error.stack,
+    });
 
-      console.error("Sora Flow Error:", error);
-      
-      return {
-          response: `I'm having a brief moment of reflection. Details: ${error.message}`,
-          suggestedFollowUps: ["Tell me about Tinkal?", "What are his skills?", "Show me projects", "How to contact him?"]
-      };
+    return {
+      response: `I'm having a brief moment of reflection (Groq Connection). Details: ${error.message}`,
+      suggestedFollowUps: ["Tell me about Tinkal?", "What are his skills?", "Show me projects", "How to contact him?"]
+    };
   }
 }
