@@ -5,8 +5,13 @@ import {
   ServerCog, Wand2, Palette, Settings2, ShoppingCart, FileText, BookOpen,
   GraduationCap, Building, Award, ExternalLink, UserCircle2, KeyRound, ShieldCheck,
   UploadCloud, Smartphone, Layers, Puzzle, Lightbulb, TerminalSquare, GitCommit, Wrench,
-  Send, Brain, MessageSquareText, Rocket, NotebookText, Scale, Instagram
+  Send, Brain, MessageSquareText, Rocket, NotebookText, Scale, Instagram, Boxes
 } from 'lucide-react';
+
+import {
+Network,Radio,
+Zap,Activity,} from "lucide-react";
+
 
 export const APP_NAME = "Tinkal";
 export const AUTHOR_NAME = "Tinkal Kumar";
@@ -40,7 +45,7 @@ export const HERO_TITLES = [
   "AWS Cloud Practitioner",                  // 4
   "Infrastructure as Code Engineer",         // 5
   "Automation-Driven Engineer",              // 6
-  "Scalable Systems Engineer",        
+  "Scalable Systems Engineer",
   "Terraform Infrastructure Engineer",         // 71
   "Cloud Resource Automation Engineer",        // 72
   "Provisioning and Deployment Engineer",      // 73
@@ -85,12 +90,12 @@ export const HERO_TITLES = [
   "Compliance-Conscious Engineer",             // 47
   "Security-Driven DevOps Engineer",           // 48
   "Application Hardening Specialist",          // 49
-  "Cloud Risk-Aware Engineer",   
+  "Cloud Risk-Aware Engineer",
   "Node.js Backend Engineer",                  // 61
   "REST API Developer",                        // 62
   "API-First Application Engineer",            // 63
   "Backend Services Engineer",                 // 64
-  "Server-Side Application Developer",         
+  "Server-Side Application Developer",
   "Monitoring and Observability Engineer",     // 81
   "Cloud Monitoring Specialist",               // 82
   "System Health and Alerting Engineer",        // 83
@@ -137,7 +142,7 @@ export const HERO_TITLES = [
   "DevOps and Cloud Practitioner",              // 122
   "Infrastructure and Application Engineer",   // 123
   "End-to-End Cloud Engineer",                 // 124
-  "Future-Ready Software Engineer"   ,   
+  "Future-Ready Software Engineer",
   "Next.js Specialist",
   "React Virtuoso",
   "Node.js Architect",
@@ -199,11 +204,11 @@ export const HERO_TITLES = [
 export const PROFILE_IMAGES = [
   { src: "/profile-1.jpg", alt: "Tinkal Kumar - Professional Headshot", dataAiHint: "professional man" },
   { src: "/profile-2.jpg", alt: "Tinkal Kumar - Working at a desk", dataAiHint: "developer coding" },
- /* { src: "/profile-3.jpg", alt: "Tinkal Kumar - Casual Portrait", dataAiHint: "man portrait" },
-  { src: "/profile-4.jpg", alt: "Tinkal Kumar - Tech Event", dataAiHint: "developer conference" },*/
+  /* { src: "/profile-3.jpg", alt: "Tinkal Kumar - Casual Portrait", dataAiHint: "man portrait" },
+   { src: "/profile-4.jpg", alt: "Tinkal Kumar - Tech Event", dataAiHint: "developer conference" },*/
 ];
 
-export const RESUME_PATH = "/Tinkal_Resume.pdf"; 
+export const RESUME_PATH = "/Tinkal_Resume.pdf";
 
 export const ABOUT_ME = {
   summary: `Results-driven software engineer with strong experience in full-stack web development and growing expertise in DevOps and AWS cloud technologies. Skilled in building scalable applications using MongoDB, Express.js, React.js, and Node.js, along with deploying, monitoring, and securing applications on AWS. Hands-on experience with Docker, CI/CD pipelines, infrastructure automation, and cloud security best practices. Passionate about clean code, system reliability, performance optimization, and continuously learning modern cloud-native and DevOps technologies.`,
@@ -214,7 +219,7 @@ export const ABOUT_ME = {
   IconRelocation: Briefcase,
   IconAbout: UserCircle2,
   image: {
-    src: "/Tech-focused-image.png", 
+    src: "/Tech-focused-image.png",
     alt: "Tinkal Kumar - Tech focused image",
     dataAiHint: "technology developer",
   },
@@ -255,21 +260,21 @@ export interface ExperienceEntry {
 }
 
 export const WORK_EXPERIENCE_DATA: ExperienceEntry[] = [
-  // {
-  //   title: "MERN Stack Developer",
-  //   company: "OweBest Technologies Pvt Ltd",
-  //   duration: "Feb 2025 – Present",
-  //   location: "Jaipur, Rajasthan",
-  //   responsibilities: [
-  //     "Developing and maintaining scalable full-stack web applications using the MERN stack (MongoDB, Express.js, React.js, Node.js) and TypeScript.",
-  //     "Designing and implementing RESTful APIs for seamless frontend-backend communication.",
-  //     "Focusing on writing clean, maintainable, and efficient code with an emphasis on component reusability and performance optimization.",
-  //     "Collaborating closely with cross-functional teams in an agile environment to deliver high-quality software solutions for real-world client projects.",
-  //     "Implementing user authentication and authorization mechanisms using JWT and Bcrypt.",
-  //     "Integrating third-party services and APIs as per project requirements."
-  //   ],
-  //   Icon: Building,
-  // },
+  {
+    title: "MERN Stack Developer",
+    company: "OweBest Technologies Pvt Ltd",
+    duration: "Feb 2025 – Present",
+    location: "Jaipur, Rajasthan",
+    responsibilities: [
+      "Developing and maintaining scalable full-stack web applications using the MERN stack (MongoDB, Express.js, React.js, Node.js) and TypeScript.",
+      "Designing and implementing RESTful APIs for seamless frontend-backend communication.",
+      "Focusing on writing clean, maintainable, and efficient code with an emphasis on component reusability and performance optimization.",
+      "Collaborating closely with cross-functional teams in an agile environment to deliver high-quality software solutions for real-world client projects.",
+      "Implementing user authentication and authorization mechanisms.",
+      "Integrating third-party services and APIs as per project requirements."
+    ],
+    Icon: Building,
+  },
   {
     title: "IT Executive",
     company: "Apex Hospitals, Jaipur",
@@ -349,58 +354,122 @@ export const TECH_STACK_CATEGORIES_ORDER = [
 ];
 
 export const TECH_STACK: TechStackItem[] = [
-  // Languages & Core Technologies
-  { name: "Java", Icon: CodeXml, category: "Languages & Core Technologies" },
-  { name: "TypeScript", Icon: CodeXml, category: "Languages & Core Technologies" },
-  { name: "JavaScript (ES7+)", Icon: CodeXml, category: "Languages & Core Technologies" },
+
+  // =============================
+  // Programming Languages
+  // =============================
+
+  { name: "JavaScript", Icon: CodeXml, category: "Programming Languages" },
+  { name: "TypeScript", Icon: CodeXml, category: "Programming Languages" },
+  { name: "Java", Icon: CodeXml, category: "Programming Languages" },
+  { name: "C", Icon: CodeXml, category: "Programming Languages" },
+  { name: "C++", Icon: CodeXml, category: "Programming Languages" },
+  { name: "SQL", Icon: Database, category: "Programming Languages" },
+
+  // =============================
   // Frontend Development
-  { name: "HTML5", Icon: CodeXml, category: "Frontend Development" },
-  { name: "CSS3", Icon: Palette, category: "Frontend Development" },
+  // =============================
+
   { name: "React.js", Icon: CodeXml, category: "Frontend Development" },
   { name: "Next.js", Icon: CodeXml, category: "Frontend Development" },
-  { name: "ShadCN UI", Icon: Layers, category: "Frontend Development" },
+  { name: "HTML5", Icon: CodeXml, category: "Frontend Development" },
+  { name: "CSS3", Icon: Palette, category: "Frontend Development" },
   { name: "Tailwind CSS", Icon: Palette, category: "Frontend Development" },
+  { name: "ShadCN UI", Icon: Layers, category: "Frontend Development" },
   { name: "Redux", Icon: CodeXml, category: "Frontend Development" },
+  { name: "Redux Toolkit", Icon: CodeXml, category: "Frontend Development" },
+  { name: "RTK Query", Icon: Radio, category: "Frontend Development" },
   { name: "Zustand", Icon: CodeXml, category: "Frontend Development" },
   { name: "Responsive Design", Icon: Smartphone, category: "Frontend Development" },
-  // Backend Development
-  { name: "Node.js", Icon: ServerCog, category: "Backend Development" },
-  { name: "Express.js", Icon: ServerCog, category: "Backend Development" },
-  { name: "Nest.js", Icon: ServerCog, category: "Backend Development" },
-  { name: "REST APIs", Icon: Settings2, category: "Backend Development" },
-  { name: "JWT Auth", Icon: KeyRound, category: "Backend Development" },
-  { name: "Bcrypt", Icon: ShieldCheck, category: "Backend Development" },
-  { name: "Multer", Icon: UploadCloud, category: "Backend Development" },
-  { name: "Nodemailer", Icon: Mail, category: "Backend Development" },
-  { name: "EmailJS", Icon: Send, category: "Backend Development" },
-  // Databases & Storage
-  { name: "MongoDB", Icon: Database, category: "Databases & Storage" },
-  { name: "Mongoose", Icon: Database, category: "Databases & Storage" },
-  { name: "SQL", Icon: Database, category: "Databases & Storage" },
-  { name: "MySQL", Icon: Database, category: "Databases & Storage" },
-  { name: "Firestore", Icon: Database, category: "Databases & Storage" },
-  // AI, Cloud & Specialized Tech
-  { name: "Firebase", Icon: Wand2, category: "AI, Cloud & Specialized Tech" },
-  { name: "Genkit AI", Icon: Wand2, category: "AI, Cloud & Specialized Tech" },
-  { name: "Machine Learning Integration", Icon: Brain, category: "AI, Cloud & Specialized Tech" },
-  { name: "Natural Language Processing (NLP)", Icon: MessageSquareText, category: "AI, Cloud & Specialized Tech" },
-  { name: "AI Model Deployment", Icon: Rocket, category: "AI, Cloud & Specialized Tech" },
-  { name: "Large Language Models (LLMs)", Icon: NotebookText, category: "AI, Cloud & Specialized Tech" },
-  { name: "Responsible AI & Ethics", Icon: Scale, category: "AI, Cloud & Specialized Tech" },
-  // Developer Tools & DevOps
-  { name: "Git", Icon: GitCommit, category: "Developer Tools & DevOps" },
-  { name: "GitHub", Icon: Github, category: "Developer Tools & DevOps" },
-  { name: "Postman", Icon: Settings2, category: "Developer Tools & DevOps" },
-  { name: "Redux DevTools", Icon: Wrench, category: "Developer Tools & DevOps" },
-  { name: "DevOps", Icon: TerminalSquare, category: "Developer Tools & DevOps" },
-  { name: "Basic CI/CD", Icon: Layers, category: "Developer Tools & DevOps" },
-  { name: "Kubernetes", Icon: ServerCog, category: "Developer Tools & DevOps" },
-  { name: "Vercel", Icon: Rocket, category: "Developer Tools & DevOps" },
-  { name: "Render", Icon: Rocket, category: "Developer Tools & DevOps" },
-  // Methodologies & Practices
-  { name: "Clean Architecture", Icon: Layers, category: "Methodologies & Practices" },
-  { name: "Component Reusability", Icon: Puzzle, category: "Methodologies & Practices" },
-  { name: "Problem Solving", Icon: Lightbulb, category: "Methodologies & Practices" },
+
+  // =============================
+  // Backend & Microservices
+  // =============================
+
+  { name: "Node.js", Icon: ServerCog, category: "Backend & Microservices" },
+  { name: "Express.js", Icon: ServerCog, category: "Backend & Microservices" },
+  { name: "NestJS", Icon: ServerCog, category: "Backend & Microservices" },
+  { name: "REST API Development", Icon: Settings2, category: "Backend & Microservices" },
+  { name: "JWT Authentication", Icon: KeyRound, category: "Backend & Microservices" },
+  { name: "API Security", Icon: ShieldCheck, category: "Backend & Microservices" },
+  { name: "WebSockets", Icon: Radio, category: "Backend & Microservices" },
+  { name: "Microservices Architecture", Icon: Boxes, category: "Backend & Microservices" },
+  { name: "System Design", Icon: Network, category: "Backend & Microservices" },
+  { name: "Apache Kafka", Icon: Radio, category: "Backend & Microservices" },
+  { name: "Event-Driven Architecture", Icon: Zap, category: "Backend & Microservices" },
+
+  // =============================
+  // Databases & Caching
+  // =============================
+
+  { name: "MongoDB", Icon: Database, category: "Databases & Caching" },
+  { name: "PostgreSQL", Icon: Database, category: "Databases & Caching" },
+  { name: "MySQL", Icon: Database, category: "Databases & Caching" },
+  { name: "Redis", Icon: Database, category: "Databases & Caching" },
+  { name: "Firebase Firestore", Icon: Database, category: "Databases & Caching" },
+  { name: "Prisma ORM", Icon: Database, category: "Databases & Caching" },
+  { name: "Mongoose", Icon: Database, category: "Databases & Caching" },
+
+  // =============================
+  // Cloud & AWS
+  // =============================
+
+  { name: "AWS EC2", Icon: ServerCog, category: "Cloud & AWS" },
+  { name: "AWS S3", Icon: Database, category: "Cloud & AWS" },
+  { name: "AWS RDS", Icon: Database, category: "Cloud & AWS" },
+  { name: "AWS DynamoDB", Icon: Database, category: "Cloud & AWS" },
+  { name: "AWS Lambda", Icon: ServerCog, category: "Cloud & AWS" },
+  { name: "AWS API Gateway", Icon: Network, category: "Cloud & AWS" },
+  { name: "AWS VPC", Icon: Network, category: "Cloud & AWS" },
+  { name: "AWS VPC Endpoints", Icon: Network, category: "Cloud & AWS" },
+  { name: "AWS Route 53", Icon: Network, category: "Cloud & AWS" },
+  { name: "AWS Cognito", Icon: ShieldCheck, category: "Cloud & AWS" },
+  { name: "AWS CloudWatch", Icon: Activity, category: "Cloud & AWS" },
+  { name: "AWS SNS", Icon: Radio, category: "Cloud & AWS" },
+  { name: "AWS SQS", Icon: Radio, category: "Cloud & AWS" },
+  { name: "AWS Bedrock", Icon: Brain, category: "Cloud & AWS" },
+
+  // =============================
+  // DevOps, Containers & CI/CD
+  // =============================
+
+  { name: "Docker", Icon: ServerCog, category: "DevOps & CI/CD" },
+  { name: "Docker Compose", Icon: ServerCog, category: "DevOps & CI/CD" },
+  { name: "Docker Swarm", Icon: ServerCog, category: "DevOps & CI/CD" },
+  { name: "Docker Networking", Icon: Network, category: "DevOps & CI/CD" },
+  { name: "Kubernetes", Icon: ServerCog, category: "DevOps & CI/CD" },
+  { name: "Horizontal Pod Autoscaler", Icon: Layers, category: "DevOps & CI/CD" },
+  { name: "Terraform", Icon: Settings2, category: "DevOps & CI/CD" },
+  { name: "Jenkins", Icon: Settings2, category: "DevOps & CI/CD" },
+  { name: "Jenkins Pipelines", Icon: Settings2, category: "DevOps & CI/CD" },
+  { name: "GitHub Actions", Icon: Settings2, category: "DevOps & CI/CD" },
+  { name: "CI/CD Pipelines", Icon: Settings2, category: "DevOps & CI/CD" },
+
+  // =============================
+  // Networking, Servers & Monitoring
+  // =============================
+
+  { name: "NGINX", Icon: ServerCog, category: "Networking & Monitoring" },
+  { name: "Apache Server", Icon: ServerCog, category: "Networking & Monitoring" },
+  { name: "Load Balancing", Icon: Network, category: "Networking & Monitoring" },
+  { name: "Reverse Proxy", Icon: Network, category: "Networking & Monitoring" },
+  { name: "Linux Networking", Icon: TerminalSquare, category: "Networking & Monitoring" },
+  { name: "iptables", Icon: ShieldCheck, category: "Networking & Monitoring" },
+  { name: "Prometheus", Icon: Activity, category: "Networking & Monitoring" },
+  { name: "Grafana", Icon: Activity, category: "Networking & Monitoring" },
+  { name: "Cloud Monitoring", Icon: Activity, category: "Networking & Monitoring" },
+
+  // =============================
+  // Deployment & Tools
+  // =============================
+
+  { name: "Git", Icon: GitCommit, category: "Deployment & Tools" },
+  { name: "GitHub", Icon: Github, category: "Deployment & Tools" },
+  { name: "Postman", Icon: Settings2, category: "Deployment & Tools" },
+  { name: "Vercel", Icon: Rocket, category: "Deployment & Tools" },
+  { name: "Render", Icon: Rocket, category: "Deployment & Tools" },
+  { name: "Railway", Icon: Rocket, category: "Deployment & Tools" },
+
 ];
 
 export interface Project {
@@ -424,7 +493,7 @@ export const PROJECTS_DATA: Project[] = [
       { name: "Next.js", Icon: CodeXml },
       { name: "Node.js", Icon: ServerCog },
       { name: "MongoDB", Icon: Database },
-      { name: "Express.js", Icon: ServerCog},
+      { name: "Express.js", Icon: ServerCog },
       { name: "TypeScript", Icon: CodeXml },
       { name: "JWT Auth", Icon: KeyRound },
       { name: "Nodemailer", Icon: Mail },
