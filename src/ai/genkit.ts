@@ -4,8 +4,7 @@ import { openAI } from 'genkitx-openai';
 
 /**
  * Genkit initialization configured for Groq Cloud using the OpenAI-compatible plugin.
- * We use 'llama-3.3-70b-versatile' as the primary model for its speed and multilingual capabilities.
- * Note: genkitx-openai export is 'openAI'.
+ * We explicitly register the Groq models so Genkit's registry recognizes them.
  */
 export const ai = genkit({
   plugins: [

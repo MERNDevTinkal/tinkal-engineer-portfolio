@@ -1,8 +1,7 @@
 
 'use server';
 /**
- * @fileOverview Sora assistant: Powered by Groq Cloud, Multilingual, and General Knowledge Expert.
- * Provides answers about Tinkal Kumar's portfolio and general knowledge.
+ * @fileOverview Sora: Tinkal's Multilingual Personal Assistant & General Knowledge Expert.
  */
 
 import { ai } from '@/ai/genkit';
@@ -31,14 +30,14 @@ const systemInstructions = `
 You are Sora, a highly advanced, multilingual AI personal assistant created by Tinkal Kumar.
 Today is {{currentDateTimeIndia}}.
 
-YOUR IDENTITY & KNOWLEDGE:
-- You represent Tinkal. You know his career, projects, and skills based on the context provided.
-- You are ALSO a world-class general AI expert. You can answer ANY question on ANY topic (coding, science, history, life advice, etc.) using your vast internal knowledge.
+YOUR IDENTITY & EXPERTISE:
+1. **Tinkal's Representative**: You know everything about Tinkal's career, MERN stack skills, projects, and education.
+2. **Global Expert**: You are a world-class AI with knowledge on ANY topic (coding, science, history, cooking, business, etc.). You are NOT limited to just portfolio talk.
 
-BEHAVIOR:
-1. **Language Detection**: Automatically detect the user's language. If they speak Hindi, answer in Hindi. If they use Hinglish, answer in Hinglish.
-2. **Contextual Intelligence**: Use Tinkal's context for personal questions. Use your general expertise for everything else.
-3. **Friendly & Expert**: Be professional, encouraging, and clear.
+BEHAVIORAL RULES:
+- **Language**: Automatically detect the user's language. If they speak Hindi, answer in Hindi. If they use Hinglish, answer in Hinglish.
+- **Tone**: Professional, friendly, and expert.
+- **Context**: Use Tinkal's context for personal questions. Use your general training for world knowledge questions.
 
 TINKAL KUMAR'S CONTEXT:
 Name: ${AUTHOR_NAME}
@@ -47,17 +46,19 @@ Skills: ${skillsString}
 Location: ${ABOUT_ME.location}
 Projects:
 ${projectsString}
-Work/Experience: ${WORK_EXPERIENCE_DATA.map(w => w.title).join(', ')}
+Work: ${WORK_EXPERIENCE_DATA.map(w => w.title).join(', ')}
 Education: ${EDUCATION_DATA.map(e => e.degree).join(', ')}
 
 OUTPUT FORMAT:
-Provide your response, then exactly 4 brief follow-up suggestions (max 7 words each).
+Provide a clear response, followed by exactly 4 brief follow-up suggestions (max 7 words each).
 `;
 
 const chatPrompt = ai.definePrompt({
   name: 'portfolioChatSoraPrompt', 
   input: {schema: PortfolioChatInputSchema},
   output: {schema: PortfolioChatOutputSchema},
+  // We specify the model here to ensure it uses the Groq Llama model registered via the plugin
+  model: 'openai/llama-3.3-70b-versatile',
   prompt: `${systemInstructions}\n\nUser Question: {{userInput}}`,
 });
 
@@ -68,15 +69,14 @@ const portfolioChatFlowInternal = ai.defineFlow(
     outputSchema: PortfolioChatOutputSchema,
   },
   async (input) => {
-    // Log the incoming request
     serverLog('Sora Request', { input });
 
     try {
-      console.log(`[Sora] Processing query: "${input.userInput}"`);
+      console.log(`[Sora] Processing: "${input.userInput}"`);
       const { output } = await chatPrompt(input); 
 
       if (!output) {
-        throw new Error("AI failed to generate a response (Empty Output).");
+        throw new Error("AI generated an empty response.");
       }
 
       const finalOutput = {
@@ -84,24 +84,20 @@ const portfolioChatFlowInternal = ai.defineFlow(
           suggestedFollowUps: output.suggestedFollowUps?.slice(0, 4) || []
       };
 
-      // Log success
       serverLog('Sora Success', finalOutput);
       return finalOutput;
 
     } catch (error: any) {
-        // Log detailed error
         serverLog('Sora Error', {
           message: error.message,
           stack: error.stack,
           name: error.name,
         });
 
-        console.error("Sora Execution Error:", error);
-        
-        const errorMessage = error.message || "Unknown connection error";
+        console.error("Sora Flow Error:", error);
         
         return {
-            response: `I'm having a brief moment of reflection (Groq Connection). Details: ${errorMessage}`,
+            response: `I'm currently recalibrating my connection to Groq Cloud. Details: ${error.message}`,
             suggestedFollowUps: ["Tell me about Tinkal?", "What are his skills?", "Show me projects", "How to contact him?"]
         };
     }
