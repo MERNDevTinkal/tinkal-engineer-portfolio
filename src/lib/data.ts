@@ -10,12 +10,11 @@ import {
 
 export const APP_NAME = "Tinkal";
 export const AUTHOR_NAME = "Tinkal Kumar";
-export const AUTHOR_EMAIL = "tinkalkumar67693@gmail.com"; // General author email for display
+export const AUTHOR_EMAIL = "tinkalkumar67693@gmail.com";
 
-// Email address that will RECEIVE contact form submissions. Configured via .env
 export const CONTACT_FORM_RECEIVER_EMAIL = process.env.NEXT_PUBLIC_CONTACT_FORM_RECEIVER_EMAIL || AUTHOR_EMAIL;
 
-export const LOGO_PATH = "/websitelogo.png"; // Use websitelogo.png for the site logo
+export const LOGO_PATH = "/websitelogo.png";
 export const SORA_AVATAR_URL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQISscdGPN0f7hp7m9wka0VumVDqmaJYAkDLPnWCjeb7WhsvMBICoPLDHfD_3uWziaZeAc&usqp=CAU";
 
 export const NAV_LINKS = [
@@ -34,187 +33,41 @@ export const SOCIAL_LINKS = [
 ];
 
 export const HERO_TITLES = [
-  "Full Stack Engineer",            // 1
-  "DevOps-Oriented Software Engineer",       // 2
-  "Cloud-Focused Application Engineer",      // 3
-  "AWS Cloud Practitioner",                  // 4
-  "Infrastructure as Code Engineer",         // 5
-  "Automation-Driven Engineer",              // 6
-  "Scalable Systems Engineer",        
-  "Terraform Infrastructure Engineer",         // 71
-  "Cloud Resource Automation Engineer",        // 72
-  "Provisioning and Deployment Engineer",      // 73
-  "IaC-Focused DevOps Engineer",                // 74
-  "Repeatable Infrastructure Specialist",      // 75
-  "Cloud Environment Engineer",                // 76
-  "Infrastructure Lifecycle Manager",          // 77
-  "Automated Infrastructure Developer",        // 78
-  "Cloud Provisioning Specialist",             // 79
-  "Declarative Infrastructure Engineer",       // 80
-  "Production-Ready Application Developer",  // 8
-  "Cloud-Native Software Engineer",           // 9
+  "Full Stack Engineer",
+  "DevOps-Oriented Software Engineer",
+  "Cloud-Focused Application Engineer",
+  "AWS Cloud Practitioner",
+  "Infrastructure as Code Engineer",
+  "Automation-Driven Engineer",
+  "Scalable Systems Engineer",
+  "Terraform Infrastructure Engineer",
+  "Production-Ready Application Developer",
+  "Cloud-Native Software Engineer",
   "Reliability-Focused Engineer",
-  "DevOps Engineer (AWS)",                    // 21
-  "Cloud Infrastructure Engineer",            // 22
-  "CI/CD Pipeline Engineer",                  // 23
-  "Build and Release Automation Engineer",    // 24
-  "Docker and Containerization Engineer",     // 25
-  "Infrastructure Automation Engineer",       // 26
-  "Cloud Deployment Specialist",              // 27
-  "Environment Automation Engineer",          // 28
-  "DevOps Automation Specialist",             // 29
-  "Cloud Operations Engineer",                // 30
-  "Cloud Security Engineer",                  // 31
-  "Cloud Security Specialist",                // 32
-  "Scalable Backend Engineer",                // 31
-  "Distributed Systems Enthusiast",           // 32
-  "High-Availability Systems Builder",        // 33
-  "Performance-Oriented Engineer",            // 34
-  "Fault-Tolerant Application Developer",     // 35
-  "System Scalability Engineer",               // 36
-  "Cloud Scalability Specialist",              // 37
-  "Load-Aware Application Engineer",           // 38
-  "System Optimization Engineer",              // 39
-  "Cloud Performance Engineer",                // 40
-  "Secure Application Developer",              // 41
-  "Cloud Security-Aware Engineer",             // 42
-  "Security-First Software Engineer",          // 43
-  "IAM and Access Control Practitioner",       // 44
-  "Infrastructure Security Engineer",          // 45
-  "Secure Cloud Deployment Engineer",          // 46
-  "Compliance-Conscious Engineer",             // 47
-  "Security-Driven DevOps Engineer",           // 48
-  "Application Hardening Specialist",          // 49
-  "Cloud Risk-Aware Engineer",   
-  "Node.js Backend Engineer",                  // 61
-  "REST API Developer",                        // 62
-  "API-First Application Engineer",            // 63
-  "Backend Services Engineer",                 // 64
-  "Server-Side Application Developer",         
-  "Monitoring and Observability Engineer",     // 81
-  "Cloud Monitoring Specialist",               // 82
-  "System Health and Alerting Engineer",        // 83
-  "Proactive Operations Engineer",              // 84
-  "Cloud Reliability Practitioner",            // 85
-  "Metrics-Driven Engineer",                   // 86
-  "Operational Visibility Engineer",           // 87
-  "Incident-Aware Engineer",                   // 88
-  "Production Monitoring Engineer",            // 89
-  "Infrastructure Observability Engineer",     // 90
-
-  // 91–100
-  "Agile Software Engineer",                    // 91
-  "Continuous Improvement Engineer",           // 92
-  "Automation-First Developer",                // 93
-  "DevOps Culture Advocate",                   // 94
-  "Engineering Best Practices Follower",       // 95
-  "Clean Code Practitioner",                   // 96
-  "Maintainable Systems Engineer",             // 97
-  "Engineering Quality Advocate",              // 98
-  "Process-Oriented Engineer",                 // 99
-  "Operational Excellence Engineer",           // 100
-  "Cloud Application Engineer",                // 101
-  "Serverless-Aware Developer",                // 102
-  "Cloud Service Integration Engineer",        // 103
-  "AWS Services Practitioner",                 // 104
-  "Cloud Resource Optimization Engineer",      // 105
-  "Cost-Aware Cloud Engineer",                 // 106
-  "Cloud Architecture Learner",                // 107
-  "Cloud Systems Engineer",                    // 108
-  "Cloud Enablement Engineer",                 // 109
-  "Platform Engineering Enthusiast",           // 110
-  "Problem-Solving Software Engineer",          // 111
-  "Technology-Driven Engineer",                // 112
-  "Engineering Growth Mindset Practitioner",   // 113
-  "Modern Software Engineering Professional",  // 114
-  "Real-World Systems Builder",                // 115
-  "Business-Aware Engineer",                   // 116
-  "Solution-Oriented Developer",               // 117
-  "Production Systems Engineer",               // 118
-  "Scalable Product Engineer",                 // 119
-  "Cloud-Ready Software Engineer",             // 120
-  "Automation and Reliability Engineer",       // 121
-  "DevOps and Cloud Practitioner",              // 122
-  "Infrastructure and Application Engineer",   // 123
-  "End-to-End Cloud Engineer",                 // 124
-  "Future-Ready Software Engineer"   ,   
   "Next.js Specialist",
   "React Virtuoso",
   "Node.js Architect",
   "TypeScript Advocate",
-  "AI Integration Specialist",
-  "Innovative Problem Solver",
-  "End-to-End Application Developer",
-  "Versatile Software Engineer",
-  "Cross-Functional Developer",
-  "Dynamic Web App Creator",
-  "Interactive UI Developer",
-  "Responsive Design Expert",
-  "Frontend Performance Optimizer",
-  "Modern JavaScript Artisan",
-  "Scalable Backend Developer",
-  "API Design Specialist",
-  "Server-Side Logic Expert",
-  "Database Integration Pro",
-  "Cloud-Native Developer",
-  "Agile Software Developer",
-  "DevOps-Minded Engineer",
-  "E-commerce Solutions Developer",
-  "SaaS Application Engineer",
-  "Real-time Application Developer",
-  "Secure Software Developer",
-  "AI-Powered Solutions Developer",
-  "Intelligent Systems Engineer",
-  "Machine Learning Implementer",
-  "Smart Application Architect",
-  "Next-Gen Web Innovator",
-  "Complex Problem Tackler",
-  "User-Centric Solutions Builder",
-  "Technology Modernization Expert",
-  "Digital Experience Enhancer",
-  "Code Craftsman",
-  "Digital Product Developer",
-  "Performance-Driven Developer",
-  "Proficient Full Stack Specialist",
-  "Next.js Application Architect",
-  "Creative React Developer",
-  "Robust Node.js Developer",
-  "GraphQL API Developer",
-  "Headless CMS Integrator",
-  "Progressive Web App (PWA) Developer",
-  "Solution-Oriented Programmer",
-  "Web Performance Guru",
-  "Cloud Solutions Developer",
-  "Full Stack JavaScript Expert",
-  "Serverless Application Developer",
-  "API-First Developer",
-  "User Experience Advocate",
-  "Agile Methodology Practitioner",
-  "Scalable Systems Designer",
-  "Code Quality Champion",
-  "Emerging Tech Explorer",
-  "Digital Transformation Agent"
+  "AI Integration Specialist"
 ];
 
 export const PROFILE_IMAGES = [
   { src: "/profile-1.jpg", alt: "Tinkal Kumar - Professional Headshot", dataAiHint: "professional man" },
   { src: "/profile-2.jpg", alt: "Tinkal Kumar - Working at a desk", dataAiHint: "developer coding" },
- /* { src: "/profile-3.jpg", alt: "Tinkal Kumar - Casual Portrait", dataAiHint: "man portrait" },
-  { src: "/profile-4.jpg", alt: "Tinkal Kumar - Tech Event", dataAiHint: "developer conference" },*/
 ];
 
-export const RESUME_PATH = "/Tinkal_Resume.pdf"; 
+export const RESUME_PATH = "/Tinkal_Resume.pdf";
 
 export const ABOUT_ME = {
-  summary: `Results-driven software engineer with strong experience in full-stack web development and growing expertise in DevOps and AWS cloud technologies. Skilled in building scalable applications using MongoDB, Express.js, React.js, and Node.js, along with deploying, monitoring, and securing applications on AWS. Hands-on experience with Docker, CI/CD pipelines, infrastructure automation, and cloud security best practices. Passionate about clean code, system reliability, performance optimization, and continuously learning modern cloud-native and DevOps technologies.`,
-  passion: "Driven by a strong curiosity for cloud computing and automation, I enjoy working at the intersection of development and operations. I am particularly interested in DevOps tooling, infrastructure as code, CI/CD automation, and improving system reliability while continuing to build impactful, production-ready applications.",
+  summary: `Results-driven software engineer with strong experience in full-stack web development and growing expertise in DevOps and AWS cloud technologies. Skilled in building scalable applications using MongoDB, Express.js, React.js, and Node.js.`,
+  passion: "Driven by a strong curiosity for cloud computing and automation, I enjoy working at the intersection of development and operations.",
   location: "Jaipur, India",
   relocation: "Open to relocating for compelling opportunities",
   IconLocation: MapPin,
   IconRelocation: Briefcase,
   IconAbout: UserCircle2,
   image: {
-    src: "/Tech-focused-image.png", 
+    src: "/Tech-focused-image.png",
     alt: "Tinkal Kumar - Tech focused image",
     dataAiHint: "technology developer",
   },
@@ -231,15 +84,11 @@ export interface EducationEntry {
 export const EDUCATION_DATA: EducationEntry[] = [
   {
     degree: "Bachelor of Technology (B.Tech) in Computer Science & Engineering",
-    institution: "Raj Kumar Goel Institute of Technology, Ghaziabad (Affiliated to Dr. A.P.J. Abdul Kalam Technical University, Lucknow)",
+    institution: "Raj Kumar Goel Institute of Technology, Ghaziabad",
     graduationYear: "2020 - 2024",
     details: [
-      "Comprehensive curriculum covering core CS concepts: Data Structures & Algorithms, Object-Oriented Programming (Java, C++), Database Management Systems (SQL, NoSQL fundamentals), Operating Systems, Computer Networks, and Software Engineering principles.",
-      "Specialized in web development technologies including HTML, CSS, JavaScript, and gained foundational knowledge for full-stack development.",
-      "Developed strong analytical and problem-solving skills through various academic projects and assignments.",
-      "Gained practical experience with version control systems like Git and GitHub for collaborative projects.",
-      "Acquired understanding of agile development methodologies and the importance of teamwork in software development lifecycles.",
-      "Focused on building a solid theoretical and practical foundation for a career in software engineering."
+      "Core CS concepts: DSA, OOP, DBMS, OS, Networking.",
+      "Specialized in web technologies and full-stack development."
     ],
     Icon: GraduationCap,
   },
@@ -255,31 +104,15 @@ export interface ExperienceEntry {
 }
 
 export const WORK_EXPERIENCE_DATA: ExperienceEntry[] = [
-  // {
-  //   title: "MERN Stack Developer",
-  //   company: "OweBest Technologies Pvt Ltd",
-  //   duration: "Feb 2025 – Present",
-  //   location: "Jaipur, Rajasthan",
-  //   responsibilities: [
-  //     "Developing and maintaining scalable full-stack web applications using the MERN stack (MongoDB, Express.js, React.js, Node.js) and TypeScript.",
-  //     "Designing and implementing RESTful APIs for seamless frontend-backend communication.",
-  //     "Focusing on writing clean, maintainable, and efficient code with an emphasis on component reusability and performance optimization.",
-  //     "Collaborating closely with cross-functional teams in an agile environment to deliver high-quality software solutions for real-world client projects.",
-  //     "Implementing user authentication and authorization mechanisms using JWT and Bcrypt.",
-  //     "Integrating third-party services and APIs as per project requirements."
-  //   ],
-  //   Icon: Building,
-  // },
   {
     title: "IT Executive",
     company: "Apex Hospitals, Jaipur",
     duration: "Aug 2024 – Feb 2025",
     location: "Jaipur, Rajasthan",
     responsibilities: [
-      "Managed and updated content for the hospital's official website and internal applications, ensuring accuracy and timeliness.",
-      "Provided technical support and troubleshooting for the Hospital Management System (HMS), resolving issues to ensure smooth operations.",
-      "Facilitated communication between medical staff and software vendors to address system requirements and enhancements.",
-      "Built reusable UI components using HTML, CSS, and JavaScript to improve website consistency and development speed."
+      "Managed website content and internal apps.",
+      "Provided tech support for HMS systems.",
+      "Built reusable UI components with modern stacks."
     ],
     Icon: Building,
   },
@@ -293,44 +126,10 @@ export interface CertificationEntry {
 }
 
 export const CERTIFICATIONS_DATA: CertificationEntry[] = [
-  {
-    name: "Full Stack Web Development",
-    issuingOrganization: "Internshala Trainings",
-    credentialUrl: "#",
-    Icon: Award,
-  },
-  {
-    name: "MERN Stack Web Development",
-    issuingOrganization: "Coding Ninjas",
-    credentialUrl: "#",
-    Icon: Award,
-  },
-  {
-    name: "Frontend Web Development",
-    issuingOrganization: "PW Skills",
-    credentialUrl: "#",
-    Icon: Award,
-  },
-  {
-    name: "Backend Web Development",
-    issuingOrganization: "PW Skills",
-    credentialUrl: "#",
-    Icon: Award,
-  },
-  {
-    name: "DevOps Fundamentals",
-    issuingOrganization: "PW Skills",
-    credentialUrl: "#",
-    Icon: Award,
-  },
-  {
-    name: "Skills India Program Completion",
-    issuingOrganization: "Skills India",
-    credentialUrl: "#",
-    Icon: Award,
-  },
+  { name: "Full Stack Web Development", issuingOrganization: "Internshala", Icon: Award },
+  { name: "MERN Stack Web Development", issuingOrganization: "Coding Ninjas", Icon: Award },
+  { name: "DevOps Fundamentals", issuingOrganization: "PW Skills", Icon: Award },
 ];
-
 
 export interface TechStackItem {
   name: string;
@@ -345,62 +144,21 @@ export const TECH_STACK_CATEGORIES_ORDER = [
   "Databases & Storage",
   "AI, Cloud & Specialized Tech",
   "Developer Tools & DevOps",
-  "Methodologies & Practices",
 ];
 
 export const TECH_STACK: TechStackItem[] = [
-  // Languages & Core Technologies
   { name: "Java", Icon: CodeXml, category: "Languages & Core Technologies" },
   { name: "TypeScript", Icon: CodeXml, category: "Languages & Core Technologies" },
-  { name: "JavaScript (ES7+)", Icon: CodeXml, category: "Languages & Core Technologies" },
-  // Frontend Development
-  { name: "HTML5", Icon: CodeXml, category: "Frontend Development" },
-  { name: "CSS3", Icon: Palette, category: "Frontend Development" },
+  { name: "JavaScript", Icon: CodeXml, category: "Languages & Core Technologies" },
   { name: "React.js", Icon: CodeXml, category: "Frontend Development" },
   { name: "Next.js", Icon: CodeXml, category: "Frontend Development" },
-  { name: "ShadCN UI", Icon: Layers, category: "Frontend Development" },
   { name: "Tailwind CSS", Icon: Palette, category: "Frontend Development" },
-  { name: "Redux", Icon: CodeXml, category: "Frontend Development" },
-  { name: "Zustand", Icon: CodeXml, category: "Frontend Development" },
-  { name: "Responsive Design", Icon: Smartphone, category: "Frontend Development" },
-  // Backend Development
   { name: "Node.js", Icon: ServerCog, category: "Backend Development" },
   { name: "Express.js", Icon: ServerCog, category: "Backend Development" },
-  { name: "Nest.js", Icon: ServerCog, category: "Backend Development" },
-  { name: "REST APIs", Icon: Settings2, category: "Backend Development" },
-  { name: "JWT Auth", Icon: KeyRound, category: "Backend Development" },
-  { name: "Bcrypt", Icon: ShieldCheck, category: "Backend Development" },
-  { name: "Multer", Icon: UploadCloud, category: "Backend Development" },
-  { name: "Nodemailer", Icon: Mail, category: "Backend Development" },
-  { name: "EmailJS", Icon: Send, category: "Backend Development" },
-  // Databases & Storage
   { name: "MongoDB", Icon: Database, category: "Databases & Storage" },
-  { name: "Mongoose", Icon: Database, category: "Databases & Storage" },
-  { name: "SQL", Icon: Database, category: "Databases & Storage" },
-  { name: "MySQL", Icon: Database, category: "Databases & Storage" },
-  { name: "Firestore", Icon: Database, category: "Databases & Storage" },
-  // AI, Cloud & Specialized Tech
-  { name: "Firebase", Icon: Wand2, category: "AI, Cloud & Specialized Tech" },
-  { name: "Genkit AI", Icon: Wand2, category: "AI, Cloud & Specialized Tech" },
-  { name: "Machine Learning Integration", Icon: Brain, category: "AI, Cloud & Specialized Tech" },
-  { name: "Natural Language Processing (NLP)", Icon: MessageSquareText, category: "AI, Cloud & Specialized Tech" },
-  { name: "AI Model Deployment", Icon: Rocket, category: "AI, Cloud & Specialized Tech" },
-  { name: "Large Language Models (LLMs)", Icon: NotebookText, category: "AI, Cloud & Specialized Tech" },
-  { name: "Responsible AI & Ethics", Icon: Scale, category: "AI, Cloud & Specialized Tech" },
-  // Developer Tools & DevOps
+  { name: "Groq Cloud AI", Icon: Wand2, category: "AI, Cloud & Specialized Tech" },
   { name: "Git", Icon: GitCommit, category: "Developer Tools & DevOps" },
   { name: "GitHub", Icon: Github, category: "Developer Tools & DevOps" },
-  { name: "Postman", Icon: Settings2, category: "Developer Tools & DevOps" },
-  { name: "Redux DevTools", Icon: Wrench, category: "Developer Tools & DevOps" },
-  { name: "DevOps", Icon: TerminalSquare, category: "Developer Tools & DevOps" },
-  { name: "Basic CI/CD", Icon: Layers, category: "Developer Tools & DevOps" },
-  { name: "Kubernetes", Icon: ServerCog, category: "Developer Tools & DevOps" },
-  { name: "Vercel", Icon: Rocket, category: "Developer Tools & DevOps" },
-  { name: "Render", Icon: Rocket, category: "Developer Tools & DevOps" },
-  // Methodologies & Practices
-  { name: "Clean Architecture", Icon: Layers, category: "Methodologies & Practices" },
-  { name: "Component Reusability", Icon: Puzzle, category: "Methodologies & Practices" },
-  { name: "Problem Solving", Icon: Lightbulb, category: "Methodologies & Practices" },
 ];
 
 export interface Project {
@@ -409,130 +167,55 @@ export interface Project {
   description: string;
   liveDemoUrl?: string;
   githubRepoUrl: string;
-  techStack: Pick<TechStackItem, 'name' | 'Icon'>[]; // Use Pick to only get name and Icon
+  techStack: Pick<TechStackItem, 'name' | 'Icon'>[];
   Icon: LucideIcon;
 }
 
 export const PROJECTS_DATA: Project[] = [
   {
     id: "job-portal",
-    title: "Job Portal App (Next.js & MERN)",
-    description: "A comprehensive platform for job seekers and employers, featuring a Next.js frontend and a robust MERN stack backend (MongoDB, Express.js, Node.js). Implements JWT authentication, Nodemailer for notifications, Multer for file uploads, Bcrypt for password hashing, protected routes, and role-based authorization. Currently undergoing enhancements by Tinkal.",
+    title: "Job Portal App",
+    description: "Full-stack MERN platform with role-based auth and file uploads.",
     liveDemoUrl: "#",
     githubRepoUrl: "https://github.com/MERNDevTinkal/Job-Portal-App",
     techStack: [
       { name: "Next.js", Icon: CodeXml },
       { name: "Node.js", Icon: ServerCog },
-      { name: "MongoDB", Icon: Database },
-      { name: "Express.js", Icon: ServerCog},
-      { name: "TypeScript", Icon: CodeXml },
-      { name: "JWT Auth", Icon: KeyRound },
-      { name: "Nodemailer", Icon: Mail },
-      { name: "Multer", Icon: UploadCloud },
-      { name: "Bcrypt", Icon: ShieldCheck },
+      { name: "MongoDB", Icon: Database }
     ],
     Icon: Briefcase,
   },
   {
     id: "notes-app",
-    title: "Notes App (MERN)",
-    description: "A secure and intuitive MERN stack application for creating, organizing, and managing personal notes. Features JWT-based authentication, protected routes, and complete CRUD operations for effective note management.",
+    title: "Notes App",
+    description: "Secure note-taking app with JWT auth and CRUD.",
     liveDemoUrl: "https://notes-application-2-vv1k.onrender.com/",
     githubRepoUrl: "https://github.com/MERNDevTinkal/Notes-Application",
     techStack: [
       { name: "React", Icon: CodeXml },
-      { name: "Express.js", Icon: ServerCog },
-      { name: "MongoDB", Icon: Database },
-      { name: "Node.js", Icon: ServerCog },
+      { name: "MongoDB", Icon: Database }
     ],
     Icon: FileText,
   },
-  {
-    id: "e-commerce",
-    title: "E-commerce Frontend (Redux)",
-    description: "A dynamic online shopping experience with product listings, cart functionality, and efficient global state management using Redux Toolkit, styled with Tailwind CSS for a modern, responsive UI.",
-    liveDemoUrl: "https://ecommerce-using-redux-alpha.vercel.app/",
-    githubRepoUrl: "https://github.com/MERNDevTinkal/Ecommerce-Using-Redux",
-    techStack: [
-      { name: "React", Icon: CodeXml },
-      { name: "Redux Toolkit", Icon: CodeXml },
-      { name: "Tailwind CSS", Icon: Palette },
-      { name: "JavaScript", Icon: CodeXml },
-    ],
-    Icon: ShoppingCart,
-  },
 ];
 
-// Exporting hardcodedBlogPosts for sitemap generation
 export const hardcodedBlogPosts = [
   {
-    id: "0", // This ID should match the one used in BlogList and BlogPostPageClient
-    title: "The Future of Web Development: Trends to Watch", // Title for metadata fallback
-    paragraphs: [
-      "The web development landscape is a whirlwind of innovation! New frameworks, powerful tools, and cutting-edge paradigms are constantly emerging, reshaping how we craft digital experiences. For developers keen on building modern, efficient, and captivating web applications, staying ahead of the curve is not just beneficial—it's essential.",
-      "A significant trend dominating the current discourse is the ascent of server-side rendering (SSR) and static site generation (SSG), championed by frameworks like Next.js. These methodologies deliver substantial improvements in performance, search engine optimization (SEO), and overall user experience. When combined with the principles of Jamstack architecture, developers can construct lightning-fast, highly scalable websites that delight users.",
-      "Artificial Intelligence (AI) and Machine Learning (ML) are no longer futuristic concepts but active participants in the web development process. From AI-driven code assistants and automated testing suites to hyper-personalized user journeys and intelligent chatbots, AI is revolutionizing multiple facets of the development lifecycle and the final product. We are on the cusp of even deeper and more transformative integrations in the years to come.",
-      "WebAssembly (Wasm) is another groundbreaking technology demanding attention. It empowers developers to run code written in languages such as C++, Rust, and Go directly within the browser at speeds approaching native performance. This capability unlocks new frontiers for sophisticated web applications, including immersive games, professional-grade video editing tools, and complex data visualization platforms, all accessible without leaving the browser.",
-      "Finally, an unwavering commitment to web accessibility (a11y) and Core Web Vitals will remain a cornerstone of quality web development. Building inclusive digital products that perform optimally for every user is not merely a best practice—it's a fundamental responsibility. Developers must champion these principles to foster a positive, equitable, and universally accessible web."
-    ]
-  },
-  {
-    id: "1",
-    title: "Async JavaScript: Callbacks, Promises, and Async/Await",
-    paragraphs: [
-      "Understanding asynchronous JavaScript is fundamental for any modern web developer. Callbacks, Promises, and Async/Await are tools that help manage operations that don't complete immediately, like API calls or timeouts. Mastering these concepts is key to writing non-blocking, efficient code.",
-      "Callbacks were the traditional way to handle asynchronous operations, but they can lead to 'callback hell' with deeply nested structures. Promises offer a cleaner way to chain asynchronous actions, with .then() for success and .catch() for errors. They represent a value that may be available now, or in the future, or never.",
-      "Async/Await, built on top of Promises, provides a more synchronous-looking syntax for asynchronous code. Using the 'async' keyword before a function declaration allows you to use 'await' inside it. 'await' pauses the function execution until a Promise settles, making complex asynchronous logic much easier to read and maintain."
-    ]
-  },
-  {
-    id: "2",
-    title: "Introduction to DevOps Principles and Practices",
-    paragraphs: [
-      "DevOps is a set of practices that combines software development (Dev) and IT operations (Ops). It aims to shorten the systems development life cycle and provide continuous delivery with high software quality. DevOps is complementary with Agile software development; several DevOps aspects came from Agile methodology.",
-      "Key principles of DevOps include automation, continuous integration/continuous delivery (CI/CD), infrastructure as code (IaC), monitoring, and collaboration. Tools like Jenkins, GitLab CI, Docker, Kubernetes, Ansible, and Prometheus are commonly used in DevOps workflows.",
-      "Adopting DevOps culture and practices can lead to faster release cycles, improved deployment reliability, better collaboration between teams, and increased efficiency. It's about breaking down silos and working together towards common goals."
-    ]
-  },
-  {
-    id: "3",
-    title: "The Power of TypeScript in Modern Web Development",
-    paragraphs: [
-      "TypeScript, a superset of JavaScript, adds static typing to the language. This allows developers to catch errors early during development, rather than at runtime, leading to more robust and maintainable codebases. It's particularly beneficial for large-scale applications and team collaboration.",
-      "Key features of TypeScript include interfaces for defining contracts, enums for creating sets of named constants, generics for writing reusable code components, and strong tooling support with autocompletion and refactoring in modern IDEs.",
-      "While there's a learning curve, the benefits of using TypeScript—such as improved code quality, better developer experience, and enhanced scalability—often outweigh the initial investment, making it a popular choice for many projects."
-    ]
-  },
-  {
-    id: "4",
-    title: "Understanding Microservices Architecture",
-    paragraphs: [
-      "Microservices architecture is an approach to developing a single application as a suite of small, independently deployable services. Each service runs in its own process and communicates with lightweight mechanisms, often an HTTP resource API. This contrasts with a monolithic architecture where all components are part of a single, large application.",
-      "Benefits of microservices include improved scalability (services can be scaled independently), technology diversity (each service can use different tech stacks), resilience (failure in one service doesn't necessarily bring down the whole app), and easier maintenance and updates for individual components.",
-      "However, microservices also introduce complexity in terms of managing distributed systems, inter-service communication, data consistency, and increased operational overhead. Careful planning and robust infrastructure are crucial for successful microservices implementation."
-    ]
-  },
-  {
-    id: "5",
-    title: "State Management in React: A Comparative Overview",
-    paragraphs: [
-      "State management in React applications can become complex as they grow. While React's built-in `useState` and `useReducer` hooks are great for local component state, global state shared across many components often requires dedicated libraries like Redux, Zustand, or Recoil, or leveraging the Context API more extensively.",
-      "Redux is a predictable state container with a unidirectional data flow, often used for large applications. Zustand offers a more minimalistic and unopinionated approach, using hooks for a simpler API. The Context API is built into React and can be suitable for less complex global state scenarios.",
-      "Choosing the right state management solution depends on the project's scale, complexity, team familiarity, and specific requirements. The goal is always to make state predictable, manageable, and easy to debug."
-    ]
+    id: "0",
+    title: "The Future of Web Development",
+    paragraphs: ["AI and SSR are transforming the web."]
   }
 ];
 
-
 export const BLOG_SECTION_DETAILS = {
   title: "My Tech Narratives",
-  description: "Exploring the frontiers of technology, software craftsmanship, DevOps methodologies, AI advancements, and beyond. Join my musings on the ever-evolving tech landscape.",
+  description: "Exploring technology and software craftsmanship.",
   Icon: BookOpen,
 };
 
 export const CONTACT_DETAILS = {
   title: "Let's Build Together",
-  description: "Have an innovative project, a burning question, or just want to connect? I'm eager to discuss new ideas and potential collaborations. Reach out!",
+  description: "Eager to discuss new ideas and potential collaborations.",
   Icon: Mail,
   phone: "+91-9102496140",
   PhoneIcon: Phone,
