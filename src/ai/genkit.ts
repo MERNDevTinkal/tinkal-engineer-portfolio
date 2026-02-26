@@ -1,14 +1,18 @@
 
 import { genkit } from 'genkit';
-import { googleAI } from '@genkit-ai/google-genai';
+import { openAI } from 'genkitx-openai';
 
 /**
- * Genkit initialization configured for Google AI (Gemini).
- * Gemini is used for its high reliability and multilingual support.
+ * Genkit initialization configured for Groq Cloud using the OpenAI-compatible plugin.
+ * We use 'llama-3.3-70b-versatile' as the primary model for its speed and multilingual capabilities.
+ * Note: genkitx-openai export is 'openAI'.
  */
 export const ai = genkit({
   plugins: [
-    googleAI(),
+    openAI({
+      apiKey: process.env.GROQ_API_KEY,
+      baseURL: 'https://api.groq.com/openai/v1',
+    }),
   ],
-  model: 'googleai/gemini-1.5-flash',
+  model: 'openai/llama-3.3-70b-versatile',
 });
