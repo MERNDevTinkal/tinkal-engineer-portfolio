@@ -7,6 +7,7 @@
  */
 
 import {ai} from '@/ai/genkit';
+import {googleAI} from '@genkit-ai/googleai';
 import {
   PortfolioChatInputSchema,
   type PortfolioChatInput,
@@ -96,6 +97,7 @@ After providing your main answer, you MUST generate up to 4 short (max 5-7 words
 
 const chatPrompt = ai.definePrompt({
   name: 'portfolioChatSoraPrompt', 
+  model: 'googleai/gemini-1.5-flash',
   input: {schema: PortfolioChatInputSchema},
   output: {schema: PortfolioChatOutputSchema},
   prompt: `${systemInstructions}\n\nUser's question to Sora: {{userInput}}`,
