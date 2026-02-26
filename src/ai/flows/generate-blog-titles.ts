@@ -1,15 +1,19 @@
 'use server';
 
 /**
- * @fileOverview Generates blog titles for a portfolio.
+ * @fileOverview Generates blog titles for a portfolio using Groq SDK.
  *
  * - generateBlogTitles - A function that generates 11-20 blog titles.
  * - GenerateBlogTitlesInput - The input type for the generateBlogTitles function.
  * - GenerateBlogTitlesOutput - The return type for the generateBlogTitles function.
  */
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import Groq from 'groq-sdk';
+import { z } from 'zod';
+
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
+});
 
 const GenerateBlogTitlesInputSchema = z.object({
   topic: z
@@ -34,36 +38,46 @@ const GenerateBlogTitlesOutputSchema = z.object({
 export type GenerateBlogTitlesOutput = z.infer<typeof GenerateBlogTitlesOutputSchema>;
 
 export async function generateBlogTitles(input: GenerateBlogTitlesInput): Promise<GenerateBlogTitlesOutput> {
-  return generateBlogTitlesFlow(input);
-}
+  const topic = input.topic || 'technology, software development, and DevOps practices';
+  const numTitles = input.numTitles || 12;
 
-const prompt = ai.definePrompt({
-  name: 'generateBlogTitlesPrompt',
-  input: {schema: GenerateBlogTitlesInputSchema},
-  output: {schema: GenerateBlogTitlesOutputSchema},
-  prompt: `You are a blog title generator. You will generate {{numTitles}} blog titles for the topic of '{{topic}}'. 
-The titles should be engaging and relevant to professionals interested in technology, software development, and DevOps.
-Return the titles as a JSON array of strings.
+  try {
+    const completion = await groq.chat.completions.create({
+      model: "llama-3.1-8b-instant",
+      messages: [
+        {
+          role: "system",
+          content: `You are a blog title generator for a tech portfolio. 
+          Generate exactly ${numTitles} engaging and professional blog titles for the topic of '${topic}'. 
+          The titles should be relevant to professionals in tech.
+          Return the response as a JSON object with a single key "titles" containing an array of strings.`
+        },
+        {
+          role: "user",
+          content: `Generate ${numTitles} titles about ${topic}.`
+        }
+      ],
+      response_format: { type: "json_object" },
+    });
 
-Example for {{numTitles}} = 3 and topic = "cloud computing":
-{
-  "titles": [
-    "Unlocking Scalability: A Deep Dive into Cloud Architectures",
-    "Serverless vs. Containers: Choosing the Right Path for Your Next Project",
-    "The Future of Cloud-Native: Trends to Watch in 2024"
-  ]
-}
-`,
-});
+    const content = completion.choices[0]?.message?.content;
+    if (!content) throw new Error("Empty response from Groq");
 
-const generateBlogTitlesFlow = ai.defineFlow(
-  {
-    name: 'generateBlogTitlesFlow',
-    inputSchema: GenerateBlogTitlesInputSchema,
-    outputSchema: GenerateBlogTitlesOutputSchema,
-  },
-  async input => {
-    const {output} = await prompt(input);
-    return output!;
+    const parsed = JSON.parse(content);
+    return {
+      titles: Array.isArray(parsed.titles) ? parsed.titles.slice(0, numTitles) : [],
+    };
+  } catch (error) {
+    console.error("Error generating blog titles with Groq:", error);
+    return {
+      titles: [
+        "Unlocking Scalability: A Deep Dive into Cloud Architectures",
+        "Serverless vs. Containers: Choosing the Right Path",
+        "The Future of Web Development in 2026",
+        "Mastering the MERN Stack for Modern Apps",
+        "DevOps Best Practices for High-Performance Teams",
+        "AI Integration: Transforming User Experiences",
+      ].slice(0, numTitles)
+    };
   }
-);
+}

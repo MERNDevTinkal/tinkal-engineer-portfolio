@@ -1,15 +1,18 @@
-
 'use server';
 /**
- * @fileOverview Generates blog post content based on a given title.
+ * @fileOverview Generates blog post content based on a given title using Groq SDK.
  *
  * - generateBlogContent - A function that generates blog content.
  * - GenerateBlogContentInput - The input type for the generateBlogContent function.
  * - GenerateBlogContentOutput - The return type for the generateBlogContent function.
  */
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import Groq from 'groq-sdk';
+import { z } from 'zod';
+
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
+});
 
 const GenerateBlogContentInputSchema = z.object({
   title: z.string().describe('The title of the blog post for which to generate content.'),
@@ -22,37 +25,35 @@ const GenerateBlogContentOutputSchema = z.object({
 export type GenerateBlogContentOutput = z.infer<typeof GenerateBlogContentOutputSchema>;
 
 export async function generateBlogContent(input: GenerateBlogContentInput): Promise<GenerateBlogContentOutput> {
-  return generateBlogContentFlow(input);
-}
+  const { title } = input;
 
-const prompt = ai.definePrompt({
-  name: 'generateBlogContentPrompt',
-  input: {schema: GenerateBlogContentInputSchema},
-  output: {schema: GenerateBlogContentOutputSchema},
-  prompt: `You are a helpful AI assistant that writes blog posts for a tech portfolio website.
-The blog focuses on topics like technology, software development, and DevOps practices.
+  try {
+    const completion = await groq.chat.completions.create({
+      model: "llama-3.1-8b-instant",
+      messages: [
+        {
+          role: "system",
+          content: "You are a professional tech blogger. Write an informative and engaging blog post of 3-5 paragraphs based on the provided title. Use plain text. Return the response as a JSON object with a single key 'content' containing the blog text."
+        },
+        {
+          role: "user",
+          content: `Write a blog post titled: "${title}"`
+        }
+      ],
+      response_format: { type: "json_object" },
+    });
 
-Generate a blog post of approximately 3-5 paragraphs for the following title:
-"{{title}}"
+    const messageContent = completion.choices[0]?.message?.content;
+    if (!messageContent) throw new Error("Empty response from Groq");
 
-The content should be informative, engaging, and relevant to professionals and enthusiasts in the tech field.
-Ensure the output is plain text. You can use newline characters for paragraph separation.
-
-Example output format:
-{
-  "content": "This is the first paragraph introducing the topic of '{{title}}'. It sets the stage for further discussion.\\n\\nThis second paragraph delves deeper into the core concepts related to '{{title}}'. It might provide some examples or expand on key ideas.\\n\\nFinally, the third paragraph can offer some concluding thoughts, future implications, or a call to action regarding '{{title}}'."
-}
-`,
-});
-
-const generateBlogContentFlow = ai.defineFlow(
-  {
-    name: 'generateBlogContentFlow',
-    inputSchema: GenerateBlogContentInputSchema,
-    outputSchema: GenerateBlogContentOutputSchema,
-  },
-  async input => {
-    const {output} = await prompt(input);
-    return output!;
+    const parsed = JSON.parse(messageContent);
+    return {
+      content: parsed.content || "Content generation failed. Please try again later.",
+    };
+  } catch (error) {
+    console.error("Error generating blog content with Groq:", error);
+    return {
+      content: "I'm sorry, I was unable to generate the content for this post at this time due to a connection issue with the AI service. Please try expanding this section again in a moment."
+    };
   }
-);
+}
