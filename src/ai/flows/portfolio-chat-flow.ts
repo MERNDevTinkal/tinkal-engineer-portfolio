@@ -2,7 +2,7 @@
 'use server';
 /**
  * @fileOverview Sora: Tinkal's Multilingual Personal Assistant & General Knowledge Expert.
- * Optimized for Gemini 1.5 Flash.
+ * Powered by Groq Cloud (Llama 3.3 70B).
  */
 
 import { ai } from '@/ai/genkit';
@@ -61,52 +61,43 @@ const chatPrompt = ai.definePrompt({
   prompt: `${systemInstructions}\n\nUser Question: {{userInput}}`,
 });
 
-const portfolioChatFlowInternal = ai.defineFlow(
-  {
-    name: 'portfolioChatFlowInternalSora', 
-    inputSchema: PortfolioChatInputSchema,
-    outputSchema: PortfolioChatOutputSchema,
-  },
-  async (input) => {
-    serverLog('Sora Request', { input });
-
-    try {
-      const { output } = await chatPrompt(input); 
-
-      if (!output) {
-        throw new Error("AI generated an empty response.");
-      }
-
-      const finalOutput = {
-          response: output.response,
-          suggestedFollowUps: output.suggestedFollowUps?.slice(0, 4) || []
-      };
-
-      serverLog('Sora Success', finalOutput);
-      return finalOutput;
-
-    } catch (error: any) {
-        serverLog('Sora Error', {
-          message: error.message,
-          stack: error.stack,
-          name: error.name,
-        });
-
-        console.error("Sora Flow Error:", error);
-        
-        return {
-            response: `I'm currently recalibrating my neural networks. Please try again in a moment. Error: ${error.message}`,
-            suggestedFollowUps: ["Tell me about Tinkal?", "What are his skills?", "Show me projects", "How to contact him?"]
-        };
-    }
-  }
-);
-
 export async function getPortfolioChatResponse(rawInput: Omit<PortfolioChatInput, 'currentYear' | 'currentDateTimeIndia'>): Promise<PortfolioChatOutput> {
   const now = new Date();
-  return portfolioChatFlowInternal({
+  const input = {
     ...rawInput,
     currentYear: now.getFullYear(),
     currentDateTimeIndia: now.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
-  });
+  };
+
+  serverLog('Sora Request', { input });
+
+  try {
+    const { output } = await chatPrompt(input); 
+
+    if (!output) {
+      throw new Error("AI generated an empty response.");
+    }
+
+    const finalOutput = {
+        response: output.response,
+        suggestedFollowUps: output.suggestedFollowUps?.slice(0, 4) || []
+    };
+
+    serverLog('Sora Success', finalOutput);
+    return finalOutput;
+
+  } catch (error: any) {
+      serverLog('Sora Error', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name,
+      });
+
+      console.error("Sora Flow Error:", error);
+      
+      return {
+          response: `I'm having a brief moment of reflection (Groq Connection). Details: ${error.message}`,
+          suggestedFollowUps: ["Tell me about Tinkal?", "What are his skills?", "Show me projects", "How to contact him?"]
+      };
+  }
 }
