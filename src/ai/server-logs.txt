@@ -56,3 +56,18 @@
   ]
 }
 --------------------------------------------------
+[2026-02-26T11:52:19.791Z] [Sora Native Groq Request]
+{
+  "userInput": "What is Tinkal Kumar's work experience?",
+  "historyLength": 2
+}
+--------------------------------------------------
+[2026-02-26T11:52:20.231Z] [Sora Native Groq Success]
+{
+  "response": "Tinkal Kumar is an IT Executive with a strong background in software engineering and full-stack development. His work experience showcases his proficiency in building scalable and secure web applications using MERN and Next.js stacks, along with deployment expertise on AWS.",
+  "suggestedFollowUps": [
+    "Tinkal's project experience",
+    "AWS deployment experience"
+  ]
+}
+--------------------------------------------------

@@ -1,6 +1,4 @@
 
-// Removed "use client"; directive
-
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
@@ -22,7 +20,6 @@ const spaceGrotesk = Space_Grotesk({
   weight: ["300", "400", "500", "600", "700"],
 });
 
-// Enhanced Metadata for SEO
 const siteUrl = "https://tinkal-engineer-portfolio.vercel.app"; 
 
 export const metadata: Metadata = {
@@ -31,7 +28,7 @@ export const metadata: Metadata = {
     default: `${AUTHOR_NAME} | Full Stack Developer & AI Engineer`,
     template: `%s | ${AUTHOR_NAME}`,
   },
-  description: `Explore the portfolio of ${AUTHOR_NAME}, a passionate and skilled Full Stack Developer specializing in MERN stack, Next.js, TypeScript, and AI integration. Discover projects, skills, and blog insights.`,
+  description: `Explore the portfolio of ${AUTHOR_NAME}, a passionate and skilled Full Stack Developer specializing in MERN stack, Next.js, TypeScript, and AI integration.`,
   keywords: [
     "Tinkal Kumar",
     "Full Stack Developer",
@@ -39,8 +36,7 @@ export const metadata: Metadata = {
     "Next.js Developer",
     "Software Engineer",
     "AI Integration",
-    "Portfolio",
-    "React Developer"
+    "Portfolio"
   ],
   authors: [{ name: AUTHOR_NAME, url: SOCIAL_LINKS.find(l => l.name === "LinkedIn")?.href }],
   creator: AUTHOR_NAME,
@@ -51,7 +47,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: `${AUTHOR_NAME} - Full Stack Developer Portfolio`,
-    description: `Discover ${AUTHOR_NAME}'s projects and skills in MERN stack, Next.js, and more. Software engineer specializing in modern web technologies.`,
+    description: `Discover ${AUTHOR_NAME}'s projects and skills in MERN stack, Next.js, and more.`,
     url: siteUrl,
     siteName: `${AUTHOR_NAME}'s Portfolio`,
     images: [
@@ -65,19 +61,8 @@ export const metadata: Metadata = {
     locale: "en_US",
     type: "website",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: `${AUTHOR_NAME} - Full Stack Developer Portfolio`,
-    description: `Explore ${AUTHOR_NAME}'s work as a Full Stack Developer with expertise in MERN, Next.js, and AI.`,
-    images: [`${siteUrl}/websitelogo.png`], 
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
 };
 
-// JSON-LD Structured Data for Person
 const personStructuredData = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -89,7 +74,6 @@ const personStructuredData = {
   "knowsAbout": ["MERN Stack", "Next.js", "AI Integration", "TypeScript"],
   "email": `mailto:${AUTHOR_EMAIL}`,
 };
-
 
 export default function RootLayout({
   children,
