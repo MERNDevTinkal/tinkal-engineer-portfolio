@@ -21,14 +21,14 @@ export const ChatMessage = React.memo(function ChatMessage({ sender, text, isLoa
   return (
     <div className={cn("flex items-start gap-3 mb-4", isUser ? "justify-end" : "justify-start")}>
       {!isUser && (
-        <Avatar className="h-8 w-8 border border-primary/50">
+        <Avatar className="h-8 w-8 border border-primary/50 overflow-hidden">
           <AvatarImage 
             src={placeholderImages.soraAvatar.url} 
             alt="Sora AI Assistant" 
             data-ai-hint={placeholderImages.soraAvatar.hint}
             className="object-cover"
           />
-          <AvatarFallback className="bg-primary text-primary-foreground">
+          <AvatarFallback className="bg-primary text-primary-foreground text-[10px]">
             {soraInitials}
           </AvatarFallback>
         </Avatar>

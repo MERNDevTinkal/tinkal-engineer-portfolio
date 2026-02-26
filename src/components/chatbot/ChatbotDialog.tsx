@@ -252,14 +252,14 @@ export function ChatbotDialog() {
           {isOpen ? (
             <X className="h-7 w-7" />
           ) : (
-            <Avatar className="h-full w-full">
+            <Avatar className="h-full w-full border-2 border-primary/20">
               <AvatarImage 
                 src={placeholderImages.soraAvatar.url} 
                 alt="Sora"
                 className="object-cover"
                 data-ai-hint={placeholderImages.soraAvatar.hint}
               />
-              <AvatarFallback>SA</AvatarFallback>
+              <AvatarFallback className="bg-primary text-primary-foreground">SA</AvatarFallback>
             </Avatar>
           )}
         </Button>
@@ -285,14 +285,14 @@ export function ChatbotDialog() {
           >
             <header className="bg-card p-3 border-b border-border flex items-center justify-between">
               <div className="flex items-center gap-2">
-                 <Avatar className="h-8 w-8 border border-primary/50">
+                 <Avatar className="h-8 w-8 border border-primary/50 overflow-hidden">
                   <AvatarImage 
                     src={placeholderImages.soraAvatar.url} 
                     alt="Sora AI Assistant"
                     className="object-cover"
                     data-ai-hint={placeholderImages.soraAvatar.hint}
                   />
-                  <AvatarFallback>SA</AvatarFallback>
+                  <AvatarFallback className="text-[10px]">SA</AvatarFallback>
                 </Avatar>
                 <h3 className="font-semibold text-lg text-primary font-headline">Sora Assistant</h3>
               </div>
