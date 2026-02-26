@@ -132,16 +132,21 @@ const portfolioChatFlowInternal = ai.defineFlow(
           suggestedFollowUps: followUps,
       };
     } catch (error) {
-        console.error("Error in portfolioChatFlowInternal:", error);
+        console.error("Detailed Error in portfolioChatFlowInternal:", error);
         
         let errorMessage = "Sorry, I encountered an issue. Please try asking in a different way or check back later.";
         
-        if (error instanceof Error) {
-            const lowerCaseError = error.message.toLowerCase();
-            if (lowerCaseError.includes("api key not valid") || lowerCaseError.includes("permission denied")) {
+        if (error) {
+            const err = error as any;
+            const message = err.message ? err.message.toLowerCase() : "";
+            const details = JSON.stringify(err).toLowerCase();
+            
+            if (message.includes("api key") || message.includes("401") || message.includes("permission")) {
                 errorMessage = "It looks like there's an issue with the AI service authentication. The API key may be invalid or expired. Please contact the site administrator to have it checked.";
-            } else if (lowerCaseError.includes("quota") || lowerCaseError.includes("too many requests") || lowerCaseError.includes("429")) {
+            } else if (message.includes("quota") || message.includes("too many requests") || message.includes("429") || details.includes("quota") || details.includes("429")) {
                 errorMessage = "The AI assistant is currently experiencing high traffic and has reached its free usage limit. Please try again later.";
+            } else if (message.includes("not found") || message.includes("404")) {
+                errorMessage = "I'm having trouble finding the right AI model right now. My team is looking into it!";
             }
         }
 
