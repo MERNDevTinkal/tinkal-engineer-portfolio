@@ -344,14 +344,25 @@ export interface TechStackItem {
 }
 
 export const TECH_STACK_CATEGORIES_ORDER = [
-  "Languages & Core Technologies",
+
+  "Programming Languages",
+  
   "Frontend Development",
-  "Backend Development",
-  "Databases & Storage",
-  "AI, Cloud & Specialized Tech",
-  "Developer Tools & DevOps",
-  "Methodologies & Practices",
-];
+  
+  "Backend & Microservices",
+  
+  "Databases & Caching",
+  
+  "Cloud & AWS",
+  
+  "DevOps & CI/CD",
+  
+  "Networking & Monitoring",
+  
+  "Deployment & Tools",
+  
+  ];
+  
 
 export const TECH_STACK: TechStackItem[] = [
 
@@ -375,7 +386,7 @@ export const TECH_STACK: TechStackItem[] = [
   { name: "HTML5", Icon: CodeXml, category: "Frontend Development" },
   { name: "CSS3", Icon: Palette, category: "Frontend Development" },
   { name: "Tailwind CSS", Icon: Palette, category: "Frontend Development" },
-  { name: "ShadCN UI", Icon: Layers, category: "Frontend Development" },
+  { name: "ShadCN UI", Icon: Layers, category: "" },
   { name: "Redux", Icon: CodeXml, category: "Frontend Development" },
   { name: "Redux Toolkit", Icon: CodeXml, category: "Frontend Development" },
   { name: "RTK Query", Icon: Radio, category: "Frontend Development" },
