@@ -7,7 +7,6 @@
  */
 
 import {ai} from '@/ai/genkit';
-import {googleAI} from '@genkit-ai/google-genai';
 import {
   PortfolioChatInputSchema,
   type PortfolioChatInput,
@@ -87,7 +86,7 @@ After providing your main answer, you MUST generate up to 4 short (max 5-7 words
 
 const chatPrompt = ai.definePrompt({
   name: 'portfolioChatSoraPrompt', 
-  model: 'googleai/gemini-1.5-flash',
+  model: 'googleai/gemini-1.5-flash-latest',
   input: {schema: PortfolioChatInputSchema},
   output: {schema: PortfolioChatOutputSchema},
   prompt: `${systemInstructions}\n\nUser's question to Sora: {{userInput}}`,
@@ -138,7 +137,7 @@ const portfolioChatFlowInternal = ai.defineFlow(
             } else if (message.includes("quota") || message.includes("too many requests") || message.includes("429") || details.includes("quota") || details.includes("429")) {
                 errorMessage = "The AI assistant is currently experiencing high traffic and has reached its free usage limit. Please try again later.";
             } else if (message.includes("not found") || message.includes("404")) {
-                errorMessage = "I'm having trouble finding the right AI model right now. My team is looking into it!";
+                errorMessage = "I'm having trouble finding the right AI model right now (404). We're trying a more specific version now!";
             }
         }
 
