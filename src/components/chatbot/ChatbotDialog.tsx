@@ -34,7 +34,7 @@ const INITIAL_SUGGESTIONS = [
   `Is ${AUTHOR_NAME} open to relocation?`,
 ];
 
-const LOCAL_STORAGE_KEY = 'portfolioChatHistory_Sora_v2'; 
+const LOCAL_STORAGE_KEY = 'portfolioChatHistory_Sora_v3'; 
 
 const initialBotMessage: Message = {
   id: "initial-bot-message-sora",
@@ -81,8 +81,6 @@ export function ChatbotDialog() {
               const lastBotMessage = parsedMessages.filter(m => m.sender === 'bot' && !m.isLoading).pop();
               if (lastBotMessage && lastBotMessage.suggestions && lastBotMessage.suggestions.length > 0) {
                  setCurrentSuggestions(lastBotMessage.suggestions);
-              } else if (parsedMessages.length === 1 && parsedMessages[0].id === initialBotMessage.id) {
-                 setCurrentSuggestions(initialBotMessage.suggestions || INITIAL_SUGGESTIONS.slice(0, 4));
               } else {
                 setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0,4));
               }
@@ -137,6 +135,11 @@ export function ChatbotDialog() {
     const newMessagesBeforeBot = [...messages, userMessage];
     setMessages(newMessagesBeforeBot);
 
+    // Prepare history for AI
+    const history = newMessagesBeforeBot.map(m => ({
+      role: m.sender === 'bot' ? 'assistant' : 'user',
+      content: m.text
+    }));
 
     setIsLoading(true);
     const loadingBotMessageId = `${Date.now()}-bot-loading-${Math.random().toString(36).substring(7)}`;
@@ -144,7 +147,10 @@ export function ChatbotDialog() {
     setMessages(prev => [...prev, { id: loadingBotMessageId, sender: 'bot', text: '...', isLoading: true }]);
 
     try {
-      const result: PortfolioChatOutput = await getPortfolioChatResponse({ userInput: messageText.trim() });
+      const result: PortfolioChatOutput = await getPortfolioChatResponse({ 
+        userInput: messageText.trim(),
+        history: history.slice(-10) // Only send last 10 messages to keep it fast
+      });
       
       const validSuggestions = (result.suggestedFollowUps || [])
         .filter(s => s && s.trim() !== "")
@@ -165,26 +171,14 @@ export function ChatbotDialog() {
       if (validSuggestions.length > 0) {
         setCurrentSuggestions(validSuggestions);
       } else {
-        const fallbackSuggestions = INITIAL_SUGGESTIONS
-          .filter(s => s.toLowerCase() !== messageText.trim().toLowerCase())
-          .sort(() => 0.5 - Math.random())
-          .slice(0, 4);
-        setCurrentSuggestions(fallbackSuggestions.length > 0 ? fallbackSuggestions : INITIAL_SUGGESTIONS.slice(0, 4));
+        setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0, 4));
       }
 
     } catch (error) {
-      let errorMessage = "Sorry, I encountered an issue. Please try asking in a different way or check back later.";
-       if (error instanceof Error) {
-        if (error.message.includes("system role is not supported") || error.message.includes("model_error")) {
-            errorMessage = "There's a configuration issue with my AI. My team is on it!";
-        } else if (error.message.includes("503") || error.message.toLowerCase().includes("overloaded") || error.message.includes("429")) {
-            errorMessage = "My AI brain is a bit overloaded right now (quota exceeded). Could you try that again in a moment?";
-        }
-      }
        const errorBotMessage: Message = {
         id: loadingBotMessageId,
         sender: 'bot',
-        text: errorMessage,
+        text: "I'm having a brief connection issue. Please try again in a moment!",
         isLoading: false,
         suggestions: INITIAL_SUGGESTIONS.slice(0,4)
       };
@@ -209,8 +203,7 @@ export function ChatbotDialog() {
   };
 
   const handleClearChat = () => {
-    const clearedInitialMessage = { ...initialBotMessage, suggestions: INITIAL_SUGGESTIONS.slice(0,4) };
-    setMessages([clearedInitialMessage]);
+    setMessages([initialBotMessage]);
     setCurrentSuggestions(INITIAL_SUGGESTIONS.slice(0,4));
     setSuggestionsExpanded(false);
     setCurrentInput("");
@@ -223,8 +216,7 @@ export function ChatbotDialog() {
     }
     toast({
       title: "Chat Cleared",
-      description: "The conversation history has been cleared.",
-      variant: "default"
+      description: "Memory has been reset.",
     });
     inputRef.current?.focus();
   };
@@ -237,10 +229,7 @@ export function ChatbotDialog() {
     
     navigator.clipboard.writeText(chatText).then(() => {
       setCopied(true);
-      toast({
-        title: "Copied to Clipboard",
-        description: "You can now paste the conversation for analysis.",
-      });
+      toast({ title: "Copied!" });
       setTimeout(() => setCopied(false), 2000);
     });
   };
@@ -250,27 +239,15 @@ export function ChatbotDialog() {
     open: { opacity: 1, y: 0, scale: 1 }
   };
 
-  const triggerButtonVariants = {
-    initial: { scale: 0, opacity: 0 },
-    animate: { scale: 1, opacity: 1, transition: { delay: 1, type: "spring", stiffness: 200, damping: 20 } }
-  };
-
-  const suggestionsVisible = currentSuggestions.length > 0;
-  const gridTemplateRows = suggestionsVisible ? "auto auto 1fr auto" : "auto 1fr auto";
+  const gridTemplateRows = currentSuggestions.length > 0 ? "auto auto 1fr auto" : "auto 1fr auto";
 
   return (
     <>
-      <motion.div
-        variants={triggerButtonVariants}
-        initial="initial"
-        animate="animate"
-        className="fixed bottom-6 right-6 z-50"
-      >
+      <div className="fixed bottom-6 right-6 z-50">
         <Button
           onClick={() => setIsOpen(!isOpen)}
           size="icon"
           className="rounded-full h-14 w-14 shadow-lg hover:scale-110 transition-transform bg-primary hover:bg-primary/90 p-0 overflow-hidden"
-          aria-label="Toggle Chatbot"
         >
           {isOpen ? (
             <X className="h-7 w-7" />
@@ -278,15 +255,14 @@ export function ChatbotDialog() {
             <Avatar className="h-full w-full">
               <AvatarImage 
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQISscdGPN0f7hp7m9wka0VumVDqmaJYAkDLPnWCjeb7WhsvMBICoPLDHfD_3uWziaZeAc&usqp=CAU" 
-                alt="Sora AI Assistant" 
-                data-ai-hint="woman headset"
+                alt="Sora"
                 className="object-cover"
               />
-              <AvatarFallback className="bg-primary text-primary-foreground text-xl">SA</AvatarFallback>
+              <AvatarFallback>SA</AvatarFallback>
             </Avatar>
           )}
         </Button>
-      </motion.div>
+      </div>
 
       <AnimatePresence>
         {isOpen && (
@@ -295,13 +271,11 @@ export function ChatbotDialog() {
             initial="closed"
             animate="open"
             exit="closed"
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className={cn(
               "fixed bottom-24 z-40 rounded-xl bg-background shadow-2xl border border-border overflow-hidden grid",
               "left-4 right-4 w-auto", 
               "md:left-auto md:right-6 md:w-full md:max-w-md", 
-              "lg:max-w-lg", 
-              "xl:max-w-xl"  
+              "lg:max-w-lg"
             )}
             style={{ 
               maxHeight: 'min(calc(100vh - 12rem), 85vh)',
@@ -311,60 +285,55 @@ export function ChatbotDialog() {
             <header className="bg-card p-3 border-b border-border flex items-center justify-between">
               <div className="flex items-center gap-2">
                  <Avatar className="h-8 w-8 border border-primary/50">
-                  <AvatarImage 
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQISscdGPN0f7hp7m9wka0VumVDqmaJYAkDLPnWCjeb7WhsvMBICoPLDHfD_3uWziaZeAc&usqp=CAU" 
-                    alt="Sora AI Assistant" 
-                    data-ai-hint="woman headset"
-                    className="object-cover"
-                  />
-                  <AvatarFallback className="bg-primary text-primary-foreground text-xs">SA</AvatarFallback>
+                  <AvatarImage src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQISscdGPN0f7hp7m9wka0VumVDqmaJYAkDLPnWCjeb7WhsvMBICoPLDHfD_3uWziaZeAc&usqp=CAU" />
+                  <AvatarFallback>SA</AvatarFallback>
                 </Avatar>
                 <h3 className="font-semibold text-lg text-primary font-headline">Sora Assistant</h3>
               </div>
               <div className="flex items-center gap-1">
-                <Button variant="ghost" size="icon" onClick={handleCopyChat} className="h-8 w-8 text-muted-foreground hover:text-primary" title="Copy Chat for Analysis">
+                <Button variant="ghost" size="icon" onClick={handleCopyChat} className="h-8 w-8">
                   {copied ? <CheckCircle2 className="h-5 w-5 text-green-500" /> : <Copy className="h-5 w-5" />}
                 </Button>
-                <Button variant="ghost" size="icon" onClick={handleClearChat} className="h-8 w-8 text-muted-foreground hover:text-destructive" aria-label="Clear Chat">
+                <Button variant="ghost" size="icon" onClick={handleClearChat} className="h-8 w-8 hover:text-destructive">
                   <Trash2 className="h-5 w-5" />
                 </Button>
-                <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="h-8 w-8" aria-label="Close Chat">
+                <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="h-8 w-8">
                   <X className="h-5 w-5" />
                 </Button>
               </div>
             </header>
 
-            {suggestionsVisible && (
+            {currentSuggestions.length > 0 && (
               <div className="p-3 border-b border-border bg-card/50">
                 {!suggestionsExpanded ? (
                   <Button
                     variant="ghost"
-                    className="w-full justify-start text-sm text-primary hover:bg-primary/10 py-2"
+                    className="w-full justify-start text-sm text-primary py-2"
                     onClick={() => setSuggestionsExpanded(true)}
                     disabled={isLoading}
                   >
-                    <MessageSquarePlus className="h-4 w-4 mr-2 opacity-80" />
+                    <MessageSquarePlus className="h-4 w-4 mr-2" />
                     View Suggestions
-                    <ChevronDown className="h-4 w-4 ml-auto opacity-70" />
+                    <ChevronDown className="h-4 w-4 ml-auto" />
                   </Button>
                 ) : (
                   <>
                     <Button
                       variant="ghost"
-                      className="w-full justify-start text-sm text-muted-foreground mb-2 hover:bg-muted/80 py-2"
+                      className="w-full justify-start text-sm text-muted-foreground mb-2 py-2"
                       onClick={() => setSuggestionsExpanded(false)}
                     >
-                      <MessageSquarePlus className="h-4 w-4 mr-2 opacity-80" />
+                      <MessageSquarePlus className="h-4 w-4 mr-2" />
                       Hide Suggestions
-                      <ChevronUp className="h-4 w-4 ml-auto opacity-70" />
+                      <ChevronUp className="h-4 w-4 ml-auto" />
                     </Button>
-                    <div className="flex flex-wrap gap-2 justify-start">
+                    <div className="flex flex-wrap gap-2">
                       {currentSuggestions.map((q, index) => (
                         <Button
                           key={index}
                           variant="outline"
                           size="sm"
-                          className="text-xs h-auto py-1.5 px-3 rounded-full shadow-sm hover:bg-accent hover:text-accent-foreground bg-card"
+                          className="text-xs rounded-full bg-card"
                           onClick={() => handleSuggestionClick(q)}
                           disabled={isLoading}
                         >
@@ -395,14 +364,13 @@ export function ChatbotDialog() {
                 <Input
                   ref={inputRef}
                   type="text"
-                  placeholder="Ask Sora about Tinkal..."
+                  placeholder="Ask Sora anything..."
                   value={currentInput}
                   onChange={(e) => setCurrentInput(e.target.value)}
                   disabled={isLoading}
                   className="flex-grow h-10"
-                  aria-label="Type your message"
                 />
-                <Button type="submit" size="icon" disabled={isLoading || !currentInput.trim()} aria-label="Send message" className="h-10 w-10">
+                <Button type="submit" size="icon" disabled={isLoading || !currentInput.trim()} className="h-10 w-10">
                   {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
                 </Button>
               </form>

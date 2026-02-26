@@ -1,4 +1,61 @@
-
-[2026-02-26T10:30:00.000Z] [System] HARD RESTART: Switched to native Groq SDK for 100% stability.
-[2026-02-26T10:30:00.000Z] [System] Model: llama-3.1-8b-instant configured with direct inference.
+[2026-02-26T10:28:10.277Z] [Sora Request (Groq SDK)]
+{
+  "userInput": "hi sora can you here me"
+}
+--------------------------------------------------
+[2026-02-26T10:28:10.736Z] [Sora Success (Groq SDK)]
+{
+  "response": "Namaste, main hoon Sora, kripya apni baat karein, mein samjhunga.",
+  "suggestedFollowUps": [
+    "Aap kya chaahte hain, job portal app ya notes app ke baare mein?",
+    "Aapko Tinkal sir ke baare mein kya puchhna hai?",
+    "Aap apne project ke liye koi sahayata chaahte hain?"
+  ]
+}
+--------------------------------------------------
+[2026-02-26T10:29:43.293Z] [Sora Request (Groq SDK)]
+{
+  "userInput": "who are you"
+}
+--------------------------------------------------
+[2026-02-26T10:29:43.792Z] [Sora Success (Groq SDK)]
+{
+  "response": "Main Sora hai, ek mahaul kee jyada avdhi ki AI personal asisstant. Main Tinkal Kumar ke dauraan banaaya tha.",
+  "suggestedFollowUps": [
+    "Tinkal Kumar kaun hai?",
+    "Tum kis cheezo par mahir hain?",
+    "Kya tum mujhe yahaan kaafi madad kar sakthe ho?"
+  ]
+}
+--------------------------------------------------
+[2026-02-26T10:30:13.442Z] [Sora Request (Groq SDK)]
+{
+  "userInput": "lets talk in english"
+}
+--------------------------------------------------
+[2026-02-26T10:30:13.904Z] [Sora Success (Groq SDK)]
+{
+  "response": "I'd be happy to discuss various topics in English. What would you like to talk about, such as Tinkal Kumar's career, full-stack web development, DevOps, or something else?",
+  "suggestedFollowUps": [
+    "What projects is Tinkal interested in collaborating on?",
+    "Do you have experience with cloud security best practices?",
+    "How can Tinkal improve his clean code and problem-solving skills?",
+    "Can you share any resources on responsible AI and ethics?"
+  ]
+}
+--------------------------------------------------
+[2026-02-26T10:30:27.128Z] [Sora Request (Groq SDK)]
+{
+  "userInput": "tell me about yourself"
+}
+--------------------------------------------------
+[2026-02-26T10:30:27.633Z] [Sora Success (Groq SDK)]
+{
+  "response": "Main kya hoon? Mein Tinkal Kumar se banaya ek advance AI personal assistant hoon, jiska naam Sora hai. Apne gyaan aur kaushal ke liye jaanta hoon, ismein saare vishay shaamil hain, code se lyeke science tak, shiksha se lyeke itihas tak.",
+  "suggestedFollowUps": [
+    "Aap kya jaanne chahte hain?",
+    "Tinkal Kumar ka career kya hai?",
+    "Mujh se kya paaya ja sakta hai?"
+  ]
+}
 --------------------------------------------------

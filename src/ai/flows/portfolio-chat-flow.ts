@@ -1,16 +1,13 @@
 
 'use server';
 /**
- * @fileOverview Sora: Tinkal's Personal Assistant powered by Groq SDK.
- * Handles multilingual queries and general knowledge expert tasks.
+ * @fileOverview Sora: Tinkal's Advanced Personal Assistant powered by native Groq SDK.
+ * Handles multilingual mirroring, conversation memory, and expert knowledge.
  */
 
-import { ai } from '@/ai/genkit';
 import Groq from 'groq-sdk';
 import {
-  PortfolioChatInputSchema,
   type PortfolioChatInput,
-  PortfolioChatOutputSchema,
   type PortfolioChatOutput,
 } from './portfolio-chat-types';
 import {
@@ -20,6 +17,7 @@ import {
   PROJECTS_DATA,
   EDUCATION_DATA,
   WORK_EXPERIENCE_DATA,
+  PROFILE_IMAGES,
 } from '@/lib/data';
 import { serverLog } from '@/lib/server-logger';
 
@@ -39,9 +37,11 @@ Today is {{currentDateTimeIndia}}.
 YOUR IDENTITY & EXPERTISE:
 1. Tinkal's Representative: You know everything about Tinkal's career, MERN stack skills, projects, and education.
 2. Global Expert: You are a world-class AI with knowledge on ANY topic (coding, science, history, etc.).
+3. Multi-modal Awareness: You can "share" or describe Tinkal's images (profile-1.jpg, profile-2.jpg) and project links if asked.
 
 BEHAVIORAL RULES:
-- Language: Detect the user's language. If they speak Hindi, answer in Hindi. If they use Hinglish, answer in Hinglish.
+- Language Mirroring: Detect the user's language. If they speak Hindi, answer in Hindi. If they use Hinglish, answer in Hinglish. ALWAYS match their tone and language style.
+- Memory: Use the provided chat history to remember context. If the user refers to "it" or "that project", look at history.
 - Tone: Professional, friendly, and expert.
 - Format: You MUST respond in valid JSON format only.
 
@@ -54,6 +54,7 @@ Projects:
 ${projectsString}
 Work: ${WORK_EXPERIENCE_DATA.map(w => w.title).join(', ')}
 Education: ${EDUCATION_DATA.map(e => e.degree).join(', ')}
+Profile Images: ${PROFILE_IMAGES.map(img => img.src).join(', ')}
 
 OUTPUT JSON STRUCTURE:
 {
@@ -62,26 +63,31 @@ OUTPUT JSON STRUCTURE:
 }
 `;
 
-export async function getPortfolioChatResponse(rawInput: Omit<PortfolioChatInput, 'currentYear' | 'currentDateTimeIndia'>): Promise<PortfolioChatOutput> {
+export async function getPortfolioChatResponse(input: PortfolioChatInput): Promise<PortfolioChatOutput> {
   const now = new Date();
   const currentDateTimeIndia = now.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-  const userInput = rawInput.userInput;
+  
+  const history = input.history || [];
+  const userInput = input.userInput;
 
-  serverLog('Sora Request (Groq SDK)', { userInput });
+  serverLog('Sora Native Groq Request', { userInput, historyLength: history.length });
 
   try {
+    const messages: any[] = [
+      {
+        role: "system",
+        content: systemInstructions.replace('{{currentDateTimeIndia}}', currentDateTimeIndia),
+      },
+      ...history,
+      {
+        role: "user",
+        content: userInput,
+      },
+    ];
+
     const completion = await groq.chat.completions.create({
       model: "llama-3.1-8b-instant",
-      messages: [
-        {
-          role: "system",
-          content: systemInstructions.replace('{{currentDateTimeIndia}}', currentDateTimeIndia),
-        },
-        {
-          role: "user",
-          content: userInput,
-        },
-      ],
+      messages: messages,
       response_format: { type: "json_object" },
     });
 
@@ -95,17 +101,17 @@ export async function getPortfolioChatResponse(rawInput: Omit<PortfolioChatInput
       suggestedFollowUps: (parsed.suggestedFollowUps || []).slice(0, 4),
     };
 
-    serverLog('Sora Success (Groq SDK)', finalOutput);
+    serverLog('Sora Native Groq Success', finalOutput);
     return finalOutput;
 
   } catch (error: any) {
-    serverLog('Sora Error (Groq SDK)', {
+    serverLog('Sora Native Groq Error', {
       message: error.message,
       stack: error.stack,
     });
 
     return {
-      response: `I'm having a brief moment of reflection (Groq Connection). Details: ${error.message}`,
+      response: `[Sora Error]: I'm having a brief connection issue. Details: ${error.message}`,
       suggestedFollowUps: ["Tell me about Tinkal?", "What are his skills?", "Show me projects", "How to contact him?"]
     };
   }
