@@ -5,7 +5,7 @@ import {
   ServerCog, Wand2, Palette, Settings2, ShoppingCart, FileText, BookOpen,
   GraduationCap, Building, Award, ExternalLink, UserCircle2, KeyRound, ShieldCheck,
   UploadCloud, Smartphone, Layers, Puzzle, Lightbulb, TerminalSquare, GitCommit, Wrench,
-  Send, Brain, MessageSquareText, Rocket, NotebookText, Scale, Instagram, Boxes
+  Send, Brain, MessageSquareText, Rocket, NotebookText, Scale, Instagram
 } from 'lucide-react';
 
 import {
@@ -393,7 +393,6 @@ export const TECH_STACK: TechStackItem[] = [
   { name: "JWT Authentication", Icon: KeyRound, category: "Backend & Microservices" },
   { name: "API Security", Icon: ShieldCheck, category: "Backend & Microservices" },
   { name: "WebSockets", Icon: Radio, category: "Backend & Microservices" },
-  { name: "Microservices Architecture", Icon: Boxes, category: "Backend & Microservices" },
   { name: "System Design", Icon: Network, category: "Backend & Microservices" },
   { name: "Apache Kafka", Icon: Radio, category: "Backend & Microservices" },
   { name: "Event-Driven Architecture", Icon: Zap, category: "Backend & Microservices" },
