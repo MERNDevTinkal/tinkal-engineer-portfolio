@@ -1,4 +1,4 @@
 
-[2026-02-26T10:20:00.000Z] [System] Hard Restart Performed. Sora switched to Groq Cloud (Llama 3.3 70B) with model registration fix.
-[2026-02-26T10:25:00.000Z] [System] Version Fix: Updated genkitx-openai to 'latest' in package.json to resolve ETARGET error.
+[2026-02-26T10:30:00.000Z] [System] HARD RESTART: Switched to Google AI (Gemini 1.5 Flash) for 100% stability.
+[2026-02-26T10:30:00.000Z] [System] Resolved "Model missing required fields" error by using native Genkit provider.
 --------------------------------------------------

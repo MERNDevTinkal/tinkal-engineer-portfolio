@@ -2,7 +2,7 @@
 'use server';
 /**
  * @fileOverview Sora: Tinkal's Multilingual Personal Assistant & General Knowledge Expert.
- * Powered by Groq Cloud (Llama 3.3 70B).
+ * Powered by Google Gemini 1.5 Flash for maximum reliability.
  */
 
 import { ai } from '@/ai/genkit';
@@ -96,7 +96,7 @@ export async function getPortfolioChatResponse(rawInput: Omit<PortfolioChatInput
       console.error("Sora Flow Error:", error);
       
       return {
-          response: `I'm having a brief moment of reflection (Groq Connection). Details: ${error.message}`,
+          response: `I'm having a brief moment of reflection. Details: ${error.message}`,
           suggestedFollowUps: ["Tell me about Tinkal?", "What are his skills?", "Show me projects", "How to contact him?"]
       };
   }

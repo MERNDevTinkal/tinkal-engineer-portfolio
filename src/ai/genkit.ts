@@ -1,23 +1,14 @@
 
 import { genkit } from 'genkit';
-import { openAI } from 'genkitx-openai';
+import { googleAI } from '@genkit-ai/google-genai';
 
 /**
- * Genkit initialization configured for Groq Cloud.
- * We register the specific Groq models so Genkit's registry recognizes them.
+ * Genkit initialization configured for Google AI (Gemini).
+ * This provides the most stable and high-performance experience for Sora.
  */
 export const ai = genkit({
   plugins: [
-    openAI({
-      apiKey: process.env.GROQ_API_KEY,
-      baseURL: 'https://api.groq.com/openai/v1',
-      models: [
-        {
-          name: 'llama-3.3-70b-versatile',
-          label: 'Groq Llama 3.3 70B',
-        }
-      ]
-    }),
+    googleAI(),
   ],
-  model: 'openai/llama-3.3-70b-versatile',
+  model: 'googleai/gemini-1.5-flash',
 });
