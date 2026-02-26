@@ -2,19 +2,18 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Send, Loader2, X, MessageSquarePlus, ChevronDown, ChevronUp, Trash2, Copy, CheckCircle2 } from "lucide-react";
+import { Send, Loader2, X, MessageSquarePlus, ChevronDown, ChevronUp, Trash2, Copy, CheckCircle2, Bot } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChatMessage } from "./ChatMessage";
 import { getPortfolioChatResponse } from "@/ai/flows/portfolio-chat-flow";
 import type { PortfolioChatOutput } from "@/ai/flows/portfolio-chat-types";
-import { AUTHOR_NAME } from "@/lib/data";
+import { AUTHOR_NAME, LOGO_PATH } from "@/lib/data";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import placeholderImages from '@/app/lib/placeholder-images.json';
 
 interface Message {
   id: string;
@@ -254,12 +253,13 @@ export function ChatbotDialog() {
           ) : (
             <Avatar className="h-full w-full border-2 border-primary/20">
               <AvatarImage 
-                src={placeholderImages.soraAvatar.url} 
+                src={LOGO_PATH} 
                 alt="Sora"
                 className="object-cover"
-                data-ai-hint={placeholderImages.soraAvatar.hint}
               />
-              <AvatarFallback className="bg-primary text-primary-foreground">SA</AvatarFallback>
+              <AvatarFallback className="bg-primary text-primary-foreground">
+                <Bot className="h-7 w-7" />
+              </AvatarFallback>
             </Avatar>
           )}
         </Button>
@@ -287,12 +287,13 @@ export function ChatbotDialog() {
               <div className="flex items-center gap-2">
                  <Avatar className="h-8 w-8 border border-primary/50 overflow-hidden">
                   <AvatarImage 
-                    src={placeholderImages.soraAvatar.url} 
+                    src={LOGO_PATH} 
                     alt="Sora AI Assistant"
                     className="object-cover"
-                    data-ai-hint={placeholderImages.soraAvatar.hint}
                   />
-                  <AvatarFallback className="text-[10px]">SA</AvatarFallback>
+                  <AvatarFallback className="text-[10px]">
+                    <Bot className="h-4 w-4" />
+                  </AvatarFallback>
                 </Avatar>
                 <h3 className="font-semibold text-lg text-primary font-headline">Sora Assistant</h3>
               </div>

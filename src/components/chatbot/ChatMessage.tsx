@@ -4,9 +4,8 @@
 import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
-import { UserCircle2 } from 'lucide-react'; 
-import { AUTHOR_NAME } from '@/lib/data';
-import placeholderImages from '@/app/lib/placeholder-images.json';
+import { UserCircle2, Bot } from 'lucide-react'; 
+import { AUTHOR_NAME, LOGO_PATH } from '@/lib/data';
 
 interface ChatMessageProps {
   sender: "user" | "bot";
@@ -23,13 +22,12 @@ export const ChatMessage = React.memo(function ChatMessage({ sender, text, isLoa
       {!isUser && (
         <Avatar className="h-8 w-8 border border-primary/50 overflow-hidden">
           <AvatarImage 
-            src={placeholderImages.soraAvatar.url} 
+            src={LOGO_PATH} 
             alt="Sora AI Assistant" 
-            data-ai-hint={placeholderImages.soraAvatar.hint}
             className="object-cover"
           />
           <AvatarFallback className="bg-primary text-primary-foreground text-[10px]">
-            {soraInitials}
+            <Bot className="h-4 w-4" />
           </AvatarFallback>
         </Avatar>
       )}
