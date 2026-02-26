@@ -1,0 +1,58 @@
+[2026-02-26T11:41:50.822Z] [Sora Native Groq Request]
+{
+  "userInput": "hi",
+  "historyLength": 2
+}
+--------------------------------------------------
+[2026-02-26T11:41:50.994Z] [Sora Native Groq Error]
+{
+  "message": "401 {\"error\":{\"message\":\"Invalid API Key\",\"type\":\"invalid_request_error\",\"code\":\"invalid_api_key\"}}",
+  "stack": "Error: 401 {\"error\":{\"message\":\"Invalid API Key\",\"type\":\"invalid_request_error\",\"code\":\"invalid_api_key\"}}\n    at APIError.generate (/home/user/studio/.next/server/chunks/ssr/node_modules_4f3b134f._.js:10506:20)\n    at Groq.makeStatusError (/home/user/studio/.next/server/chunks/ssr/node_modules_4f3b134f._.js:11368:162)\n    at Groq.makeRequest (/home/user/studio/.next/server/chunks/ssr/node_modules_4f3b134f._.js:11419:30)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async getPortfolioChatResponse (/home/user/studio/.next/server/chunks/ssr/[root of the server]__85fbc625._.js:200:28)\n    at async /home/user/studio/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:439:1227\n    at async handleAction (/home/user/studio/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:437:23681)\n    at async renderToHTMLOrFlightImpl (/home/user/studio/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:444:26714)\n    at async doRender (/home/user/studio/node_modules/next/dist/server/base-server.js:1650:34)\n    at async DevServer.renderToResponseWithComponentsImpl (/home/user/studio/node_modules/next/dist/server/base-server.js:1915:28)\n    at async DevServer.renderPageComponent (/home/user/studio/node_modules/next/dist/server/base-server.js:2393:24)\n    at async DevServer.renderToResponseImpl (/home/user/studio/node_modules/next/dist/server/base-server.js:2430:32)\n    at async DevServer.pipeImpl (/home/user/studio/node_modules/next/dist/server/base-server.js:1003:25)\n    at async NextNodeServer.handleCatchallRenderRequest (/home/user/studio/node_modules/next/dist/server/next-server.js:304:17)\n    at async DevServer.handleRequestImpl (/home/user/studio/node_modules/next/dist/server/base-server.js:895:17)\n    at async /home/user/studio/node_modules/next/dist/server/dev/next-dev-server.js:371:20\n    at async Span.traceAsyncFn (/home/user/studio/node_modules/next/dist/trace/trace.js:157:20)\n    at async DevServer.handleRequest (/home/user/studio/node_modules/next/dist/server/dev/next-dev-server.js:368:24)\n    at async invokeRender (/home/user/studio/node_modules/next/dist/server/lib/router-server.js:235:21)\n    at async handleRequest (/home/user/studio/node_modules/next/dist/server/lib/router-server.js:426:24)\n    at async requestHandlerImpl (/home/user/studio/node_modules/next/dist/server/lib/router-server.js:450:13)\n    at async Server.requestListener (/home/user/studio/node_modules/next/dist/server/lib/start-server.js:158:13)"
+}
+--------------------------------------------------
+[2026-02-26T11:43:50.164Z] [Sora Native Groq Request]
+{
+  "userInput": "hi",
+  "historyLength": 2
+}
+--------------------------------------------------
+[2026-02-26T11:43:50.641Z] [Sora Native Groq Success]
+{
+  "response": "NAMASTE! Kaise chaal rahi hai aajki date? (How's your day going today?)",
+  "suggestedFollowUps": [
+    "kya aapke paas koi vishesh sawal hai aaj (Do you have any special questions today?)",
+    "aap mere se Tinkal bhaashit kar rahe hai kya (Are you asking about Tinkal?)"
+  ]
+}
+--------------------------------------------------
+[2026-02-26T11:43:59.787Z] [Sora Native Groq Request]
+{
+  "userInput": "lets talk in englishj",
+  "historyLength": 4
+}
+--------------------------------------------------
+[2026-02-26T11:44:00.225Z] [Sora Native Groq Success]
+{
+  "response": "No problem! I'm glad we can have a conversation in English. Is there something you'd like to know about Tinkal Kumar or his work?",
+  "suggestedFollowUps": [
+    "His projects on GitHub?",
+    "Your experience working with Tinkal?",
+    "A specific tech-related question?"
+  ]
+}
+--------------------------------------------------
+[2026-02-26T11:44:13.210Z] [Sora Native Groq Request]
+{
+  "userInput": "whats your defaul lanuage",
+  "historyLength": 6
+}
+--------------------------------------------------
+[2026-02-26T11:44:13.520Z] [Sora Native Groq Success]
+{
+  "response": "My default language is English.",
+  "suggestedFollowUps": [
+    "Can I communicate in a different language?",
+    "What languages do I support?"
+  ]
+}
+--------------------------------------------------
