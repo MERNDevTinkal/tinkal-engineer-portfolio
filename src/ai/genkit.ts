@@ -5,8 +5,6 @@ import { openAI } from 'genkitx-openai';
 /**
  * Genkit initialization configured for Groq Cloud.
  * Uses the OpenAI-compatible endpoint via genkitx-openai.
- * 
- * IMPORTANT: This uses the GROQ_API_KEY provided in the .env file.
  */
 export const ai = genkit({
   plugins: [
@@ -16,5 +14,6 @@ export const ai = genkit({
     }),
   ],
   // Using Llama 3.3 70B via Groq for high-speed, high-quality multilingual responses.
+  // The 'openai/' prefix is required by the genkitx-openai plugin.
   model: 'openai/llama-3.3-70b-versatile',
 });
