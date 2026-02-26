@@ -71,3 +71,109 @@
   ]
 }
 --------------------------------------------------
+[2026-02-26T11:57:44.232Z] [Sora Native Groq Request]
+{
+  "userInput": "hi sora",
+  "historyLength": 2
+}
+--------------------------------------------------
+[2026-02-26T11:57:44.589Z] [Sora Native Groq Success]
+{
+  "response": "Hello! How can I assist you today?",
+  "suggestedFollowUps": [
+    "Hi, do you know Tinkal?",
+    "Can you tell me more about his skills?",
+    "Show me Tinkal"
+  ]
+}
+--------------------------------------------------
+[2026-02-26T11:58:08.228Z] [Sora Native Groq Request]
+{
+  "userInput": "Hy sora",
+  "historyLength": 2
+}
+--------------------------------------------------
+[2026-02-26T11:58:08.688Z] [Sora Native Groq Success]
+{
+  "response": "Namaste! Main Tinkal ka AI assistent hoon. Aap kaun hai aur kya chunti hai?",
+  "suggestedFollowUps": [
+    "Tinkal ke bare mein puchhna chunta hoon?",
+    "Mujhse koi project ya skill ka jankari chunti hoon"
+  ]
+}
+--------------------------------------------------
+[2026-02-26T11:58:38.179Z] [Sora Native Groq Request]
+{
+  "userInput": "hii tell me one thing",
+  "historyLength": 2
+}
+--------------------------------------------------
+[2026-02-26T11:58:38.666Z] [Sora Native Groq Success]
+{
+  "response": "Tinkal has a great professional headshot where he looks very confident. You can check it here: /profile-1.jpg",
+  "suggestedFollowUps": [
+    "Kya Tinkal ka work kaha hai?",
+    "Tinkal ka job portal app ka link kahan hai?",
+    "Tinkal aapke liye kyun uttam software engineer hai?"
+  ]
+}
+--------------------------------------------------
+[2026-02-26T11:58:59.524Z] [Sora Native Groq Request]
+{
+  "userInput": "wahts this",
+  "historyLength": 4
+}
+--------------------------------------------------
+[2026-02-26T11:58:59.954Z] [Sora Native Groq Success]
+{
+  "response": "You're asking about the image of Tinkal I shared earlier. It's a professional headshot of him, taken with a lot of care to capture his confident personality.",
+  "suggestedFollowUps": [
+    "Would you like to know more about Tinkal?",
+    "Can I share the image with you again?",
+    "Do you want to know about his projects?"
+  ]
+}
+--------------------------------------------------
+[2026-02-26T11:59:06.612Z] [Sora Native Groq Request]
+{
+  "userInput": "no i am not",
+  "historyLength": 6
+}
+--------------------------------------------------
+[2026-02-26T11:59:06.967Z] [Sora Native Groq Success]
+{
+  "response": "Sorry, it seems there's been a miscommunication. Could you please clarify what you're looking to know or discuss?",
+  "suggestedFollowUps": [
+    "Can I assist you with something related to Tinkal?",
+    "Would you like to know about his skills or projects?"
+  ]
+}
+--------------------------------------------------
+[2026-02-26T11:59:16.256Z] [Sora Native Groq Request]
+{
+  "userInput": "clear your menory",
+  "historyLength": 2
+}
+--------------------------------------------------
+[2026-02-26T11:59:16.552Z] [Sora Native Groq Success]
+{
+  "response": "All memories cleared. Let's start fresh!",
+  "suggestedFollowUps": []
+}
+--------------------------------------------------
+[2026-02-26T12:49:38.836Z] [Sora Native Groq Request]
+{
+  "userInput": "Tell me about a project Tinkal Kumar worked on.",
+  "historyLength": 2
+}
+--------------------------------------------------
+[2026-02-26T12:49:39.273Z] [Sora Native Groq Success]
+{
+  "response": "Tinkal Kumar worked on a Job Portal App, a comprehensive platform for job seekers and employers. It features a Next.js frontend and a robust MERN stack backend (MongoDB, Express.js, Node.js) with JWT authentication, Nodemailer for notifications, Multer for file uploads, and Bcrypt for password hashing.",
+  "suggestedFollowUps": [
+    "What is the Job Portal App's current status?",
+    "Can you elaborate on the technologies used?",
+    "What other projects has Tinkal worked on?"
+  ]
+}
+--------------------------------------------------
