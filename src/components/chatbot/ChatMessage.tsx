@@ -5,7 +5,7 @@ import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { UserCircle2, Bot } from 'lucide-react'; 
-import { AUTHOR_NAME, LOGO_PATH } from '@/lib/data';
+import { SORA_AVATAR_URL } from '@/lib/data';
 
 interface ChatMessageProps {
   sender: "user" | "bot";
@@ -15,14 +15,13 @@ interface ChatMessageProps {
 
 export const ChatMessage = React.memo(function ChatMessage({ sender, text, isLoading = false }: ChatMessageProps) {
   const isUser = sender === "user";
-  const soraInitials = "SA";
 
   return (
     <div className={cn("flex items-start gap-3 mb-4", isUser ? "justify-end" : "justify-start")}>
       {!isUser && (
         <Avatar className="h-8 w-8 border border-primary/50 overflow-hidden">
           <AvatarImage 
-            src={LOGO_PATH} 
+            src={SORA_AVATAR_URL} 
             alt="Sora AI Assistant" 
             className="object-cover"
           />

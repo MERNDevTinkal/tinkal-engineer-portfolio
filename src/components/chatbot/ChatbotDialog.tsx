@@ -9,7 +9,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChatMessage } from "./ChatMessage";
 import { getPortfolioChatResponse } from "@/ai/flows/portfolio-chat-flow";
 import type { PortfolioChatOutput } from "@/ai/flows/portfolio-chat-types";
-import { AUTHOR_NAME, LOGO_PATH } from "@/lib/data";
+import { AUTHOR_NAME, SORA_AVATAR_URL } from "@/lib/data";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -253,7 +253,7 @@ export function ChatbotDialog() {
           ) : (
             <Avatar className="h-full w-full border-2 border-primary/20">
               <AvatarImage 
-                src={LOGO_PATH} 
+                src={SORA_AVATAR_URL} 
                 alt="Sora"
                 className="object-cover"
               />
@@ -287,7 +287,7 @@ export function ChatbotDialog() {
               <div className="flex items-center gap-2">
                  <Avatar className="h-8 w-8 border border-primary/50 overflow-hidden">
                   <AvatarImage 
-                    src={LOGO_PATH} 
+                    src={SORA_AVATAR_URL} 
                     alt="Sora AI Assistant"
                     className="object-cover"
                   />
