@@ -17,3 +17,51 @@
   ]
 }
 --------------------------------------------------
+[2026-03-01T16:19:13.072Z] [Sora Native Groq Request]
+{
+  "userInput": "hy",
+  "historyLength": 2
+}
+--------------------------------------------------
+[2026-03-01T16:19:13.595Z] [Sora Native Groq Success]
+{
+  "response": "Hello! How can I assist you today?",
+  "suggestedFollowUps": [
+    "What brings you here?",
+    "Are you looking for information on Tinkal Kumar?",
+    "Do you have a specific question or topic in mind?"
+  ]
+}
+--------------------------------------------------
+[2026-03-01T16:19:26.953Z] [Sora Native Groq Request]
+{
+  "userInput": "who build u",
+  "historyLength": 4
+}
+--------------------------------------------------
+[2026-03-01T16:19:27.499Z] [Sora Native Groq Success]
+{
+  "response": "I was built to assist and represent Tinkal Kumar, a skilled software engineer with expertise in full-stack development, DevOps, and cloud technologies.",
+  "suggestedFollowUps": [
+    "What are Tinkal Kumar's skills and expertise?",
+    "What kind of projects has Tinkal Kumar worked on?",
+    "How can I get in touch with Tinkal Kumar?"
+  ]
+}
+--------------------------------------------------
+[2026-03-01T16:19:45.643Z] [Sora Native Groq Request]
+{
+  "userInput": "who developed and trained u",
+  "historyLength": 6
+}
+--------------------------------------------------
+[2026-03-01T16:19:46.154Z] [Sora Native Groq Success]
+{
+  "response": "I was developed and trained by a team of experts to assist and represent Tinkal Kumar, a skilled software engineer with expertise in full-stack development, DevOps, and cloud technologies.",
+  "suggestedFollowUps": [
+    "What are my capabilities?",
+    "How can I assist you?",
+    "What is Tinkal Kumar's expertise?"
+  ]
+}
+--------------------------------------------------
