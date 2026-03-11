@@ -65,3 +65,20 @@
   ]
 }
 --------------------------------------------------
+[2026-03-08T12:16:32.944Z] [Sora Native Groq Request]
+{
+  "userInput": "What is Tinkal Kumar's work experience?",
+  "historyLength": 2
+}
+--------------------------------------------------
+[2026-03-08T12:16:33.847Z] [Sora Native Groq Success]
+{
+  "response": "Tinkal Kumar is a highly skilled software engineer with strong experience in full-stack web development and growing expertise in DevOps and AWS cloud technologies. He has hands-on experience with Docker, CI/CD pipelines, infrastructure automation, and cloud security best practices. His expertise includes building scalable applications using MongoDB, Express.js, React.js, and Node.js, along with deploying, monitoring, and securing applications on AWS.",
+  "suggestedFollowUps": [
+    "What are Tinkal Kumar's key skills?",
+    "Can you describe one of Tinkal Kumar's projects?",
+    "How does Tinkal Kumar approach system design?",
+    "What is Tinkal Kumar's experience with cloud infrastructure?"
+  ]
+}
+--------------------------------------------------
