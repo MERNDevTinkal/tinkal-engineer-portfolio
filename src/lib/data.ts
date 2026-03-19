@@ -275,19 +275,19 @@ export const WORK_EXPERIENCE_DATA: ExperienceEntry[] = [
     ],
     Icon: Building,
   },
-  {
-    title: "IT Executive",
-    company: "Apex Hospitals, Jaipur",
-    duration: "Aug 2024 – Feb 2025",
-    location: "Jaipur, Rajasthan",
-    responsibilities: [
-      "Managed and updated content for the hospital's official website and internal applications, ensuring accuracy and timeliness.",
-      "Provided technical support and troubleshooting for the Hospital Management System (HMS), resolving issues to ensure smooth operations.",
-      "Facilitated communication between medical staff and software vendors to address system requirements and enhancements.",
-      "Built reusable UI components using HTML, CSS, and JavaScript to improve website consistency and development speed."
-    ],
-    Icon: Building,
-  },
+  // {
+  //   title: "IT Executive",
+  //   company: "Apex Hospitals, Jaipur",
+  //   duration: "Aug 2024 – Feb 2025",
+  //   location: "Jaipur, Rajasthan",
+  //   responsibilities: [
+  //     "Managed and updated content for the hospital's official website and internal applications, ensuring accuracy and timeliness.",
+  //     "Provided technical support and troubleshooting for the Hospital Management System (HMS), resolving issues to ensure smooth operations.",
+  //     "Facilitated communication between medical staff and software vendors to address system requirements and enhancements.",
+  //     "Built reusable UI components using HTML, CSS, and JavaScript to improve website consistency and development speed."
+  //   ],
+  //   Icon: Building,
+  // },
 ];
 
 export interface CertificationEntry {
