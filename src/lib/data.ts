@@ -262,8 +262,29 @@ export interface ExperienceEntry {
 export const WORK_EXPERIENCE_DATA: ExperienceEntry[] = [
   {
     title: "MERN Stack Developer",
+<<<<<<< HEAD
     company: "OweBest Technologies Pvt Ltd",
     duration: "Feb 2025 – Present",
+=======
+    company: "JPLoft Software Solutions",
+    duration: "April 2026 – Present",
+    location: "Jaipur, Rajasthan",
+    responsibilities: [
+     "Developed and maintained scalable full-stack applications using the MERN stack (MongoDB, Express.js, React.js, Node.js) with TypeScript.",
+      "Designed and implemented robust RESTful APIs using NestJS, ensuring clean architecture and high performance.",
+      "Integrated multiple third-party APIs and services, handling authentication, data synchronization, and error management efficiently.",
+      "Managed cloud infrastructure and deployments on AWS, including S3 for storage, server management, and CI/CD pipelines.",
+      "Optimized application performance through reusable components, efficient state management, and code refactoring.",
+      "Implemented secure authentication and authorization systems using JWT and role-based access control.",
+      "Collaborated in agile teams to deliver high-quality, production-ready solutions aligned with client requirements."
+    ],
+    Icon: Building,
+  },
+  {
+    title: "MERN Stack Developer",
+    company: "OweBest Technologies Pvt Ltd",
+    duration: "Feb 2025 – March 2026",
+>>>>>>> 890dcc7 (jpLoft)
     location: "Jaipur, Rajasthan",
     responsibilities: [
       "Developing and maintaining scalable full-stack web applications using the MERN stack (MongoDB, Express.js, React.js, Node.js) and TypeScript.",
